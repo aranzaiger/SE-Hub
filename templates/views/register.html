@@ -1,0 +1,31 @@
+<div class="register">
+
+	<md-content layout-padding>
+		<h1 style="margin-left:15px"><i class="fa fa-pencil"></i> Registration</h1>
+		    <md-card class="wellcome-float" style="margin-top: 15px;">
+		    <center>
+		      <p>First Login Of {{user.name}}</p>
+			      <div class="avatar">
+			        <img ng-src="{{user.avatar_url}}" alt="{{item.who}}" />
+			      </div>
+				</center>
+			      <br><br>
+			      <md-input-container ng-if="userHasNoName">
+				      <label>Full Name: </label>
+				      <input ng-model="user.name" required>
+				  </md-input-container>
+				Are You A Lecturer?	
+				<div>
+					<md-switch ng-model="user.isLecturer" aria-label="Switch 1">
+    					" I Am A Lecturer... ": {{ user.isLecturer }}
+  					</md-switch>
+				</div>
+				<center>	     
+				<p>
+					<b>Note:</b> This setting can be changed in the future. <br>
+					But Choose Now for easy Registration...
+				</p>    
+				</center> 
+		    </md-card>
+    </md-content>
+</div>
