@@ -10,6 +10,7 @@ from flask import Flask, request, render_template, redirect, abort
 # from User import User
 from flask.ext.github import GitHub
 from flask.ext.cors import CORS, cross_origin
+from models.User import User
 
 
 
@@ -115,16 +116,23 @@ def cookieMonster(uid):
 
 
 
-class User(db.Model):
-    username = db.StringProperty(required=True)
-    name = db.StringProperty(required=True)
-    email = db.StringProperty(required=True)
-    isLecturer = db.BooleanProperty(required=True)
-    accsessToken = db.StringProperty(required=True)
-    seToken = db.StringProperty(required=True)
-    avatar_url = db.StringProperty(required=True)
-    isFirstLogin = db.BooleanProperty(default=True)
-
-    def to_JSON(self):
-            return json.dumps(self, default=lambda o: o.__dict__,
-                sort_keys=True, indent=4)
+# class User(db.Model):
+#     username = db.StringProperty(required=True)
+#     name = db.StringProperty(required=True)
+#     email = db.StringProperty(required=True)
+#     isLecturer = db.BooleanProperty(required=True)
+#     accsessToken = db.StringProperty(required=True)
+#     seToken = db.StringProperty(required=True)
+#     avatar_url = db.StringProperty(required=True)
+#     isFirstLogin = db.BooleanProperty(default=True)
+#
+#     def to_JSON(self):
+#         dick = {'username' : self.username,
+#                 'name' : self.name,
+#                 'email' : self.email,
+#                 'isLecturer' : self.isLecturer,
+#                 'seToken' : self.seToken,
+#                 'avatar_url' : self.avatar_url,
+#                 'isFirstLogin' : self.isFirstLogin,
+#                 }
+#         return json.dumps(dick)
