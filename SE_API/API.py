@@ -48,7 +48,7 @@ def getUserByToken(token):
     for u in query.run(limit=5):
         return u.to_JSON()
 
-    return json.loads({'message' : 'No User Found'}), 403
+    return json.dumps({'message' : 'No User Found'}), 403
 
 
 @app.route('/githubOAuth')
