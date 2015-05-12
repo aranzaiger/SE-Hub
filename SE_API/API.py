@@ -6,7 +6,7 @@ from google.appengine.ext import db
 import requests
 import uuid
 
-from flask import Flask, request, render_template, redirect, abort
+from flask import Flask, request, render_template, redirect, abort, Response
 
 from flask.ext.github import GitHub
 from flask.ext.cors import CORS, cross_origin
@@ -62,9 +62,14 @@ def getUserByToken(token):
     query.filter("seToken = ", token)
 
     for u in query.run(limit=5):
-        return u.to_JSON()
+        return Response(response=u.to_JSON(),
+                    status=201,
+                    mimetype="application/json")  # Real response!
 
-    return json.dumps({'message' : 'No User Found'}), 403
+    return Response(response=json.dumps({'message' : 'No User Found'}),
+                    status=403,
+                    mimetype="application/json")
+
 
 
 @app.route('/githubOAuth')
