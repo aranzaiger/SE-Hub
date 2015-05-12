@@ -67,7 +67,7 @@ def getUserByToken(token):
                     mimetype="application/json")  # Real response!
 
     return Response(response=json.dumps({'message' : 'No User Found'}),
-                    status=403,
+                    status=400,
                     mimetype="application/json")
 
 
