@@ -10,6 +10,8 @@ from flask import Flask, request, render_template, redirect, abort
 # from User import User
 from flask.ext.github import GitHub
 from flask.ext.cors import CORS, cross_origin
+from flask.ext.autodoc import Autodoc
+
 
 
 
@@ -22,6 +24,7 @@ app.config['GITHUB_CLIENT_SECRET'] = githubKeys.getSecret()
 
 github = GitHub(app)
 cross = CORS(app)
+auto = Autodoc(app)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -30,6 +33,10 @@ def page_not_found(e):
 @app.route('/')
 def wellcomePage():
     return app.send_static_file('index.html')
+
+@app.route('/api/documentation')
+def documentation():
+    return auto.html()
 
 @app.route('/home')
 def returnHome():
@@ -41,7 +48,13 @@ def returnHome():
 
 
 @app.route('/api/getUserByToken/<string:token>', methods=["GET"])
+@auto.doc()
 def getUserByToken(token):
+    '''
+    param: String - token: users se-Token
+    return: JSON object of the user
+    if no valid seToken, return message: No User Found
+    '''
     query = User.all()
     query.filter("seToken = ", token)
 
