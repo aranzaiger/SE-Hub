@@ -1,4 +1,4 @@
-var DEBUG = false;
+var DEBUG = true;
 
 var welcome = angular.module('welcome', ['ngMaterial', 'seHub.services', 'ngRoute' , 'ngCookies']);
 

@@ -6,11 +6,12 @@ angular.module('SeHub')
 	$scope.loadingData = true;
 
 	apiService.getUserByToken(token).success(function(data){
+		console.log(data);
 		if(data.message == 'No User Found')
 			console.error("No User Found!");
 
-		$scope.user = data._entity;
-		$rootScope.user = data._entity;
+		$scope.user = data;
+		$rootScope.user = data;
 		if($scope.user.isFirstLogin)
 			$location.path('/register')
 	})
