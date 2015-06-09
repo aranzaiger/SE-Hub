@@ -10,5 +10,21 @@ angular.module('SeHub')
 		$scope.userHasNoName = true;
 	}
 
+	///TESTING
+	$scope.campuses = [
+		{															
+			title: 'JCE',
+			capus_avatar: "http://asdasfa.asdasd.com/img.jpg"
+		},
+		{
+			title: 'JCE1',
+			capus_avatar: "http://asdasfa.asdasd.com/img.jpg"
+		},
+		{
+			title: "JCE2",
+			capus_avatar: "http://asdasfa.asdasd.com/img.jpg"
+		}
+	];
 
-}])
+
+}]);																						
