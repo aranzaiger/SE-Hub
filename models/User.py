@@ -12,6 +12,8 @@ class User(db.Model):
     seToken = db.StringProperty(required=True)
     avatar_url = db.StringProperty(required=True)
     isFirstLogin = db.BooleanProperty(default=True)
+    campuses_id_list = db.StringListProperty()
+    classes_id_list = db.StringListProperty()
 
     def to_JSON(self):
         dick = {'username' : self.username,
@@ -21,5 +23,7 @@ class User(db.Model):
                 'seToken' : self.seToken,
                 'avatar_url' : self.avatar_url,
                 'isFirstLogin' : self.isFirstLogin,
+                'campuses_id_list': self.campuses_id_list,
+                'classes_id_list': self.classes_id_list
                 }
         return json.dumps(dick)
