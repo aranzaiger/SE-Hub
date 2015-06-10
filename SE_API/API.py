@@ -41,6 +41,39 @@ def page_not_found(e):
 def wellcomePage():
     return app.send_static_file('index.html')
 
+@app.route('/api/validatation/sendmail/<string:token>', methods=['POST'])
+@auto.doc()
+def send_activation(token):
+    """
+    This Method Will Send An Email To The User - To Confirm his Account
+    :param token:  - seToken
+    :payload: JSON - {email: 'academic@email.ac.com'}
+    :return:
+    200 - Email Sent - No Response
+    400 - Bad Request
+    403 - Invalid Token
+    """
+    if not request.data:
+        return Response(response=json.dumps({'message': 'Bad Request'}),
+                        status=400,
+                        mimetype="application/json")
+    payload = json.loads(request.data)
+    if not is_user_token_valid(token):
+        return Response(response=json.dumps({'message': 'Not A Valid Token!'}),
+                        status=403,
+                        mimetype="application/json")
+    query = User.all()
+    query.filter('seToken =', token)
+    for u in query.run(limit=1):
+        try:
+            send_validation_email(token=token, name=u.username, email=payload["email"])
+        except Exception:
+            return Response(response=json.dumps({'message': 'Bad Request'}),
+                     status=400,
+                     mimetype="application/json")
+
+        return Response(status=200)
+
 @app.route('/api/help')
 def documentation():
     return auto.html()
@@ -67,8 +100,8 @@ def getUserByToken(token):
 
     for u in query.run(limit=5):
         return Response(response=u.to_JSON(),
-                    status=201,
-                    mimetype="application/json")  # Real response!
+                        status=201,
+                        mimetype="application/json")  # Real response!
 
     return Response(response=json.dumps({'message' : 'No User Found'}),
                     status=400,
@@ -135,7 +168,7 @@ def get_campuses(token):
     ....
     {
     ...
-    }
+    }req
     ]
 
     code 403: Forbidden - Invalid Token
