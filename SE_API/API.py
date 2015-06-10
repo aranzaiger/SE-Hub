@@ -143,11 +143,12 @@ def get_campuses(token):
     """
     if is_user_token_valid(token):
         arr = []
-        query = User.all()
+        query = Campus.all()
         for c in query.run():
-            arr.append(c.to_JSON)
+            arr.append(dict(json.loads(c.to_JSON())))
+        print arr
         if len(arr) != 0:
-            return Response(response=json.dumps([]),
+            return Response(response=json.dumps(arr),
                             status=200,
                             mimetype="application/json")
         else:
