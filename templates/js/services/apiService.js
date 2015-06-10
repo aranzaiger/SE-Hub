@@ -14,6 +14,15 @@ service.factory('apiService', ['$http', function($http) {
 
 			};
 			return $http(req);
+		},
+		getAllCampuses: function(token){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/Campuses/" + token;
+			req = {
+				method : "GET",
+				url : url
+
+			};
+			return $http(req);
 		}
 
 
