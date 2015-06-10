@@ -41,7 +41,7 @@ def page_not_found(e):
 def wellcomePage():
     return app.send_static_file('index.html')
 
-@app.route('/api/documentation')
+@app.route('/api/help')
 def documentation():
     return auto.html()
 
@@ -125,7 +125,9 @@ def get_campuses(token):
     :param token: user seToken
     :return:
     code 200:
-    [{'title': 'JCE',
+    [
+    {
+                'title': 'JCE',
                 'email_ending': '@post.jce.ac.il',
                 'master_user_id': 123453433341, (User that created the campus)
                 'avatar_url': 'http://some.domain.com/imagefile.jpg'
