@@ -14,6 +14,10 @@ from flask.ext.autodoc import Autodoc
 
 # DB Models
 from models.User import User
+from models.Campus import Campus
+
+#Validation Utils Libs
+from SE_API.Validation_Utils import *
 
 
 
@@ -98,10 +102,7 @@ def oauth(oauth_token):
         u.put()
         return cookieMonster(u.seToken)
 
-    if user_data["name"] == "":
-        tempName = ";"
-    else:
-        tempName = user_data["name"]
+    tempName = ";"
 
     if user_data["email"] == "":
         for email in userEmails:
@@ -110,12 +111,51 @@ def oauth(oauth_token):
     else:
         tempEmail = user_data["email"]
 
-
     user = User(username=user_data["login"], name=tempName, avatar_url=user_data["avatar_url"], email=tempEmail, isLecturer=False, accsessToken=oauth_token, seToken=str(uuid.uuid4()))
     db.put(user)
     db.save
     return cookieMonster(user.seToken)
 
+
+@app.route('/api/Campuses/<string:token>', methods=['GET'])
+@auto.doc()
+def get_campuses(token):
+    """
+    This Call will return an array of all Campuses available
+    :param token: user seToken
+    :return:
+    code 200:
+    [{'title': 'JCE',
+                'email_ending': '@post.jce.ac.il',
+                'master_user_id': 123453433341, (User that created the campus)
+                'avatar_url': 'http://some.domain.com/imagefile.jpg'
+    },
+    ....
+    {
+    ...
+    }
+    ]
+
+    code 403: Forbidden - Invalid Token
+    code 500: internal server error
+    """
+    if is_user_token_valid(token):
+        arr = []
+        query = User.all()
+        for c in query.run():
+            arr.append(c.to_JSON)
+        if len(arr) != 0:
+            return Response(response=json.dumps([]),
+                            status=200,
+                            mimetype="application/json")
+        else:
+            return Response(response=[],
+                            status=200,
+                            mimetype="application/json")
+    else:
+        return Response(response=json.dumps({'message': 'Invalid Token'}),
+                        status=403,
+                        mimetype="application/json")
 
 
 
