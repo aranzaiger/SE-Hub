@@ -8,13 +8,13 @@ class User(db.Model):
     name = db.StringProperty(required=True)
     email = db.StringProperty(required=True)
     isLecturer = db.BooleanProperty(required=True)
-    accsessToken = db.StringProperty(required=True)
+    accessToken = db.StringProperty(required=True)
     seToken = db.StringProperty(required=True)
     avatar_url = db.StringProperty(required=True)
     isFirstLogin = db.BooleanProperty(default=True)
 
     def to_JSON(self):
-        dick = {'username' : self.username,
+        data = {'username' : self.username,
                 'name' : self.name,
                 'email' : self.email,
                 'isLecturer' : self.isLecturer,
@@ -22,4 +22,4 @@ class User(db.Model):
                 'avatar_url' : self.avatar_url,
                 'isFirstLogin' : self.isFirstLogin,
                 }
-        return json.dumps(dick)
+        return json.dumps(data)

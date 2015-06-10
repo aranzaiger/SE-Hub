@@ -14,6 +14,8 @@ from flask.ext.autodoc import Autodoc
 
 # DB Models
 from models.User import User
+from models.Course import Course
+from models.Project import Project
 
 
 
@@ -69,6 +71,8 @@ def getUserByToken(token):
     return Response(response=json.dumps({'message' : 'No User Found'}),
                     status=400,
                     mimetype="application/json")
+
+
 
 
 
