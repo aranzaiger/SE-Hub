@@ -20,7 +20,12 @@
     					" I Am A Lecturer... ": {{ user.isLecturer }}
   					</md-switch>
 				</div>
-				<center>	     
+				<center>
+				<div>
+					<md-select placeholder="Campus Name" ng-model="campus" style="z-index: 9999">
+				        <md-option ng-repeat="c in campuses" value="{{c.title}}">{{c.title}}</md-option>
+				    </md-select>
+				</div>   
 				<p>
 					<b>Note:</b> This setting can be changed in the future. <br>
 					But Choose Now for easy Registration...
