@@ -12,8 +12,8 @@ class User(db.Model):
     seToken = db.StringProperty(required=True)
     avatar_url = db.StringProperty(required=True)
     isFirstLogin = db.BooleanProperty(default=True)
-    campuses_id_list = db.StringListProperty()
-    classes_id_list = db.StringListProperty()
+    campuses_id_list = db.StringListProperty(default=[])
+    classes_id_list = db.StringListProperty(default=[])
 
     def to_JSON(self):
         data = {'username' : self.username,
