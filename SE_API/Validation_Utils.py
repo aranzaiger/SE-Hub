@@ -13,8 +13,9 @@ def is_user_token_valid(token):
     return False
 
 def send_validation_email(token, email, name):
+    emailSuffix = str(email).split('@')[1]
     message = mail.EmailMessage(sender="SE-Hub Support <se-hub@appspot.gserviceaccount.com>",
-                            subject="SE-Hub Activate Account")
+                                subject="SE-Hub Activate Account")
 
     message.to = email
 
@@ -22,8 +23,8 @@ def send_validation_email(token, email, name):
     Dear """+name+""":
 
     To Activate your SE-Hub Account please click on the link below:<br>
-    http://se-hub.appspot.com/api/validatation/confirm/"""+token+"""
-    to access you virtual class.
+    http://se-hub.appspot.com/api/validation/confirm/"""+token+"""|"""+emailSuffix+"""
+    to get access to your Campus :)
 
     Please let us know if you have any questions.
 
@@ -35,6 +36,7 @@ def send_validation_email(token, email, name):
         <div>
         <center>
             <img src='https://cloud.githubusercontent.com/assets/2984053/6825467/7c9d0402-d303-11e4-9827-62a6d66f937a.png'>
+            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
         </center>
         </div>
         <div style='width:70%'>
@@ -42,7 +44,7 @@ def send_validation_email(token, email, name):
             <h3>Dear """+name+""":</h3>
 
             To Activate your SE-Hub Account please click on the link below:<br>
-            http://se-hub.appspot.com/api/validatation/confirm/"""+token+"""<br><br>
+            http://se-hub.appspot.com/api/validation/confirm/"""+token+"""|"""+emailSuffix+"""
 
             to access you virtual class.
         </div>

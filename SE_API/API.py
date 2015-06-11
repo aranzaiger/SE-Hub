@@ -43,7 +43,29 @@ def page_not_found(e):
 def wellcomePage():
     return app.send_static_file('index.html')
 
-@app.route('/api/validatation/sendmail/<string:token>', methods=['POST'])
+@app.route('/api/validation/confirm/<string:validation_token>')
+@auto.doc()
+def confirm_user_to_campus(validation_token):
+    """
+    This Function is will re
+    :param validation_token: 'seToken|email_suffix'
+    :return:
+    200 - redirect to home + new cookie
+    403 - Invalid Token
+    """
+    #TODO
+    token = str(validation_token).split('|')[0]
+    email_sufix = '@'+str(validation_token).split('|')[1]
+
+    if is_user_token_valid(token):
+        return Response(status=200, response=json.dumps({'token': token, 'suffix': email_sufix}))
+    else:
+        return Response(response=json.dumps({'message': 'Not A Valid Token!'}),
+                        status=403,
+                        mimetype="application/json")
+
+
+@app.route('/api/validation/sendmail/<string:token>', methods=['POST'])
 @auto.doc()
 def send_activation(token):
     """
@@ -146,7 +168,7 @@ def oauth(oauth_token):
     else:
         tempEmail = user_data["email"]
 
-    user = User(username=user_data["login"], name=tempName, avatar_url=user_data["avatar_url"], email=tempEmail, isLecturer=False, accsessToken=oauth_token, seToken=str(uuid.uuid4()))
+    user = User(username=user_data["login"], name=tempName, avatar_url=user_data["avatar_url"], email=tempEmail, isLecturer=False, accessToken=oauth_token, seToken=str(uuid.uuid4()))
     db.put(user)
     db.save
     return cookieMonster(user.seToken)
