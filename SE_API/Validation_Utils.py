@@ -1,6 +1,7 @@
 __author__ = 'sagi'
 from google.appengine.ext import db
 from models.User import User
+from models.Campus import Campus
 from google.appengine.api import mail
 
 
@@ -10,6 +11,14 @@ def get_user_by_token(token):
 
     for u in query.run(limit = 1):
         return u
+    return None
+
+def get_campus_by_suffix(suffix):
+    query = Campus.all()
+    query.filter("email_ending = ", suffix)
+
+    for c in query.run(limit = 1):
+        return c
     return None
 
 def is_user_token_valid(token):

@@ -59,12 +59,21 @@ def confirm_user_to_campus(validation_token):
     token = str(validation_token).split('|')[0]
     email_sufix = '@'+str(validation_token).split('|')[1]
 
-    if is_user_token_valid(token):
-        return Response(status=200, response=json.dumps({'token': token, 'suffix': email_sufix}))
+    user = get_user_by_token(token)
+
+    if user is None:
+        return forbidden('Forbidden: invalid Token')
     else:
-        return Response(response=json.dumps({'message': 'Not A Valid Token!'}),
-                        status=403,
-                        mimetype="application/json")
+        campus = get_campus_by_suffix(email_sufix)
+        if campus is None:
+            return bad_request('Bad Request: Email Suffix ' + email_sufix + ' Not Found')
+    user.isFirstLogin = False
+    user.seToken = str(uuid.uuid4())
+    if str(campus.key().id()) not in user.campuses_id_list:
+        user.campuses_id_list.append(str(campus.key().id()))
+    db.put(user)
+    return cookieMonster(user.seToken)
+
 
 
 @app.route('/api/validation/sendmail/<string:token>', methods=['POST'])

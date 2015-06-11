@@ -5,7 +5,7 @@ from google.appengine.ext import db
 
 class User(db.Model):
     username = db.StringProperty(required=True)
-    name = db.StringProperty(required=True)
+    name = db.StringProperty(required=False)
     email = db.StringProperty(required=True)
     isLecturer = db.BooleanProperty(required=True)
     accessToken = db.StringProperty(required=True)
