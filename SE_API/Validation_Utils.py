@@ -4,13 +4,26 @@ from models.User import User
 from google.appengine.api import mail
 
 
-def is_user_token_valid(token):
+def get_user_by_token(token):
     query = User.all()
     query.filter("seToken = ", token)
 
-    for u in query.run():
+    for u in query.run(limit = 1):
+        return u
+    return None
+
+def is_user_token_valid(token):
+    user = get_user_by_token(token)
+    if user is not None:
         return True
     return False
+
+def is_lecturer(token):
+    user = get_user_by_token(token)
+    if user is None:
+        return False
+    return user.isLecturer
+
 
 def send_validation_email(token, email, name):
     emailSuffix = str(email).split('@')[1]

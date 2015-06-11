@@ -1,3 +1,4 @@
+
 __author__ = 'sagi'
 import json
 from GithubAPI.GithubAPI import GitHubAPI_Keys
@@ -20,6 +21,7 @@ from models.Campus import Campus
 
 #Validation Utils Libs
 from SE_API.Validation_Utils import *
+from SE_API.Respones_Utils import *
 
 
 
@@ -152,7 +154,7 @@ def oauth(oauth_token):
 
     print user_data["login"]
 
-    for u in resault.run(limit=5):
+    for u in resault.run():
         print "Exists!!!"
         u.seToken = str(uuid.uuid4())
         u.accessToken = oauth_token
@@ -172,6 +174,52 @@ def oauth(oauth_token):
     db.put(user)
     db.save
     return cookieMonster(user.seToken)
+
+
+@app.route('/api/Campuses/create/<string:token>', methods=['POST'])
+@auto.doc()
+def create_campus(token):
+    """
+    This call will create a new campus in the DB
+    :param token:  user seToken
+    Payload
+    {'title': self.title,
+     'email_ending': self.email_ending,
+     'avatar_url': self.avatar_url
+    }
+    :return:
+    code 200
+    """
+    print "1\n"
+    if not request.data:
+        return Response(response=json.dumps({'message': 'Bad Request0'}),
+                        status=400,
+                        mimetype="application/json")
+    payload = json.loads(request.data)
+    if not is_lecturer(token):  #todo: change to lecturer id
+        return Response(response=json.dumps({'message': 'Invalid token or not a lecturer!'}),
+                        status=403,
+                        mimetype="application/json")
+
+    user = get_user_by_token(token)
+
+    #todo: check legality
+
+
+    try:
+        campus = Campus(title=payload['title'], email_ending=payload['email_ending'], master_user_id=user.key().id(), avatar_url=payload['avatar_url'])
+    except Exception:
+        return Response(response=json.dumps({'message': 'Bad Request1'}),
+                        status=400,
+                        mimetype="application/json")
+
+    db.put(campus)
+    db.save
+    return Response(response=json.dumps(campus.to_JSON()),
+                                status=200,
+                                mimetype="application/json")
+
+
 
 
 @app.route('/api/Campuses/<string:token>', methods=['GET'])
