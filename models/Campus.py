@@ -11,12 +11,12 @@ class Campus(db.Model):
     master_user_id = db.IntegerProperty(required=True)
 
     def to_JSON(self):
-        dick = {'title': self.title,
+        data = {'title': self.title,
                 'email_ending': self.email_ending,
                 'master_user_id': self.master_user_id,
                 'avatar_url': self.avatar_url
                 }
-        return json.dumps(dick)
+        return json.dumps(data)
 
 
 """

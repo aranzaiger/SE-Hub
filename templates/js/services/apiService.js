@@ -23,6 +23,20 @@ service.factory('apiService', ['$http', function($http) {
 
 			};
 			return $http(req);
+		},
+		sendValidationMail: function(token, email){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/validation/sendmail/" + token;
+			payload = {
+				email: email
+			};
+
+			req = {
+				method: "POST",
+				url: url,
+				data: payload
+			};
+
+			return $http(req);
 		}
 
 

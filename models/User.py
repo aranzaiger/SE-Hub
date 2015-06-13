@@ -5,21 +5,25 @@ from google.appengine.ext import db
 
 class User(db.Model):
     username = db.StringProperty(required=True)
-    name = db.StringProperty(required=True)
+    name = db.StringProperty(required=False)
     email = db.StringProperty(required=True)
     isLecturer = db.BooleanProperty(required=True)
-    accsessToken = db.StringProperty(required=True)
+    accessToken = db.StringProperty(required=True)
     seToken = db.StringProperty(required=True)
     avatar_url = db.StringProperty(required=True)
     isFirstLogin = db.BooleanProperty(default=True)
+    campuses_id_list = db.StringListProperty(default=[])
+    classes_id_list = db.StringListProperty(default=[])
 
     def to_JSON(self):
-        dick = {'username' : self.username,
+        data = {'username' : self.username,
                 'name' : self.name,
                 'email' : self.email,
                 'isLecturer' : self.isLecturer,
                 'seToken' : self.seToken,
                 'avatar_url' : self.avatar_url,
                 'isFirstLogin' : self.isFirstLogin,
+                'campuses_id_list': self.campuses_id_list,
+                'classes_id_list': self.classes_id_list
                 }
-        return json.dumps(dick)
+        return json.dumps(data)

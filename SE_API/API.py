@@ -1,3 +1,4 @@
+
 __author__ = 'sagi'
 import json
 from GithubAPI.GithubAPI import GitHubAPI_Keys
@@ -14,10 +15,13 @@ from flask.ext.autodoc import Autodoc
 
 # DB Models
 from models.User import User
+from models.Course import Course
+from models.Project import Project
 from models.Campus import Campus
 
 #Validation Utils Libs
 from SE_API.Validation_Utils import *
+from SE_API.Respones_Utils import *
 
 
 
@@ -40,6 +44,70 @@ def page_not_found(e):
 @app.route('/')
 def wellcomePage():
     return app.send_static_file('index.html')
+
+@app.route('/api/validation/confirm/<string:validation_token>')
+@auto.doc()
+def confirm_user_to_campus(validation_token):
+    """
+    This Function is will re
+    :param validation_token: 'seToken|email_suffix'
+    :return:
+    200 - redirect to home + new cookie
+    403 - Invalid Token
+    """
+    #TODO
+    token = str(validation_token).split('|')[0]
+    email_sufix = '@'+str(validation_token).split('|')[1]
+
+    user = get_user_by_token(token)
+
+    if user is None:
+        return forbidden('Forbidden: invalid Token')
+    else:
+        campus = get_campus_by_suffix(email_sufix)
+        if campus is None:
+            return bad_request('Bad Request: Email Suffix ' + email_sufix + ' Not Found')
+    user.isFirstLogin = False
+    user.seToken = str(uuid.uuid4())
+    if str(campus.key().id()) not in user.campuses_id_list:
+        user.campuses_id_list.append(str(campus.key().id()))
+    db.put(user)
+    return cookieMonster(user.seToken)
+
+
+
+@app.route('/api/validation/sendmail/<string:token>', methods=['POST'])
+@auto.doc()
+def send_activation(token):
+    """
+    This Method Will Send An Email To The User - To Confirm his Account
+    :param token:  - seToken
+    :payload: JSON - {email: 'academic@email.ac.com'}
+    :return:
+    200 - Email Sent - No Response
+    400 - Bad Request
+    403 - Invalid Token
+    """
+    if not request.data:
+        return Response(response=json.dumps({'message': 'Bad Request'}),
+                        status=400,
+                        mimetype="application/json")
+    payload = json.loads(request.data)
+    if not is_user_token_valid(token):
+        return Response(response=json.dumps({'message': 'Not A Valid Token!'}),
+                        status=403,
+                        mimetype="application/json")
+    query = User.all()
+    query.filter('seToken =', token)
+    for u in query.run(limit=1):
+        try:
+            send_validation_email(token=token, name=u.username, email=payload["email"])
+        except Exception:
+            return Response(response=json.dumps({'message': 'Bad Request'}),
+                     status=400,
+                     mimetype="application/json")
+
+        return Response(status=200)
 
 @app.route('/api/help')
 def documentation():
@@ -67,8 +135,8 @@ def getUserByToken(token):
 
     for u in query.run(limit=5):
         return Response(response=u.to_JSON(),
-                    status=201,
-                    mimetype="application/json")  # Real response!
+                        status=201,
+                        mimetype="application/json")  # Real response!
 
     return Response(response=json.dumps({'message' : 'No User Found'}),
                     status=400,
@@ -95,7 +163,7 @@ def oauth(oauth_token):
 
     print user_data["login"]
 
-    for u in resault.run(limit=5):
+    for u in resault.run():
         print "Exists!!!"
         u.seToken = str(uuid.uuid4())
         u.accessToken = oauth_token
@@ -111,10 +179,56 @@ def oauth(oauth_token):
     else:
         tempEmail = user_data["email"]
 
-    user = User(username=user_data["login"], name=tempName, avatar_url=user_data["avatar_url"], email=tempEmail, isLecturer=False, accsessToken=oauth_token, seToken=str(uuid.uuid4()))
+    user = User(username=user_data["login"], name=tempName, avatar_url=user_data["avatar_url"], email=tempEmail, isLecturer=False, accessToken=oauth_token, seToken=str(uuid.uuid4()))
     db.put(user)
     db.save
     return cookieMonster(user.seToken)
+
+
+@app.route('/api/Campuses/create/<string:token>', methods=['POST'])
+@auto.doc()
+def create_campus(token):
+    """
+    This call will create a new campus in the DB
+    :param token:  user seToken
+    Payload
+    {'title': self.title,
+     'email_ending': self.email_ending,
+     'avatar_url': self.avatar_url
+    }
+    :return:
+    code 200
+    """
+    print "1\n"
+    if not request.data:
+        return Response(response=json.dumps({'message': 'Bad Request0'}),
+                        status=400,
+                        mimetype="application/json")
+    payload = json.loads(request.data)
+    if not is_lecturer(token):  #todo: change to lecturer id
+        return Response(response=json.dumps({'message': 'Invalid token or not a lecturer!'}),
+                        status=403,
+                        mimetype="application/json")
+
+    user = get_user_by_token(token)
+
+    #todo: check legality
+
+
+    try:
+        campus = Campus(title=payload['title'], email_ending=payload['email_ending'], master_user_id=user.key().id(), avatar_url=payload['avatar_url'])
+    except Exception:
+        return Response(response=json.dumps({'message': 'Bad Request1'}),
+                        status=400,
+                        mimetype="application/json")
+
+    db.put(campus)
+    db.save
+    return Response(response=json.dumps(campus.to_JSON()),
+                                status=200,
+                                mimetype="application/json")
+
+
 
 
 @app.route('/api/Campuses/<string:token>', methods=['GET'])
@@ -135,7 +249,7 @@ def get_campuses(token):
     ....
     {
     ...
-    }
+    }req
     ]
 
     code 403: Forbidden - Invalid Token
