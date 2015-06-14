@@ -54,17 +54,24 @@ body.noscroll
 }
 
 .avatar {
-  border: 1px solid white;
-  height: 90px;
-  width: 90px;
-  display: block;
-  border-radius: 45px;
-  box-shadow: 1px 1px 1px rgba(0,0,0, 0.7);
+    float: left;
+    margin-top: 1em;
+    margin-right: 1em;
+    position: relative;
+    
+
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+
+    -webkit-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
+    box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
 }
 
-.avatar {
+/*.avatar {
   background: rgba(0, 0, 0, 0.2);
-}
+}*/
 
 .avatar img {
   border-radius: 40px;
@@ -72,3 +79,75 @@ body.noscroll
   height: 80px;
   margin: 6px; /* centers the image in the parent element */
 }
+
+/* Added BY devMatan */
+
+/*.disabledSubmitButton:
+{
+  /*background: #f7f7f7;*/
+  /*border-radius: 10000px;*/
+  /*text-align: center;*/
+ 
+  /*position: relative !important;*
+ 
+}*/
+
+.campusAvatar:
+{
+    float: left;
+    margin-top: 1em;
+    margin-right: 1em;
+    position: relative;
+    width:70%;
+    height:auto;
+
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+
+    -webkit-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
+    box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
+}
+
+.spacer{
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.port_spacer{
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.mail_suffix{
+  margin-top: auto;
+}
+
+/*div.img campusAvatar
+{
+  border: 1px solid #0000ff;
+  padding-right: 10px;
+  float:right;
+}*/
+
+/*.dropDown: /* TODO *
+{
+  border-bottom: 2px black solid;
+  border-top: 2px black solid;
+  border-left: 2px black solid;
+  border-right: 2px black solid;
+  border-radius: 1px black solid;
+}*/
+
+
+/*
+h1
+{
+  position:center;
+}
+*/
+
+
+
+
