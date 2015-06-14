@@ -45,24 +45,25 @@ def page_not_found(e):
 def wellcomePage():
     return app.send_static_file('index.html')
 
-@app.route('/api/validation/confirm/<string:validation_token>')
+@app.route('/api/validation/confirm/<string:validation_token>', methods=["GET"])
 @auto.doc()
 def confirm_user_to_campus(validation_token):
     """
     <span class="card-title">This Function is will Activate a user and add tha campus to it</span>
     <br>
-    <b>Route Parameters</b>
-    <ul>
-        <li>
-            validation_token: 'seToken|email_suffix'
-        </li>
-    </ul>
-    :return:
+    <b>Route Parameters</b><br>
+        - validation_token: 'seToken|email_suffix'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
     200 - redirect to home + new cookie
+    <br>
     403 - Invalid Token
-    <code>main(){
-    asd = 3
-    }</code>
     """
     #TODO
     token = str(validation_token).split('|')[0]
@@ -100,7 +101,8 @@ def send_activation(token):
      <code>{email: 'academic@email.ac.com'}</code>
     <br>
     <br>
-    <b>Response</b><br>
+    <b>Response</b>
+    <br>
     200 - Email Sent - No Response<br>
     400 - Bad Request<br>
     403 - Invalid Token<br>
@@ -143,9 +145,34 @@ def returnHome():
 @auto.doc()
 def getUserByToken(token):
     '''
-    param: String - token: users se-Token
-    return: JSON object of the user
-    if no valid seToken, return message: No User Found
+    <span class="card-title">This Function is will Activate a user and add tha campus to it</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - validation_token: 'seToken|email_suffix'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'username' : 'github_username',<br>
+        'name' : 'Bob Dylan',<br>
+        'email' : 'email@domain.com',<br>
+        'isLecturer' : true,<br>
+        'seToken' : 'dds2d-sfvvsf-qqq-fdf33-sfaa',<br>
+        'avatar_url' : 'http://location.domain.com/image.jpg',<br>
+        'isFirstLogin' : false,<br>
+        'campuses_id_list': ['22314','243512',...,'356'],<br>
+        'classes_id_list': ['22314','243512',...,'356']<br>
+        }
+    </code>
+    <br>
+    403 - Invalid Token
     '''
     query = User.all()
     query.filter("seToken = ", token)
@@ -206,15 +233,26 @@ def oauth(oauth_token):
 @auto.doc()
 def create_campus(token):
     """
-    This call will create a new campus in the DB
-    :param token:  user seToken
-    Payload
-    {'title': self.title,
-     'email_ending': self.email_ending,
-     'avatar_url': self.avatar_url
-    }
-    :return:
-    code 200
+    <span class="card-title">This call will create a new campus in the DB</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - JSON Object, Example: <br>
+     {<br>
+     'title': 'Campus name',<br>
+     'email_ending': '@campus.ac.com',<br>
+     'avatar_url': 'http://location.domain.com/image.jpg'<br>
+    }<br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    201 - Created
+    <br>
+    403 - Invalid Token/Forbidden
     """
     print "1\n"
     if not request.data:
@@ -231,7 +269,6 @@ def create_campus(token):
 
     #todo: check legality
 
-
     try:
         campus = Campus(title=payload['title'], email_ending=payload['email_ending'], master_user_id=user.key().id(), avatar_url=payload['avatar_url'])
     except Exception:
@@ -242,7 +279,7 @@ def create_campus(token):
     db.put(campus)
     db.save
     return Response(response=json.dumps(campus.to_JSON()),
-                                status=200,
+                                status=201,
                                 mimetype="application/json")
 
 
@@ -252,25 +289,34 @@ def create_campus(token):
 @auto.doc()
 def get_campuses(token):
     """
-    This Call will return an array of all Campuses available
-    :param token: user seToken
-    :return:
-    code 200:
-    [
+    <span class="card-title">This Call will return an array of all Campuses available</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Array, Example:<br>
+    [<br>
     {
-                'title': 'JCE',
-                'email_ending': '@post.jce.ac.il',
-                'master_user_id': 123453433341, (User that created the campus)
-                'avatar_url': 'http://some.domain.com/imagefile.jpg'
-    },
-    ....
-    {
-    ...
-    }req
-    ]
-
-    code 403: Forbidden - Invalid Token
-    code 500: internal server error
+                'title': 'JCE',<br>
+                'email_ending': '@post.jce.ac.il',<br>
+                'master_user_id': 123453433341, (User that created the campus)<br>
+                'avatar_url': 'http://some.domain.com/imagefile.jpg'<br>
+    },<br>
+    ....<br>
+    {<br>
+    ...<br>
+    }req<br>
+    ]<br>
+    <br>
+    403 - Invalid Token<br>
+    500 - Server Error
     """
     if is_user_token_valid(token):
         arr = []
