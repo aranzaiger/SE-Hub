@@ -59,7 +59,7 @@ angular.module('SeHub')
 			  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
 		        .ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(ev));
 		        // TODO - ADD DELETE COOKIES
-		        $cookies.remove("com.sehub.www");
+		        // $cookies.remove("com.sehub.www");
 		        // $location.path("templates/views/home.html"); // Redirecting to home page // TODO REMOVE REMOVE!!
 			}).error(function()
 			{
