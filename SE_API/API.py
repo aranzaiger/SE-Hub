@@ -348,11 +348,36 @@ def login():
 
 @app.route('/api/qa/init')
 def init_QA():
-    qa_user = User(username='qa_student', name='Student QA', avatar_url='http://ava.com', email='just@mail.com',
-                   isLecturer=False, accessToken='student_token_', seToken='_QA_TOKEN_TEST')
+    is_student_exist = False
+    is_lecturer_exist = False
+    qa_student = User(username='qa_student', name='Student QA', avatar_url='http://ava.com', email='just@mail.com',
+                   isLecturer=False, accessToken='student_token_', seToken='_QA_TOKEN_TEST_STUDENT')
+    qa_lecturer = User(username='qa_lecturer', name='Student QA', avatar_url='http://ava.com', email='just@mail.com',
+                   isLecturer=False, accessToken='student_token_', seToken='_QA_TOKEN_TEST_LECTURER')
+    query = User.all().filter('username =', qa_student.username)
+    for u in query.run():
+        is_student_exist = True
+        u.isLecturer = qa_student.isLecturer
+        u.seToken = qa_student.seToken
+        u.campuses_id_list = []
+        u.classes_id_list = []
+        db.put(u)
 
+    query = User.all().filter('username =', qa_lecturer.username)
+    for u in query.run():
+        is_lecturer_exist = True
+        u.isLecturer = qa_lecturer.isLecturer
+        u.seToken = qa_lecturer.seToken
+        u.campuses_id_list = []
+        u.classes_id_list = []
+        db.put(u)
 
+    if not is_lecturer_exist:
+        db.put(qa_lecturer)
+    if not is_student_exist:
+        db.put(qa_student)
 
+    return Response(status=200)
 
 
 def cookieMonster(uid):
