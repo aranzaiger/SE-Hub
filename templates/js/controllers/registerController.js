@@ -1,25 +1,19 @@
 angular.module('SeHub')
-.controller('registerController', ['$scope', '$location', '$cookies', 'apiService', '$rootScope', function ($scope, $location, $cookies, apiService ,$rootScope) {
+.controller('registerController', ['$scope', '$cookies', 'apiService', '$rootScope', function ($scope, $cookies, apiService ,$rootScope) {
 	
 	$scope.userHasNoName = false;
 	$scope.campusChecked = false;
 	$scope.isEmpty = true; // if the academic email line is empty
-	// $scope.fullMail = $scope.academicEmail + $scope.campusObj.email_ending; // Will hold the full academic email of the user
 
 	$rootScope.seToken = $cookies['com.sehub.www'];
 	var token = $rootScope.seToken;
 
 	apiService.getUserByToken(token).success(function(data){
 		$scope.user = data;
-				console.log(data);
+		
 		if(data.message == 'No User Found')
 			console.error("No User Found!");
-
-		$scope.user = data;
-		$rootScope.user = data;
-		if($scope.user.isFirstLogin)
-			$location.path('/register')
-
+		console.log(data);
 
 		if($scope.user.name === ";"){
 			$scope.user.name = "";
@@ -38,8 +32,6 @@ angular.module('SeHub')
 	});
 
 
-	
-
 	$scope.dropdownClicked = function()
 	{
 		if($scope.campus){
@@ -51,37 +43,26 @@ angular.module('SeHub')
 					console.log($scope.campusObj); // TODO REMOVE!!
 				}
 			};
-		}
-		
+		};
 	};
 
 	$scope.submitClicked = function()
 	{
-		console.log($scope.user.AcMail);
-		$scope.mail = 'pin';
-		console.log($scope.mail);
+		if($scope.user.AcMail != null)
+		{
+			var fullMail = $scope.user.AcMail + $scope.campusObj.email_ending; // Holds the full academic email of the user
+			apiService.sendValidationMail($scope.user.seToken, fullMail).success(function(data) // TODO: Add 2nd parameter email type Email
+			{
+				console.log("DONE - 200");	
+				// TODO - add a window that display that an email has been sent for verification
+			}).error(function()
+			{
+				// TODO
+			});
+		};
 	};
 
-	
 
-	apiService.getAllCampuses($scope.user.seToken).success(function(data)
-	{
-		$scope.campuses = data;
-	}).error(function()
-	{
-		// TODO
-	});
-
-	// apiService.sendValidationMail($scope.user.seToken, $scope.fullMail).success(function(data) // TODO: Add 2nd parameter email type Email
-	// {
-	// 	console.log($scope.fullMail);
-	// 	console.log("200");
-		
-	// 	// TODO
-	// }).error(function()
-	// {
-
-	// });
 
 
 	
