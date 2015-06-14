@@ -8,7 +8,8 @@ angular.module('SeHub')
 	$rootScope.seToken = $cookies['com.sehub.www'];
 	var token = $rootScope.seToken;
 
-	apiService.getUserByToken(token).success(function(data){
+	apiService.getUserByToken(token).success(function(data) // Get user token
+	{
 		$scope.user = data;
 		
 		if(data.message == 'No User Found')
@@ -21,7 +22,7 @@ angular.module('SeHub')
 			$scope.userHasNoName = true;
 		}
 
-	apiService.getAllCampuses($scope.user.seToken).success(function(data)
+	apiService.getAllCampuses($scope.user.seToken).success(function(data) // Get all the campuses
 	{
 		$scope.campuses = data;
 	}).error(function()
