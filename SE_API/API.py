@@ -49,11 +49,20 @@ def wellcomePage():
 @auto.doc()
 def confirm_user_to_campus(validation_token):
     """
-    This Function is will re
-    :param validation_token: 'seToken|email_suffix'
+    <span class="card-title">This Function is will Activate a user and add tha campus to it</span>
+    <br>
+    <b>Route Parameters</b>
+    <ul>
+        <li>
+            validation_token: 'seToken|email_suffix'
+        </li>
+    </ul>
     :return:
     200 - redirect to home + new cookie
     403 - Invalid Token
+    <code>main(){
+    asd = 3
+    }</code>
     """
     #TODO
     token = str(validation_token).split('|')[0]
@@ -83,7 +92,7 @@ def send_activation(token):
     This Method Will Send An Email To The User - To Confirm his Account
     :param token:  - seToken
     :payload: JSON - {email: 'academic@email.ac.com'}
-    :return:
+    <b>:return:<b>
     200 - Email Sent - No Response
     400 - Bad Request
     403 - Invalid Token
