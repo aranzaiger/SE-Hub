@@ -1,5 +1,6 @@
 angular.module('SeHub')
-.controller('registerController', ['$scope', '$cookies', 'apiService', '$rootScope', function ($scope, $cookies, apiService ,$rootScope) {
+.controller('registerController', ['$scope', '$cookies', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $cookies, $location, $mdToast, $mdDialog, apiService ,$rootScope)
+{
 	
 	$scope.userHasNoName = false;
 	$scope.campusChecked = false;
@@ -16,22 +17,22 @@ angular.module('SeHub')
 			console.error("No User Found!");
 		console.log(data);
 
-		if($scope.user.name === ";"){
+		if($scope.user.name === ";")
+		{
 			$scope.user.name = "";
 			$scope.user.name = $scope.user.username
 			$scope.userHasNoName = true;
 		}
 
-	apiService.getAllCampuses($scope.user.seToken).success(function(data) // Get all the campuses
-	{
-		$scope.campuses = data;
-	}).error(function()
-	{
-		// TODO
-	});
+		apiService.getAllCampuses($scope.user.seToken).success(function(data) // Get all the campuses
+		{
+			$scope.campuses = data;
+		}).error(function()
+		{
+			// TODO
+		});
 
 	});
-
 
 	$scope.dropdownClicked = function()
 	{
@@ -47,26 +48,51 @@ angular.module('SeHub')
 		};
 	};
 
-	$scope.submitClicked = function()
+	$scope.submitClicked = function(ev)
 	{
 		if($scope.user.AcMail != null)
 		{
 			var fullMail = $scope.user.AcMail + $scope.campusObj.email_ending; // Holds the full academic email of the user
-			apiService.sendValidationMail($scope.user.seToken, fullMail).success(function(data) // TODO: Add 2nd parameter email type Email
+			apiService.sendValidationMail($scope.user.seToken, fullMail).success(function(data)
 			{
-				console.log("DONE - 200");	
-				// TODO - add a window that display that an email has been sent for verification
+				console.log("DONE - 200");
+			  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
+		        .ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(ev));
+		        // TODO - ADD DELETE COOKIES
+		        $cookies.remove("com.sehub.www");
+		        // $location.path("templates/views/home.html"); // Redirecting to home page // TODO REMOVE REMOVE!!
 			}).error(function()
 			{
-				// TODO
+				$mdDialog.show($mdDialog.alert().title('Error - E-mail Verification').content('An error has occured in your e-mail address.')
+		        .ariaLabel('Email verification error alert dialog').ok('Got it!').targetEvent(ev));
 			});
 		};
 	};
 
 
+	// TODO FOR LATER
+	// TODO FOR LATER
 
+	$scope.getPopWindowPosition = function()
+  	{
+    	return Object.keys($scope.toastPosition).filter(function(pos)
+    		{
+    			return $scope.toastPosition[pos];
+    		}).join(' ');
+  	};
+  	
+  	$scope.toastPosition =
+  	{
+	    bottom: false,
+	    top: true,
+	    left: false,
+	    right: true
+  	};
+
+  	// TODO FOR LATER
+  	// TODO FOR LATER
 
 	
+}]);
 
 
-}]);																						
