@@ -1,29 +1,54 @@
 angular.module('SeHub')
-.controller('registerController', ['$scope', 'apiService', '$rootScope', function ($scope, apiService ,$rootScope) {
+.controller('registerController', ['$scope', '$location', '$cookies', 'apiService', '$rootScope', function ($scope, $location, $cookies, apiService ,$rootScope) {
 	
 	$scope.userHasNoName = false;
 	$scope.campusChecked = false;
 	$scope.isEmpty = true; // if the academic email line is empty
 	// $scope.fullMail = $scope.academicEmail + $scope.campusObj.email_ending; // Will hold the full academic email of the user
 
+	$rootScope.seToken = $cookies['com.sehub.www'];
+	var token = $rootScope.seToken;
 
-	$scope.user = $rootScope.user;
-	if($scope.user.name === ";"){
-		$scope.user.name = "";
-		$scope.user.name = $scope.user.username
-		$scope.userHasNoName = true;
-	};
+	apiService.getUserByToken(token).success(function(data){
+		$scope.user = data;
+				console.log(data);
+		if(data.message == 'No User Found')
+			console.error("No User Found!");
+
+		$scope.user = data;
+		$rootScope.user = data;
+		if($scope.user.isFirstLogin)
+			$location.path('/register')
+
+
+		if($scope.user.name === ";"){
+			$scope.user.name = "";
+			$scope.user.name = $scope.user.username
+			$scope.userHasNoName = true;
+		}
+
+	apiService.getAllCampuses($scope.user.seToken).success(function(data)
+	{
+		$scope.campuses = data;
+	}).error(function()
+	{
+		// TODO
+	});
+
+	});
+
+
+	
 
 	$scope.dropdownClicked = function()
 	{
-			// console.log($scope.fullMail);
 		if($scope.campus){
 			$scope.campusChecked = true;
 			$scope.campusObj = null;
 			for (var i = $scope.campuses.length - 1; i >= 0; i--) {
 				if($scope.campuses[i].title == $scope.campus){
 					$scope.campusObj = $scope.campuses[i];
-					console.log($scope.campusObj);
+					console.log($scope.campusObj); // TODO REMOVE!!
 				}
 			};
 		}
@@ -33,8 +58,11 @@ angular.module('SeHub')
 	$scope.submitClicked = function()
 	{
 		console.log($scope.user.AcMail);
-
+		$scope.mail = 'pin';
+		console.log($scope.mail);
 	};
+
+	
 
 	apiService.getAllCampuses($scope.user.seToken).success(function(data)
 	{
