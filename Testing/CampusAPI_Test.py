@@ -3,7 +3,8 @@ import unittest
 import requests
 from Testing.config import __CONFIG__
 class UserTestPlan(unittest.TestCase):
-       def setUpClass(cls):
+    @classmethod
+    def setUpClass(cls):
         debug = __CONFIG__['DEBUG']
         if debug:
             url = __CONFIG__['PATHS']['DEBUG']
@@ -14,13 +15,16 @@ class UserTestPlan(unittest.TestCase):
         if 200 <= request.status_code <= 299:
             print 'Initialized'
 
-        def test_Campuses_invalid(self):
-           r = requests.get(self.__class__.url_+'api/Campuses/invalidtoken')
-           self.assertEquals(r.status_code, 403)
-        def test_Campuses_valid(self):
-            r = requests.get(self.__class__.url_+'api/Campuses/'+__CONFIG__['TOKENS']['STUDENT'])
-            self.assertEquals(r.status_code, 200)
-            self.assertEquals(r.json()['username'], 'qa_student')
+    def test_Campuses_invalidToken(self):
+        r = requests.get(self.__class__.url_+'api/Campuses/invalidtoken')
+        self.assertEquals(r.status_code, 403)
+
+    def test_Campuses_validToken_testArraySize(self):
+        r = requests.get(self.__class__.url_+'api/Campuses/'+__CONFIG__['TOKENS']['STUDENT'])
+        self.assertEquals(r.status_code, 200)
+        self.assertTrue(len(r.json())>= 1)
+
+
 
 if __name__ == '__main__':
     unittest.main()
