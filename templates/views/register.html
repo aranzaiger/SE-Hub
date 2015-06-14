@@ -37,7 +37,7 @@
 		</div>
 			<div>
 				<div class = "disabledSubmitButton">
-					<md-button ng-disabled="!campusChecked" class="md-raised md-primary">Submit</md-button>
+					<md-button ng-click = "submitClicked()" ng-disabled="!campusChecked" class="md-raised md-primary">Submit</md-button>
 				</div>
 			</div>
 		</div>
@@ -45,8 +45,8 @@
 			<div ng-if="campusChecked">
 				<div>
 					<md-input-container>
-					<label>Academic Email</label>
-					<input ng-model="academicEmail" required>
+					<label>Academic email</label>
+					<input type = "text" ng-model="mail" required>
 					</md-input-container>
 				</div>
 			</div>

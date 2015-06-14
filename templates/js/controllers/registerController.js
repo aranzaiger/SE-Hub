@@ -1,45 +1,31 @@
 angular.module('SeHub')
-.controller('registerController', ['$scope', 'apiService', '$rootScope', function ($scope, apiService ,$rootScope) {
+.controller('registerController', ['$scope', '$location', '$cookies', 'apiService', '$rootScope', function ($scope, $location, $cookies, apiService ,$rootScope) {
 	
 	$scope.userHasNoName = false;
 	$scope.campusChecked = false;
 	$scope.isEmpty = true; // if the academic email line is empty
-	// $scope.fullMail = $scope.academicEmail + $scope.campusObj.email_ending; // Will hold the full academic email of the user
+	
+
+	$rootScope.seToken = $cookies['com.sehub.www'];
+	var token = $rootScope.seToken;
+
+	apiService.getUserByToken(token).success(function(data){
+		$scope.user = data;
+				console.log(data);
+		if(data.message == 'No User Found')
+			console.error("No User Found!");
+
+		$scope.user = data;
+		$rootScope.user = data;
+		if($scope.user.isFirstLogin)
+			$location.path('/register')
 
 
-	$scope.user = $rootScope.user;
-	if($scope.user.name === ";"){
-		$scope.user.name = "";
-		$scope.user.name = $scope.user.username
-		$scope.userHasNoName = true;
-	}
-
-	$scope.dropdownClicked = function()
-	{
-			console.log($scope.fullMail);
-		if($scope.campus){
-			$scope.campusChecked = true;
-			$scope.campusObj = null;
-			for (var i = $scope.campuses.length - 1; i >= 0; i--) {
-				if($scope.campuses[i].title == $scope.campus){
-					$scope.campusObj = $scope.campuses[i];
-					console.log($scope.campusObj);
-				}
-			};
+		if($scope.user.name === ";"){
+			$scope.user.name = "";
+			$scope.user.name = $scope.user.username
+			$scope.userHasNoName = true;
 		}
-		
-	}
-
-	$scope.submitClicked = function()
-	{
-		if($scope.academicEmail === "")
-			isEmpty = true;
-		else{
-			$scope.isEmpty = false;
-			$scope.academicEmail = "matanbr";
-		}
-
-	}
 
 	apiService.getAllCampuses($scope.user.seToken).success(function(data)
 	{
@@ -48,6 +34,32 @@ angular.module('SeHub')
 	{
 		// TODO
 	});
+
+	});
+
+
+	
+
+	$scope.dropdownClicked = function()
+	{
+		if($scope.campus){
+			$scope.campusChecked = true;
+			$scope.campusObj = null;
+			for (var i = $scope.campuses.length - 1; i >= 0; i--) {
+				if($scope.campuses[i].title == $scope.campus){
+					$scope.campusObj = $scope.campuses[i];
+					console.log($scope.campusObj); // TODO REMOVE!!
+				}
+			};
+		}
+		
+	};
+
+	$scope.submitClicked = function()
+	{
+		$scope.mail = 'pin';
+		console.log($scope.mail);
+	};
 
 	// apiService.sendValidationMail($scope.user.seToken, $scope.fullMail).success(function(data) // TODO: Add 2nd parameter email type Email
 	// {
@@ -64,4 +76,4 @@ angular.module('SeHub')
 	
 
 
-}]);																						
+}]);
