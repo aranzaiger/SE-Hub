@@ -346,6 +346,14 @@ def login():
 
 
 
+@app.route('/api/qa/init')
+def init_QA():
+    qa_user = User(username='qa_student', name='Student QA', avatar_url='http://ava.com', email='just@mail.com',
+                   isLecturer=False, accessToken='student_token_', seToken='_QA_TOKEN_TEST')
+
+
+
+
 
 def cookieMonster(uid):
     redirect_to_home = redirect('/home')

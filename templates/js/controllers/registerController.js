@@ -12,11 +12,11 @@ angular.module('SeHub')
 		$scope.user.name = "";
 		$scope.user.name = $scope.user.username
 		$scope.userHasNoName = true;
-	}
+	};
 
 	$scope.dropdownClicked = function()
 	{
-			console.log($scope.fullMail);
+			// console.log($scope.fullMail);
 		if($scope.campus){
 			$scope.campusChecked = true;
 			$scope.campusObj = null;
@@ -28,18 +28,13 @@ angular.module('SeHub')
 			};
 		}
 		
-	}
+	};
 
 	$scope.submitClicked = function()
 	{
-		if($scope.academicEmail === "")
-			isEmpty = true;
-		else{
-			$scope.isEmpty = false;
-			$scope.academicEmail = "matanbr";
-		}
+		console.log($scope.user.AcMail);
 
-	}
+	};
 
 	apiService.getAllCampuses($scope.user.seToken).success(function(data)
 	{
