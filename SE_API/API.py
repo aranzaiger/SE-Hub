@@ -89,13 +89,21 @@ def confirm_user_to_campus(validation_token):
 @auto.doc()
 def send_activation(token):
     """
-    This Method Will Send An Email To The User - To Confirm his Account
-    :param token:  - seToken
-    :payload: JSON - {email: 'academic@email.ac.com'}
-    <b>:return:<b>
-    200 - Email Sent - No Response
-    400 - Bad Request
-    403 - Invalid Token
+    <span class="card-title">This Method Will Send An Email To The User - To Confirm his Account</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - token: 'seToken'<br>
+    <br>
+    <b>Payload</b><br>
+     - JSON object <i>Example</i>
+     <br>
+     <code>{email: 'academic@email.ac.com'}</code>
+    <br>
+    <br>
+    <b>Response</b><br>
+    200 - Email Sent - No Response<br>
+    400 - Bad Request<br>
+    403 - Invalid Token<br>
     """
     if not request.data:
         return Response(response=json.dumps({'message': 'Bad Request'}),
