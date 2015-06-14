@@ -6,6 +6,7 @@ from GithubAPI.GithubAPI import GitHubAPI_Keys
 from google.appengine.ext import db
 import requests
 import uuid
+import datetime
 
 from flask import Flask, request, render_template, redirect, abort, Response
 
@@ -23,10 +24,17 @@ from models.Campus import Campus
 from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
 
+from SE_API.UserRoutes import user_routes
+from SE_API.CampusRoutes import campus_routes
+from SE_API.CourseRoutes import course_routes
+from SE_API.ProjectRoutes import project_routes
+
 
 
 
 app = Flask(__name__, static_folder='../templates')
+
+
 
 githubKeys = GitHubAPI_Keys()
 
@@ -35,6 +43,12 @@ app.config['GITHUB_CLIENT_SECRET'] = githubKeys.getSecret()
 
 github = GitHub(app)
 cross = CORS(app)
+
+app.register_blueprint(user_routes)
+app.register_blueprint(campus_routes)
+app.register_blueprint(course_routes)
+app.register_blueprint(project_routes)
+
 auto = Autodoc(app)
 
 @app.errorhandler(404)
@@ -108,29 +122,28 @@ def send_activation(token):
     403 - Invalid Token<br>
     """
     if not request.data:
-        return Response(response=json.dumps({'message': 'Bad Request'}),
-                        status=400,
-                        mimetype="application/json")
+        return bad_request()
     payload = json.loads(request.data)
     if not is_user_token_valid(token):
-        return Response(response=json.dumps({'message': 'Not A Valid Token!'}),
-                        status=403,
-                        mimetype="application/json")
+        return forbidden("Not A Valid Token!")
+
     query = User.all()
     query.filter('seToken =', token)
     for u in query.run(limit=1):
         try:
             send_validation_email(token=token, name=u.username, email=payload["email"])
         except Exception:
-            return Response(response=json.dumps({'message': 'Bad Request'}),
-                     status=400,
-                     mimetype="application/json")
+            return bad_request()
 
         return Response(status=200)
 
 @app.route('/api/help')
 def documentation():
     return auto.html()
+
+# @app.route('/api/help/campuses')
+# def documentation():
+#     return auto.html()
 
 @app.route('/home')
 def returnHome():
@@ -140,51 +153,6 @@ def returnHome():
         abort(404)
 
 
-
-@app.route('/api/getUserByToken/<string:token>', methods=["GET"])
-@auto.doc()
-def getUserByToken(token):
-    '''
-    <span class="card-title">This Function is will Activate a user and add tha campus to it</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - validation_token: 'seToken|email_suffix'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - NONE
-    <br>
-    <br>
-    <b>Response</b>
-    <br>
-    200 - JSON Example:<br>
-    <code>
-        {<br>
-        'username' : 'github_username',<br>
-        'name' : 'Bob Dylan',<br>
-        'email' : 'email@domain.com',<br>
-        'isLecturer' : true,<br>
-        'seToken' : 'dds2d-sfvvsf-qqq-fdf33-sfaa',<br>
-        'avatar_url' : 'http://location.domain.com/image.jpg',<br>
-        'isFirstLogin' : false,<br>
-        'campuses_id_list': ['22314','243512',...,'356'],<br>
-        'classes_id_list': ['22314','243512',...,'356']<br>
-        }
-    </code>
-    <br>
-    403 - Invalid Token
-    '''
-    query = User.all()
-    query.filter("seToken = ", token)
-
-    for u in query.run(limit=5):
-        return Response(response=u.to_JSON(),
-                        status=201,
-                        mimetype="application/json")  # Real response!
-
-    return Response(response=json.dumps({'message' : 'No User Found'}),
-                    status=400,
-                    mimetype="application/json")
 
 
 
@@ -228,162 +196,6 @@ def oauth(oauth_token):
     db.save
     return cookieMonster(user.seToken)
 
-
-@app.route('/api/Campuses/create/<string:token>', methods=['POST'])
-@auto.doc()
-def create_campus(token):
-    """
-    <span class="card-title">This call will create a new campus in the DB</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - seToken: 'seToken'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - JSON Object, Example: <br>
-     {<br>
-     'title': 'Campus name',<br>
-     'email_ending': '@campus.ac.com',<br>
-     'avatar_url': 'http://location.domain.com/image.jpg'<br>
-    }<br>
-    <br>
-    <br>
-    <b>Response</b>
-    <br>
-    201 - Created
-    <br>
-    403 - Invalid Token/Forbidden
-    """
-    if not request.data:
-        return Response(response=json.dumps({'message': 'Bad Request'}),
-                        status=400,
-                        mimetype="application/json")
-    payload = json.loads(request.data)
-    if not is_lecturer(token):  #todo: change to lecturer id
-        return Response(response=json.dumps({'message': 'Invalid token or not a lecturer!'}),
-                        status=403,
-                        mimetype="application/json")
-
-    user = get_user_by_token(token)
-
-    #todo: check legality
-
-    try:
-        campus = Campus(title=payload['title'], email_ending=payload['email_ending'], master_user_id=user.key().id(), avatar_url=payload['avatar_url'])
-    except Exception:
-        return Response(response=json.dumps({'message': 'Bad Request'}),
-                        status=400,
-                        mimetype="application/json")
-
-    db.put(campus)
-    db.save
-    return Response(response=json.dumps(campus.to_JSON()),
-                                status=201,
-                                mimetype="application/json")
-
-
-
-# @app.route('/api/Courses/create/<string:token>', methods=['POST'])
-# @auto.doc()
-# def create_course(token):
-#     """
-#     This call will create a new campus in the DB
-#     :param token:  user seToken
-#     Payload
-#     {
-#      'courseName': self.courseName,
-#      'campusName': self.campusName,
-#      'projects': self.projects
-#      'startDate': self.startDate
-#      'endDate': self.endDate
-#      'taskFlag': self.taskFlag
-#     }
-#
-#     :return:
-#     code 200
-#     """
-#     if not request.data:
-#         return Response(response=json.dumps({'message': 'Bad Request'}),
-#                         status=400,
-#                         mimetype="application/json")
-#     payload = json.loads(request.data)
-#     if not is_lecturer(token):  #todo: change to lecturer id
-#         return Response(response=json.dumps({'message': 'Invalid token or not a lecturer!'}),
-#                         status=403,
-#                         mimetype="application/json")
-#
-#     user = get_user_by_token(token)
-#
-#     #todo: check legality
-#
-#
-#     try:
-#         course = Course(courseName=payload['courseName'], campusName=payload['campusName'], projects=payload['projects'], startDate=payload['startDate'], endDate=payload['endDate'], taskFlag=payload['taskFlag'])
-#     except Exception:
-#         return Response(response=json.dumps({'message': 'Bad Request'}),
-#                         status=400,
-#                         mimetype="application/json")
-#
-#     db.put(course)
-#     db.save
-#     return Response(response=json.dumps(course.to_JSON()),
-#                                 status=200,
-#                                 mimetype="application/json")
-#
-#
-#
-
-@app.route('/api/Campuses/<string:token>', methods=['GET'])
-@auto.doc()
-def get_campuses(token):
-    """
-    <span class="card-title">This Call will return an array of all Campuses available</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - seToken: 'seToken'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - NONE <br>
-    <br>
-    <br>
-    <b>Response</b>
-    <br>
-    200 - JSON Array, Example:<br>
-    [<br>
-    {
-                'title': 'JCE',<br>
-                'email_ending': '@post.jce.ac.il',<br>
-                'master_user_id': 123453433341, (User that created the campus)<br>
-                'avatar_url': 'http://some.domain.com/imagefile.jpg'<br>
-    },<br>
-    ....<br>
-    {<br>
-    ...<br>
-    }req<br>
-    ]<br>
-    <br>
-    403 - Invalid Token<br>
-    500 - Server Error
-    """
-    if is_user_token_valid(token):
-        arr = []
-        query = Campus.all()
-        for c in query.run():
-            arr.append(dict(json.loads(c.to_JSON())))
-        print arr
-        if len(arr) != 0:
-            return Response(response=json.dumps(arr),
-                            status=200,
-                            mimetype="application/json")
-        else:
-            return Response(response=[],
-                            status=200,
-                            mimetype="application/json")
-    else:
-        return Response(response=json.dumps({'message': 'Invalid Token'}),
-                        status=403,
-                        mimetype="application/json")
 
 
 
@@ -433,3 +245,5 @@ def cookieMonster(uid):
     response = app.make_response(redirect_to_home )
     response.set_cookie('com.sehub.www',value=uid)
     return response
+
+
