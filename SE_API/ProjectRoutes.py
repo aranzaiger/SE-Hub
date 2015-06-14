@@ -133,3 +133,9 @@ def get_projects(token):
 @auto.doc()
 def get_campuses(token):
     pass
+
+
+
+@project_routes.route('/api/projects/help')
+def documentation():
+    return auto.html()

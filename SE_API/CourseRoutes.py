@@ -83,3 +83,6 @@ def create_course(token):
 
 
 
+@course_routes.route('/api/courses/help')
+def documentation():
+    return auto.html()
