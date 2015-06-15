@@ -29,11 +29,11 @@ auto = Autodoc()
 @user_routes.route('/api/users/getUserByToken/<string:token>', methods=["GET"])
 @auto.doc()
 def getUserByToken(token):
-    '''
-    <span class="card-title">This Function is will Activate a user and add tha campus to it</span>
+    """
+    <span class="card-title">>This Call will return a user by a given token</span>
     <br>
     <b>Route Parameters</b><br>
-        - validation_token: 'seToken|email_suffix'
+        - seToken: 'seToken'
     <br>
     <br>
     <b>Payload</b><br>
@@ -45,20 +45,20 @@ def getUserByToken(token):
     200 - JSON Example:<br>
     <code>
         {<br>
-        'username' : 'github_username',<br>
-        'name' : 'Bob Dylan',<br>
-        'email' : 'email@domain.com',<br>
-        'isLecturer' : true,<br>
-        'seToken' : 'dds2d-sfvvsf-qqq-fdf33-sfaa',<br>
-        'avatar_url' : 'http://location.domain.com/image.jpg',<br>
-        'isFirstLogin' : false,<br>
-        'campuses_id_list': ['22314','243512',...,'356'],<br>
-        'classes_id_list': ['22314','243512',...,'356']<br>
+        'username': 'DarkLord',<br>
+        'name': 'Darth Vader',<br>
+        'email': 'darkLord@death.planet,<br>
+        'isLecturer': 'True',<br>
+        'seToken': 'xxxxxx-xxxxx-xxxxx-xxxxxx',<br>
+        'avatar_url': 'http://location.git.com/somthing'<br>
+        'isFirstLogin': False,<br>
+        'campuses_id_list': ['JCA','JCB','JCC'],<br>
+        'classes_id_list': ['a','b','c']<br>
         }
     </code>
     <br>
-    403 - Invalid Token
-    '''
+    403 - No User Found
+    """
     query = User.all()
     query.filter("seToken = ", token)
 

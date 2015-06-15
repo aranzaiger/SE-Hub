@@ -20,6 +20,7 @@ from models.Campus import Campus
 #Validation Utils Libs
 from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
+from SE_API.Email_Utils import *
 
 
 
@@ -78,11 +79,10 @@ def create_campus(token):
     except Exception:
         return bad_request()
 
-    db.put(campus)
-    db.save
-    return Response(response=campus.to_JSON(),
-                                status=201,
-                                mimetype="application/json")
+
+    send_create_campus_request(user.email, user.name, campus.title)
+    notify_se_hub_campus_request(campus, campus.title)
+    return ok()
 
 
 
@@ -119,9 +119,7 @@ def get_campuses(token):
     ]<br>
     <br>
     403 - Invalid Token<br>
-    500 - Server Error
     """
-
     if is_user_token_valid(token):
         arr = []
         query = Campus.all()
@@ -138,51 +136,6 @@ def get_campuses(token):
                             mimetype="application/json")
     else:
         return forbidden("Invalid Token")
-
-
-
-@campus_routes.route('/api/campuses/getCampusId/<string:name>', methods=["GET"])
-@auto.doc()
-def getCampusId(name):
-    '''
-    <span class="card-title">This Function is will Activate a user and add tha campus to it</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - validation_token: 'seToken|email_suffix'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - NONE
-    <br>
-    <br>
-    <b>Response</b>
-    <br>
-    200 - JSON Example:<br>
-    <code>
-        {<br>
-        'username' : 'github_username',<br>
-        'name' : 'Bob Dylan',<br>
-        'email' : 'email@domain.com',<br>
-        'isLecturer' : true,<br>
-        'seToken' : 'dds2d-sfvvsf-qqq-fdf33-sfaa',<br>
-        'avatar_url' : 'http://location.domain.com/image.jpg',<br>
-        'isFirstLogin' : false,<br>
-        'campuses_id_list': ['22314','243512',...,'356'],<br>
-        'classes_id_list': ['22314','243512',...,'356']<br>
-        }
-    </code>
-    <br>
-    403 - Invalid Token
-    '''
-    query = Campus.all()
-    query.filter("title = ", name)
-
-    for c in query.run(limit=5):
-        return Response(response=c.key().id(),
-                        status=200,
-                        mimetype="application/json")  # Real response!
-
-    return bad_request("No Campus Found")
 
 
 

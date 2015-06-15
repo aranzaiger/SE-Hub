@@ -26,9 +26,9 @@ from SE_API.Respones_Utils import *
 project_routes = Blueprint("project_routes", __name__)
 auto = Autodoc()
 
-@project_routes.route('/api/projects/Create/<string:token>/<string:id>', methods=['POST'])
+@project_routes.route('/api/projects/create/<string:token>', methods=['POST'])
 @auto.doc()
-def create_project(token,id):
+def create_project(token):
     """
     <span class="card-title">This call will create a new project in the DB</span>
     <br>
@@ -39,9 +39,10 @@ def create_project(token,id):
     <b>Payload</b><br>
      - JSON Object, Example: <br>
      {<br>
-     'title': 'Campus name',<br>
-     'email_ending': '@campus.ac.com',<br>
-     'avatar_url': 'http://location.domain.com/image.jpg'<br>
+     'projectName': 'Advance Math',<br>
+     'courseName': 'JCE',<br>
+     'logo_url': 'http://location.domain.com/image.jpg'<br>
+     'gitRepository': 'http://location.git.com/somthing'<br>
     }<br>
     <br>
     <br>
@@ -49,7 +50,9 @@ def create_project(token,id):
     <br>
     201 - Created
     <br>
-    403 - Invalid Token/Forbidden
+    400 - Bad Request
+    <br>
+    403 - Invalid token or not a lecturer
     """
     if not request.data:
         return bad_request()
@@ -62,7 +65,7 @@ def create_project(token,id):
     #todo: check legality
 
     try:
-        project = Project(projectName=payload['projectName'], masterId=user.key().id(), gitRepository=payload['gitRepository'], membersId=[token])
+        project = Project(projectName=payload['projectName'], courseName=payload['courseName'], masterId=user.key().id(), gitRepository=payload['gitRepository'], membersId=[token])
     except Exception as e:
         print e
         return bad_request()
@@ -77,62 +80,51 @@ def create_project(token,id):
 
 
 
-@project_routes.route('/api/projects/getAll/<string:token>', methods=['GET'])
+@project_routes.route('/api/projects/getProjectsByCourseName/<string:name>', methods=["GET"])
 @auto.doc()
-def get_projects(token):
+def getProjectsByCourseName(name):
     """
-    <span class="card-title">This Call will return an array of all projects available</span>
+    <span class="card-title">>This Call will return an array of all projects in a given course</span>
     <br>
     <b>Route Parameters</b><br>
-        - seToken: 'seToken'
+        - name: 'course name'
     <br>
     <br>
     <b>Payload</b><br>
-     - NONE <br>
+     - NONE
     <br>
     <br>
     <b>Response</b>
     <br>
-    200 - JSON Array, Example:<br>
-    [<br>
-    {
-                'title': 'JCE',<br>
-                'email_ending': '@post.jce.ac.il',<br>
-                'master_user_id': 123453433341, (User that created the campus)<br>
-                'avatar_url': 'http://some.domain.com/imagefile.jpg'<br>
-    },<br>
-    ....<br>
-    {<br>
-    ...<br>
-    }req<br>
-    ]<br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'projectName': 'Advance Math',<br>
+        'courseName': 'JCE',<br>
+        'grade': 98,<br>
+        'logo_url': 'http://location.domain.com/image.jpg',<br>
+        'gitRepository': 'http://location.git.com/somthing',<br>
+        'membersId': ['bob', 'dylan', 'quentin', 'terentino']<br>
+        }
+    </code>
     <br>
-    403 - Invalid Token<br>
-    500 - Server Error
     """
-    if is_user_token_valid(token):
-        arr = []
-        query = Campus.all()
-        for c in query.run():
-            arr.append(dict(json.loads(c.to_JSON())))
-        print arr
-        if len(arr) != 0:
-            return Response(response=json.dumps(arr),
-                            status=200,
-                            mimetype="application/json")
-        else:
-            return Response(response=[],
-                            status=200,
-                            mimetype="application/json")
+
+    arr = []
+    query = Project.all()
+    query.filter("courseName = ", name)
+
+    for p in query.run():
+        arr.append(dict(json.loads(p.to_JSON())))
+    print arr
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
     else:
-        return forbidden("Invalid Token")
-
-
-
-@project_routes.route('/api/Projects/<string:token>', methods=['GET'])
-@auto.doc()
-def get_campuses(token):
-    pass
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
 
 
 

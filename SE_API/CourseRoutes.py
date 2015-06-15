@@ -31,43 +31,63 @@ auto = Autodoc()
 @auto.doc()
 def create_course(token):
     """
-    This call will create a new campus in the DB
-    :param token:  user seToken
-    Payload
-    {
-     'courseName': self.courseName,
-     'campusName': self.campusName,
-     'projects': self.projects
-     'startDate': self.startDate
-     'endDate': self.endDate
-     'taskFlag': self.taskFlag
-    }
-
-    :return:
-    code 200
+    <span class="card-title">This call will create a new course in the DB</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - JSON Object, Example: <br>
+     {<br>
+     'courseName': 'Advance Math',<br>
+     'campusName': 'JCE',<br>
+     'startDate': '2015-14-3'<br>
+     'endDate': '2015-29-6'<br>
+     'taskFlag': 'False'<br>
+    }<br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    201 - Created
+    <br>
+    400 - Bad Request
+    <br>
+    403 - Invalid token or not a lecturer
     """
     if not request.data:
         return bad_request()
-    payload = json.loads(request.data)
     if not is_lecturer(token):  #todo: change to lecturer id
         return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
 
-    #todo: check legality
+    #try to parse payload
+    try:
+        payload = json.loads(request.data)
+    except Exception as e:
+        return bad_request(e)
 
 
     try:
         start_date = datetime.date(payload['startDate']['year'],payload['startDate']['month'],payload['startDate']['day'])
         end_date = datetime.date(payload['endDate']['year'],payload['endDate']['month'],payload['endDate']['day'])
 
+        if end_date <= start_date:
+            return bad_request("end date cant be before (or same day) start date")
+
         course = Course(courseName=payload['courseName'], campusName=payload['campusName'],
                         startDate=start_date, endDate=end_date)
 
+        #check if name already exists
         try:
-            course.projects=payload['projects']
-        except Exception:
-            pass
+            query = Course.all()
+            query.filter("courseName = ", payload['courseName'])
+            for c in query.run(limit=1):
+                return forbidden("Campus with same name already exists")
+        except Exception as e:
+            print e
 
 
     except Exception:
@@ -81,6 +101,51 @@ def create_course(token):
                                 status=201,
                                 mimetype="application/json")
 
+
+
+@course_routes.route('/api/courses/getCourseByCampusName/<string:name>', methods=["GET"])
+@auto.doc()
+def getCourseByCampusName(name):
+    """
+    <span class="card-title">>This Call will return an array of all courses in a given campus</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - name: 'campus name'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'courseName': 'Advance Math',<br>
+        'campusName': 'JCE',<br>
+        'startDate': '2015-14-3'<br>
+        'endDate': '2015-29-6'<br>
+        'taskFlag': 'False'<br>
+        }
+    </code>
+    <br>
+    """
+    arr = []
+    query = Course.all()
+    query.filter("campusName = ", name)
+
+    for c in query.run():
+        arr.append(dict(json.loads(c.to_JSON())))
+    print arr
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
+    else:
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
 
 
 @course_routes.route('/api/courses/help')
