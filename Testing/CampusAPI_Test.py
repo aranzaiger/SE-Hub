@@ -2,7 +2,7 @@ __author__ = 'etye'
 import unittest
 import requests
 from Testing.config import __CONFIG__
-class UserTestPlan(unittest.TestCase):
+class CampusTestPlan(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         debug = __CONFIG__['DEBUG']
