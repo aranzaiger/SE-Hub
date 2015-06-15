@@ -141,51 +141,6 @@ def get_campuses(token):
 
 
 
-@campus_routes.route('/api/campuses/getCampusId/<string:name>', methods=["GET"])
-@auto.doc()
-def getCampusId(name):
-    '''
-    <span class="card-title">This Function is will Activate a user and add tha campus to it</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - validation_token: 'seToken|email_suffix'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - NONE
-    <br>
-    <br>
-    <b>Response</b>
-    <br>
-    200 - JSON Example:<br>
-    <code>
-        {<br>
-        'username' : 'github_username',<br>
-        'name' : 'Bob Dylan',<br>
-        'email' : 'email@domain.com',<br>
-        'isLecturer' : true,<br>
-        'seToken' : 'dds2d-sfvvsf-qqq-fdf33-sfaa',<br>
-        'avatar_url' : 'http://location.domain.com/image.jpg',<br>
-        'isFirstLogin' : false,<br>
-        'campuses_id_list': ['22314','243512',...,'356'],<br>
-        'classes_id_list': ['22314','243512',...,'356']<br>
-        }
-    </code>
-    <br>
-    403 - Invalid Token
-    '''
-    query = Campus.all()
-    query.filter("title = ", name)
-
-    for c in query.run(limit=5):
-        return Response(response=c.key().id(),
-                        status=200,
-                        mimetype="application/json")  # Real response!
-
-    return bad_request("No Campus Found")
-
-
-
 @campus_routes.route('/api/campuses/help')
 def documentation():
     return auto.html()
