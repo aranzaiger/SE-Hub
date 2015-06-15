@@ -53,13 +53,25 @@ def create_campus(token):
     """
     if not request.data:
         return bad_request()
-    payload = json.loads(request.data)
     if not is_lecturer(token):  #todo: change to lecturer id
         return forbidden("Invalid token or not a lecturer!")
 
-    user = get_user_by_token(token)
+    #try to parse payload
+    try:
+        payload = json.loads(request.data)
+    except Exception as e:
+        return bad_request(e)
 
-    #todo: check legality
+    #check if name already exists
+    try:
+        query = Campus.all()
+        query.filter("title = ", payload['title'])
+        for c in query.run(limit=1):
+            return forbidden("Campus with same name already exists")
+    except Exception as e:
+        print e
+
+    user = get_user_by_token(token)
 
     try:
         campus = Campus(title=payload['title'], email_ending=payload['email_ending'], master_user_id=user.key().id(), avatar_url=payload['avatar_url'])
@@ -76,7 +88,7 @@ def create_campus(token):
 
 
 
-@campus_routes.route('/api/campuses/<string:token>', methods=['GET'])
+@campus_routes.route('/api/campuses/getAll/<string:token>', methods=['GET'])
 @auto.doc()
 def get_campuses(token):
     """
@@ -127,6 +139,50 @@ def get_campuses(token):
     else:
         return forbidden("Invalid Token")
 
+
+
+@campus_routes.route('/api/campuses/getCampusId/<string:name>', methods=["GET"])
+@auto.doc()
+def getCampusId(name):
+    '''
+    <span class="card-title">This Function is will Activate a user and add tha campus to it</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - validation_token: 'seToken|email_suffix'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'username' : 'github_username',<br>
+        'name' : 'Bob Dylan',<br>
+        'email' : 'email@domain.com',<br>
+        'isLecturer' : true,<br>
+        'seToken' : 'dds2d-sfvvsf-qqq-fdf33-sfaa',<br>
+        'avatar_url' : 'http://location.domain.com/image.jpg',<br>
+        'isFirstLogin' : false,<br>
+        'campuses_id_list': ['22314','243512',...,'356'],<br>
+        'classes_id_list': ['22314','243512',...,'356']<br>
+        }
+    </code>
+    <br>
+    403 - Invalid Token
+    '''
+    query = Campus.all()
+    query.filter("title = ", name)
+
+    for c in query.run(limit=5):
+        return Response(response=c.key().id(),
+                        status=200,
+                        mimetype="application/json")  # Real response!
+
+    return bad_request("No Campus Found")
 
 
 
