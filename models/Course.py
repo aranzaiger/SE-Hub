@@ -6,6 +6,7 @@ from google.appengine.ext import db
 class Course(db.Model):
     courseName = db.StringProperty(required=True)
     campusName = db.StringProperty(required=True)
+    master_id = db.IntegerProperty(required=True)
     projects = db.StringListProperty(required=True,default=[])
     startDate = db.DateProperty(required=True)
     endDate = db.DateProperty(required=True)
@@ -13,6 +14,7 @@ class Course(db.Model):
     def to_JSON(self):
         data = {'courseName' : self.courseName,
                 'campusName' : self.campusName,
+                'master_id' : self.master_id,
                 'projects' : self.projects,
                 'startDate' : {
                     'year': self.startDate.year,

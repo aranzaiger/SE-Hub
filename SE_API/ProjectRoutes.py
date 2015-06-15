@@ -77,7 +77,7 @@ def create_project(token,id):
 
 
 
-@project_routes.route('/api/projects/get/<string:token>', methods=['GET'])
+@project_routes.route('/api/projects/getAll/<string:token>', methods=['GET'])
 @auto.doc()
 def get_projects(token):
     """
@@ -133,6 +133,7 @@ def get_projects(token):
 @auto.doc()
 def get_campuses(token):
     pass
+
 
 
 
