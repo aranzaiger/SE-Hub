@@ -15,9 +15,18 @@ md-list .md-button {
   width: 100%;
 }
 
+.welcome-logo-banner{
+  width: 100%;
+}
+
 /* Using Data-URI converted from svg until <md-icon> becomes available
 https://github.com/google/material-design-icons
 */
+
+p {
+  margin-left: 2em;
+}
+
 .menuBtn {
   background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIyNHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDI0IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGcgaWQ9IkhlYWRlciI+CiAgICA8Zz4KICAgICAgICA8cmVjdCB4PSItNjE4IiB5PSItMjIzMiIgZmlsbD0ibm9uZSIgd2lkdGg9IjE0MDAiIGhlaWdodD0iMzYwMCIvPgogICAgPC9nPgo8L2c+CjxnIGlkPSJMYWJlbCI+CjwvZz4KPGcgaWQ9Ikljb24iPgogICAgPGc+CiAgICAgICAgPHJlY3QgZmlsbD0ibm9uZSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+CiAgICAgICAgPHBhdGggZD0iTTMsMThoMTh2LTJIM1YxOHogTTMsMTNoMTh2LTJIM1YxM3ogTTMsNnYyaDE4VjZIM3oiIHN0eWxlPSJmaWxsOiNmM2YzZjM7Ii8+CiAgICA8L2c+CjwvZz4KPGcgaWQ9IkdyaWQiIGRpc3BsYXk9Im5vbmUiPgogICAgPGcgZGlzcGxheT0iaW5saW5lIj4KICAgIDwvZz4KPC9nPgo8L3N2Zz4=) no-repeat  center center;
 }
@@ -54,84 +63,84 @@ body.noscroll
 }
 
 .avatar {
-    float: left;
-    margin-top: 1em;
-    margin-right: 1em;
-    position: relative;
-    
+  margin-top: 1em;
+  margin-right: 1em;
+  position: center;
 
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
+  -webkit-border-radius: 30%;
+  -moz-border-radius: 30%;
+  border-radius: 30%;
 
-    -webkit-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
-    -moz-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
-    box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
+
 }
 
 /*.avatar {
   background: rgba(0, 0, 0, 0.2);
-}*/
+  }*/
 
-.avatar img {
-  border-radius: 40px;
-  width: 80px;
-  height: 80px;
-  margin: 6px; /* centers the image in the parent element */
-}
+  .avatar img {
+    border-radius: 40px;
+    position:center;
+    width: 80px;
+    height: 80px;
+    margin: 6px;  /*centers the image in the parent element */
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  }
 
-/* Added BY devMatan */
+  /* Added BY devMatan */
 
 /*.disabledSubmitButton:
 {
   /*background: #f7f7f7;*/
   /*border-radius: 10000px;*/
   /*text-align: center;*/
- 
+
   /*position: relative !important;*
  
-}*/
+  }*/
 
-.campusAvatar:
-{
-    float: left;
+  .campusAvatar img
+  {
+/*
     margin-top: 1em;
     margin-right: 1em;
-    position: relative;
-    width:70%;
-    height:auto;
+    position: center;
+    */
 
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
+    border-radius: 40px;
+    position:center;
+    width: 80px;
+    height: 80px;
+    margin: 6px; 
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  }
 
-    -webkit-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
-    -moz-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
-    box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
-}
+  .spacer{
+    margin-right: auto;
+    margin-left: auto;
+  }
 
-.spacer{
-  margin-right: auto;
-  margin-left: auto;
-}
+  .port_spacer{
+    margin-top: auto;
+    margin-bottom: auto;
+  }
 
-.port_spacer{
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
-.mail_suffix{
-  margin-top: auto;
-}
+  .mail_suffix{
+    margin-top: auto;
+  }
 
 /*div.img campusAvatar
 {
   border: 1px solid #0000ff;
   padding-right: 10px;
   float:right;
-}*/
+  }*/
 
-/*.dropDown: /* TODO *
+/*.dropDown /* TODO *
 {
   border-bottom: 2px black solid;
   border-top: 2px black solid;
@@ -139,15 +148,3 @@ body.noscroll
   border-right: 2px black solid;
   border-radius: 1px black solid;
 }*/
-
-
-/*
-h1
-{
-  position:center;
-}
-*/
-
-
-
-

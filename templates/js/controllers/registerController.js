@@ -1,44 +1,36 @@
 angular.module('SeHub')
-.controller('registerController', ['$scope', '$location', '$cookies', 'apiService', '$rootScope', function ($scope, $location, $cookies, apiService ,$rootScope) {
-	
+.controller('registerController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
+{
 	$scope.userHasNoName = false;
 	$scope.campusChecked = false;
 	$scope.isEmpty = true; // if the academic email line is empty
-	// $scope.fullMail = $scope.academicEmail + $scope.campusObj.email_ending; // Will hold the full academic email of the user
 
 	$rootScope.seToken = $cookies['com.sehub.www'];
 	var token = $rootScope.seToken;
 
-	apiService.getUserByToken(token).success(function(data){
+	apiService.getUserByToken(token).success(function(data) // Get user token
+	{
 		$scope.user = data;
-				console.log(data);
+		
 		if(data.message == 'No User Found')
 			console.error("No User Found!");
+		console.log(data);
 
-		$scope.user = data;
-		$rootScope.user = data;
-		if($scope.user.isFirstLogin)
-			$location.path('/register')
-
-
-		if($scope.user.name === ";"){
+		if($scope.user.name === ";")
+		{
 			$scope.user.name = "";
 			$scope.user.name = $scope.user.username
 			$scope.userHasNoName = true;
 		}
 
-	apiService.getAllCampuses($scope.user.seToken).success(function(data)
-	{
-		$scope.campuses = data;
-	}).error(function()
-	{
-		// TODO
+		apiService.getAllCampuses($scope.user.seToken).success(function(data) // Get all the campuses
+		{
+			$scope.campuses = data;
+		}).error(function()
+		{
+			// TODO
+		});
 	});
-
-	});
-
-
-	
 
 	$scope.dropdownClicked = function()
 	{
@@ -51,40 +43,61 @@ angular.module('SeHub')
 					console.log($scope.campusObj); // TODO REMOVE!!
 				}
 			};
+		};
+	};
+
+	$scope.submitClicked = function(ev)
+	{
+		if($scope.user.AcMail != null)
+		{
+			var fullMail = $scope.user.AcMail + $scope.campusObj.email_ending; // Holds the full academic email of the user
+			apiService.sendValidationMail($scope.user.seToken, fullMail).success(function(data)
+			{
+				console.log("DONE - 200");
+			  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
+		        .ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(ev)); // Pop-up alert for e-mail verification
+		        $cookieStore.remove("com.sehub.www"); // Removing the cookies
+		        $window.location.href = 'http://se-hub.appspot.com'; // Reference to 'welcome' page
+			}).error(function()
+			{
+				$mdDialog.show($mdDialog.alert().title('Error - E-mail Verification').content('An error has occured in your e-mail address.')
+		        .ariaLabel('Email verification error alert dialog').ok('Got it!').targetEvent(ev));
+			});
+		};
+	};
+
+	$scope.lecturerPrivilege = function(data)
+	{
+		// console.log("Now " + data);
+		var isLecturer;
+		if(!data) // if i am a lecturer (when pressing -> getting last data value before pressing) = "!data" => I Am Lecturer
+		{
+			isLecturer = true;
+			console.log("im lecturer " + isLecturer);
 		}
-		
-	};
-
-	$scope.submitClicked = function()
-	{
-		console.log($scope.user.AcMail);
-		$scope.mail = 'pin';
-		console.log($scope.mail);
-	};
-
-	
-
-	apiService.getAllCampuses($scope.user.seToken).success(function(data)
-	{
-		$scope.campuses = data;
-	}).error(function()
-	{
-		// TODO
-	});
-
-	// apiService.sendValidationMail($scope.user.seToken, $scope.fullMail).success(function(data) // TODO: Add 2nd parameter email type Email
-	// {
-	// 	console.log($scope.fullMail);
-	// 	console.log("200");
-		
-	// 	// TODO
-	// }).error(function()
-	// {
-
-	// });
+	}
 
 
-	
+	// TODO FOR LATER - toast
+	// TODO FOR LATER
 
+	// $scope.getPopWindowPosition = function()
+ //  	{
+ //    	return Object.keys($scope.toastPosition).filter(function(pos)
+ //    		{
+ //    			return $scope.toastPosition[pos];
+ //    		}).join(' ');
+ //  	};
+  	
+ //  	$scope.toastPosition =
+ //  	{
+	//     bottom: false,
+	//     top: true,
+	//     left: false,
+	//     right: true
+ //  	};
 
-}]);																						
+  	// TODO FOR LATER
+  	// TODO FOR LATER
+  	
+}]);

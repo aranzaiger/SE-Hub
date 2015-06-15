@@ -14,8 +14,10 @@ welcome.controller('welcomeController', ['$scope', 'apiService', '$cookies', '$w
 	console.log("Welcome Controller");
 
 	var uid = $cookies['com.sehub.www'];
-	if(uid)
+	if(uid){
+		console.info("Session in Place");
 		$window.location.href = DEBUG ? 'http://localhost:8080/home' : 'http://se-hub.appspot.com/home';
+	}
 
 
 
@@ -26,8 +28,7 @@ app.config(['$routeProvider', '$locationProvider',
 	function($routeProvider, $locationProvider) {
 		$routeProvider
 			.when('/', {
-				templateUrl: 'templates/views/home.html',
-				controller: 'mainController'
+				templateUrl: 'templates/views/home.html'
 			})
 			.when('/register', {
 				templateUrl: 'templates/views/register.html',

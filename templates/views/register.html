@@ -1,44 +1,53 @@
 <div class="register">
 	<md-content layout-padding>
-	<h1 style="margin-left:15px"><i class="fa fa-pencil"></i> Registration</h1>
-	<md-card class="wellcome-float" style="margin-top: 15px;">
-	<center>
-		<p>First Login Of {{user.name}}</p>
-		<div class="avatar">
-			<img ng-src="{{user.avatar_url}}" alt="{{item.who}}" style="position:center !important;"/>
+	<md-card layout-padding>
+		<h1 style="margin-left:15px"><i class="fa fa-pencil"></i> Registration</h1>
+		<center>
+			First Login Of {{user.name}}
+			<div class="avatar">
+				<img ng-src="{{user.avatar_url}}" alt="{{item.who}}">
+			</div>
+		</center>
+		<div layout="col">
+			<div>
+				<md-input-container ng-if="userHasNoName">
+					<label>Full Name: </label>
+					<input ng-model="user.name" required>
+				</md-input-container>
+			</div>
+			<br></br>
+			<div layout="row" layout-align="center center">
+				<p>Are You A Lecturer?</p>
+				<md-switch ng-click = "lecturerPrivilege(data.cb1)" ng-model="data.cb1" aria-label="Switch 1">
+					Switch 1: {{ data.cb1 }}
+					<div ng-if="data">
+						 <!-- <md-progress-circular class="md-hue-2" md-mode="indeterminate">
+						</md-progress-circular> -->
+					</div>
+				</md-switch>			
+
+				<!-- TODO original -->
+				<!-- <md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="data.cb5">
+	  			</md-switch> -->
+			</div>
 		</div>
-	</center>
-	<br><br>
-	<div layout="col">
-		<div>
-			<md-input-container ng-if="userHasNoName">
-			<label>Full Name: </label>
-			<input ng-model="user.name" required>
-			</md-input-container>
-		</div>
-		<div layout="row" layout-align="center center">
-			Are You A Lecturer?	
-			<md-switch ng-model="user.isLecturer" aria-label="Switch 1">
-			</md-switch>
-		</div>
-	</div>
 		<div>
 			<div class = "dropDown">
-			<md-select placeholder="Pick your Campus" ng-model="campus" style="z-index: 300" ng-change="dropdownClicked()">
-			<md-option ng-repeat="c in campuses" value="{{c.title}}">{{c.title}}</md-option>
-			</md-select> 
+				<md-select placeholder="Pick your Campus" ng-model="campus" style="z-index: 300" ng-change="dropdownClicked()">
+					<md-option ng-repeat="c in campuses" value="{{c.title}}">{{c.title}}</md-option>
+				</md-select> 
+			</div>
 		</div>
-		<div layout="col">
+		<div layout="col" layout-align="center center">
 			<div>
 				<div class="campusAvatar" ng-if="campusChecked">
 					<img ng-src="{{campusObj.avatar_url}}" alt="campusAvatar">
 				</div>
 			</div>
 		</div>
-			<div>
-				<div class = "disabledSubmitButton">
-					<md-button ng-click="submitClicked()" ng-disabled="!campusChecked" class="md-raised md-primary">Submit</md-button>
-				</div>
+		<div>
+			<div class = "disabledSubmitButton">
+				<md-button ng-click="submitClicked($event)" ng-disabled="!campusChecked" class="md-raised md-primary">Submit</md-button>
 			</div>
 		</div>
 		<div layout="row" layout-align="center center">
@@ -56,14 +65,12 @@
 				</div>
 			</div>
 		</div>
-	<!-- 	<div> // TODO return
-			<p>
-			<b>Note:</b> This setting can be changed in the future. <br>
-			But Choose Now for easy Registration...
-			</p>    
-		</div> -->
-		</div>
-	</div>
+		<!-- 	<div> // TODO return
+				<p>
+				<b>Note:</b> This setting can be changed in the future. <br>
+				But Choose Now for easy Registration...
+				</p>    
+			</div> -->
 
 	</md-card>
 	</md-content>
