@@ -20,6 +20,7 @@ from models.Campus import Campus
 #Validation Utils Libs
 from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
+from SE_API.Email_Utils import *
 
 
 
@@ -78,11 +79,10 @@ def create_campus(token):
     except Exception:
         return bad_request()
 
-    db.put(campus)
-    db.save
-    return Response(response=campus.to_JSON(),
-                                status=201,
-                                mimetype="application/json")
+
+    send_create_campus_request(user.email, user.name, campus.title)
+    notify_se_hub_campus_request(campus, campus.title)
+    return ok()
 
 
 
