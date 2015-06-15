@@ -18,8 +18,8 @@
 		</div>
 		<div layout="row" layout-align="center center">
 			Are You A Lecturer?	
-			<md-switch ng-model="user.isLecturer" aria-label="Switch 1">
-			</md-switch>
+			<md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="data.cb5">
+  			</md-switch>
 		</div>
 	</div>
 		<div>
@@ -37,7 +37,7 @@
 		</div>
 			<div>
 				<div class = "disabledSubmitButton">
-					<md-button ng-click="submitClicked()" ng-disabled="!campusChecked" class="md-raised md-primary">Submit</md-button>
+					<md-button ng-click="submitClicked($event)" ng-disabled="!campusChecked" class="md-raised md-primary">Submit</md-button>
 				</div>
 			</div>
 		</div>

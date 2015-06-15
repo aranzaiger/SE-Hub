@@ -20,9 +20,10 @@ from models.Course import Course
 from models.Project import Project
 from models.Campus import Campus
 
-#Validation Utils Libs
+# All API
 from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
+from SE_API.Email_Utils import *
 
 from SE_API.UserRoutes import user_routes
 from SE_API.CampusRoutes import campus_routes
