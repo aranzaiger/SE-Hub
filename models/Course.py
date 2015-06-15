@@ -6,17 +6,23 @@ from google.appengine.ext import db
 class Course(db.Model):
     courseName = db.StringProperty(required=True)
     campusName = db.StringProperty(required=True)
-    projects = db.StringListProperty(required=True)
+    projects = db.StringListProperty(required=True,default=[])
     startDate = db.DateProperty(required=True)
-    endDate = db.DateProperty(required=False)
-    taskFlag = db.BooleanProperty(required=True)
+    endDate = db.DateProperty(required=True)
 
     def to_JSON(self):
         data = {'courseName' : self.courseName,
                 'campusName' : self.campusName,
                 'projects' : self.projects,
-                'startDate' : self.startDate,
-                'endDate' : self.endDate,
-                'taskFlag' : self.taskFlag,
+                'startDate' : {
+                    'year': self.startDate.year,
+                    'month': self.startDate.month,
+                    'day': self.startDate.day,
+                },
+                'endDate' : {
+                    'year': self.endDate.year,
+                    'month': self.endDate.month,
+                    'day': self.endDate.day,
+                }
                 }
         return json.dumps(data)
