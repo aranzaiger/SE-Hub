@@ -1,7 +1,6 @@
 angular.module('SeHub')
 .controller('registerController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
-	
 	$scope.userHasNoName = false;
 	$scope.campusChecked = false;
 	$scope.isEmpty = true; // if the academic email line is empty
@@ -31,7 +30,6 @@ angular.module('SeHub')
 		{
 			// TODO
 		});
-
 	});
 
 	$scope.dropdownClicked = function()
@@ -67,6 +65,28 @@ angular.module('SeHub')
 			});
 		};
 	};
+
+
+	// TODO FOR LATER - toast
+	// TODO FOR LATER
+
+	// $scope.getPopWindowPosition = function()
+ //  	{
+ //    	return Object.keys($scope.toastPosition).filter(function(pos)
+ //    		{
+ //    			return $scope.toastPosition[pos];
+ //    		}).join(' ');
+ //  	};
+  	
+ //  	$scope.toastPosition =
+ //  	{
+	//     bottom: false,
+	//     top: true,
+	//     left: false,
+	//     right: true
+ //  	};
+
+  	// TODO FOR LATER
+  	// TODO FOR LATER
+  	
 }]);
-
-
