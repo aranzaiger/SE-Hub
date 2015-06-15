@@ -15,14 +15,15 @@ class UserTestPlan(unittest.TestCase):
         if 200 <= request.status_code <= 299:
             print 'Initialized'
 
-    def test_Campuses_invalidToken(self):
-        r = requests.get(self.__class__.url_+'api/Campuses/invalidtoken')
+    def test_campusesGet_invalidToken(self):
+        r = requests.get(self.__class__.url_+'api/campuses/getAll/invalidtoken')
         self.assertEquals(r.status_code, 403)
 
-    def test_Campuses_validToken_testArraySize(self):
-        r = requests.get(self.__class__.url_+'api/Campuses/'+__CONFIG__['TOKENS']['STUDENT'])
+    def test_campusesGet_validToken_testArraySize(self):
+        r = requests.get(self.__class__.url_+'api/campuses/getAll/'+__CONFIG__['TOKENS']['STUDENT'])
         self.assertEquals(r.status_code, 200)
         self.assertTrue(len(r.json())>= 1)
+
 
 
 
