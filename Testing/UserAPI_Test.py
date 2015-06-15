@@ -20,12 +20,10 @@ class UserTestPlan(unittest.TestCase):
         r = requests.get(self.__class__.url_+'api/getUserByToken/invalidtoken')
         self.assertEquals(r.status_code, 403)
 
-
     def test_getUserByToken_valid(self):
         r = requests.get(self.__class__.url_+'api/getUserByToken/'+__CONFIG__['TOKENS']['STUDENT'])
         self.assertEquals(r.status_code, 200)
         self.assertEquals(r.json()['username'], 'qa_student')
-
 
     def test_getUserByToken_empty(self):
          r = requests.get(self.__class__.url_+'api/getUserByToken/')
