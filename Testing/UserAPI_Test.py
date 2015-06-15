@@ -18,7 +18,7 @@ class UserTestPlan(unittest.TestCase):
 
     def test_getUserByToken_invalid(self):
         r = requests.get(self.__class__.url_+'api/getUserByToken/invalidtoken')
-        self.assertEquals(r.status_code, 403)
+        self.assertEquals(r.status_code, 204)
 
 
     def test_getUserByToken_valid(self):
@@ -30,7 +30,7 @@ class UserTestPlan(unittest.TestCase):
     def test_getUserByToken_empty(self):
          r = requests.get(self.__class__.url_+'api/getUserByToken/')
          self.assertEquals(r.status_code, 400)
-    
+
 
 
 if __name__ == '__main__':
