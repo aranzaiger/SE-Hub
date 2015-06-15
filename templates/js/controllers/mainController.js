@@ -12,7 +12,6 @@ angular.module('SeHub')
 		}
 
 		$scope.user = data;
-		$rootScope.user = data;
 		if($scope.user.isFirstLogin){
 			$scope.menuObj = {};
 			$scope.isInRegisterMode = true;
