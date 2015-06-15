@@ -1,7 +1,7 @@
 <div class="register">
 	<md-content layout-padding>
-	<h1 style="margin-left:15px"><i class="fa fa-pencil"></i> Registration</h1>
 	<md-card layout-padding>
+		<h1 style="margin-left:15px"><i class="fa fa-pencil"></i> Registration</h1>
 		<center>
 			First Login Of {{user.name}}
 			<div class="avatar">
@@ -18,8 +18,17 @@
 			<br></br>
 			<div layout="row" layout-align="center center">
 				<p>Are You A Lecturer?</p>
-				<md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="data.cb5">
-	  			</md-switch>
+				<md-switch ng-click = "lecturerPrivilege(data.cb1)" ng-model="data.cb1" aria-label="Switch 1">
+					Switch 1: {{ data.cb1 }}
+					<div ng-if="data">
+						 <!-- <md-progress-circular class="md-hue-2" md-mode="indeterminate">
+						</md-progress-circular> -->
+					</div>
+				</md-switch>			
+
+				<!-- TODO original -->
+				<!-- <md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="data.cb5">
+	  			</md-switch> -->
 			</div>
 		</div>
 		<div>

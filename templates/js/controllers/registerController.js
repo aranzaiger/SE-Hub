@@ -1,7 +1,6 @@
 angular.module('SeHub')
 .controller('registerController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
-	
 	$scope.userHasNoName = false;
 	$scope.campusChecked = false;
 	$scope.isEmpty = true; // if the academic email line is empty
@@ -31,7 +30,6 @@ angular.module('SeHub')
 		{
 			// TODO
 		});
-
 	});
 
 	$scope.dropdownClicked = function()
@@ -59,7 +57,7 @@ angular.module('SeHub')
 			  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
 		        .ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(ev)); // Pop-up alert for e-mail verification
 		        $cookieStore.remove("com.sehub.www"); // Removing the cookies
-		        $window.location.href = 'http://se-hub.appspot.com';
+		        $window.location.href = 'http://se-hub.appspot.com'; // Reference to 'welcome' page
 			}).error(function()
 			{
 				$mdDialog.show($mdDialog.alert().title('Error - E-mail Verification').content('An error has occured in your e-mail address.')
@@ -67,6 +65,39 @@ angular.module('SeHub')
 			});
 		};
 	};
+
+	$scope.lecturerPrivilege = function(data)
+	{
+		// console.log("Now " + data);
+		var isLecturer;
+		if(!data) // if i am a lecturer (when pressing -> getting last data value before pressing) = "!data" => I Am Lecturer
+		{
+			isLecturer = true;
+			console.log("im lecturer " + isLecturer);
+		}
+	}
+
+
+	// TODO FOR LATER - toast
+	// TODO FOR LATER
+
+	// $scope.getPopWindowPosition = function()
+ //  	{
+ //    	return Object.keys($scope.toastPosition).filter(function(pos)
+ //    		{
+ //    			return $scope.toastPosition[pos];
+ //    		}).join(' ');
+ //  	};
+  	
+ //  	$scope.toastPosition =
+ //  	{
+	//     bottom: false,
+	//     top: true,
+	//     left: false,
+	//     right: true
+ //  	};
+
+  	// TODO FOR LATER
+  	// TODO FOR LATER
+  	
 }]);
-
-
