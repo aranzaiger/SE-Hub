@@ -7,7 +7,7 @@ service.factory('apiService', ['$http', function($http) {
 
 	return {
 		getUserByToken: function(token){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/getUserByToken/" + token;
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/getUserByToken/" + token;
 			req = {
 				method : "GET",
 				url : url
@@ -16,7 +16,7 @@ service.factory('apiService', ['$http', function($http) {
 			return $http(req);
 		},
 		getAllCampuses: function(token){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/Campuses/" + token;
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/campuses/" + token;
 			req = {
 				method : "GET",
 				url : url
