@@ -18,6 +18,11 @@ md-list .md-button {
 /* Using Data-URI converted from svg until <md-icon> becomes available
 https://github.com/google/material-design-icons
 */
+
+p {
+  margin-left: 2em;
+}
+
 .menuBtn {
   background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIyNHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDI0IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGcgaWQ9IkhlYWRlciI+CiAgICA8Zz4KICAgICAgICA8cmVjdCB4PSItNjE4IiB5PSItMjIzMiIgZmlsbD0ibm9uZSIgd2lkdGg9IjE0MDAiIGhlaWdodD0iMzYwMCIvPgogICAgPC9nPgo8L2c+CjxnIGlkPSJMYWJlbCI+CjwvZz4KPGcgaWQ9Ikljb24iPgogICAgPGc+CiAgICAgICAgPHJlY3QgZmlsbD0ibm9uZSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+CiAgICAgICAgPHBhdGggZD0iTTMsMThoMTh2LTJIM1YxOHogTTMsMTNoMTh2LTJIM1YxM3ogTTMsNnYyaDE4VjZIM3oiIHN0eWxlPSJmaWxsOiNmM2YzZjM7Ii8+CiAgICA8L2c+CjwvZz4KPGcgaWQ9IkdyaWQiIGRpc3BsYXk9Im5vbmUiPgogICAgPGcgZGlzcGxheT0iaW5saW5lIj4KICAgIDwvZz4KPC9nPgo8L3N2Zz4=) no-repeat  center center;
 }
@@ -54,19 +59,13 @@ body.noscroll
 }
 
 .avatar {
-    float: left;
     margin-top: 1em;
     margin-right: 1em;
-    position: relative;
-    
+    position: center;
 
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-
-    -webkit-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
-    -moz-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
-    box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
+    -webkit-border-radius: 30%;
+    -moz-border-radius: 30%;
+    border-radius: 30%;
 }
 
 /*.avatar {
@@ -75,9 +74,10 @@ body.noscroll
 
 .avatar img {
   border-radius: 40px;
+  position:center;
   width: 80px;
   height: 80px;
-  margin: 6px; /* centers the image in the parent element */
+  margin: 6px;  /*centers the image in the parent element */
 }
 
 /* Added BY devMatan */
@@ -92,22 +92,19 @@ body.noscroll
  
 }*/
 
-.campusAvatar:
+.campusAvatar img
 {
-    float: left;
+/*
     margin-top: 1em;
     margin-right: 1em;
-    position: relative;
-    width:70%;
-    height:auto;
-
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-
-    -webkit-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
-    -moz-box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
-    box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
+    position: center;
+*/
+     
+    border-radius: 40px;
+    position:center;
+    width: 80px;
+    height: 80px;
+    margin: 6px; 
 }
 
 .spacer{
@@ -131,7 +128,7 @@ body.noscroll
   float:right;
 }*/
 
-/*.dropDown: /* TODO *
+/*.dropDown /* TODO *
 {
   border-bottom: 2px black solid;
   border-top: 2px black solid;
@@ -139,15 +136,3 @@ body.noscroll
   border-right: 2px black solid;
   border-radius: 1px black solid;
 }*/
-
-
-/*
-h1
-{
-  position:center;
-}
-*/
-
-
-
-
