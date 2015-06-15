@@ -140,7 +140,7 @@ def send_activation(token):
 
 @app.route('/api/help')
 def documentation():
-    return auto.html()
+    return app.send_static_file('API_Doc/api_doc_index.html')
 
 # @app.route('/api/help/campuses')
 # def documentation():
