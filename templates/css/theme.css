@@ -63,74 +63,82 @@ body.noscroll
 }
 
 .avatar {
-    margin-top: 1em;
-    margin-right: 1em;
-    position: center;
+  margin-top: 1em;
+  margin-right: 1em;
+  position: center;
 
-    -webkit-border-radius: 30%;
-    -moz-border-radius: 30%;
-    border-radius: 30%;
+  -webkit-border-radius: 30%;
+  -moz-border-radius: 30%;
+  border-radius: 30%;
+
+
 }
 
 /*.avatar {
   background: rgba(0, 0, 0, 0.2);
-}*/
+  }*/
 
-.avatar img {
-  border-radius: 40px;
-  position:center;
-  width: 80px;
-  height: 80px;
-  margin: 6px;  /*centers the image in the parent element */
-}
+  .avatar img {
+    border-radius: 40px;
+    position:center;
+    width: 80px;
+    height: 80px;
+    margin: 6px;  /*centers the image in the parent element */
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  }
 
-/* Added BY devMatan */
+  /* Added BY devMatan */
 
 /*.disabledSubmitButton:
 {
   /*background: #f7f7f7;*/
   /*border-radius: 10000px;*/
   /*text-align: center;*/
- 
+
   /*position: relative !important;*
  
-}*/
+  }*/
 
-.campusAvatar img
-{
+  .campusAvatar img
+  {
 /*
     margin-top: 1em;
     margin-right: 1em;
     position: center;
-*/
-     
+    */
+
     border-radius: 40px;
     position:center;
     width: 80px;
     height: 80px;
     margin: 6px; 
-}
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  }
 
-.spacer{
-  margin-right: auto;
-  margin-left: auto;
-}
+  .spacer{
+    margin-right: auto;
+    margin-left: auto;
+  }
 
-.port_spacer{
-  margin-top: auto;
-  margin-bottom: auto;
-}
+  .port_spacer{
+    margin-top: auto;
+    margin-bottom: auto;
+  }
 
-.mail_suffix{
-  margin-top: auto;
-}
+  .mail_suffix{
+    margin-top: auto;
+  }
 
 /*div.img campusAvatar
 {
   border: 1px solid #0000ff;
   padding-right: 10px;
   float:right;
-}*/
+  }*/
 
 /*.dropDown /* TODO *
 {
