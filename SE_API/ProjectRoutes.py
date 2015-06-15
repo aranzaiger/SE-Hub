@@ -26,9 +26,9 @@ from SE_API.Respones_Utils import *
 project_routes = Blueprint("project_routes", __name__)
 auto = Autodoc()
 
-@project_routes.route('/api/projects/Create/<string:token>/<string:id>', methods=['POST'])
+@project_routes.route('/api/projects/create/<string:token>', methods=['POST'])
 @auto.doc()
-def create_project(token,id):
+def create_project(token):
     """
     <span class="card-title">This call will create a new project in the DB</span>
     <br>
@@ -62,7 +62,7 @@ def create_project(token,id):
     #todo: check legality
 
     try:
-        project = Project(projectName=payload['projectName'], masterId=user.key().id(), gitRepository=payload['gitRepository'], membersId=[token])
+        project = Project(projectName=payload['projectName'], courseName=payload['courseName'], masterId=user.key().id(), gitRepository=payload['gitRepository'], membersId=[token])
     except Exception as e:
         print e
         return bad_request()
@@ -77,62 +77,55 @@ def create_project(token,id):
 
 
 
-@project_routes.route('/api/projects/getAll/<string:token>', methods=['GET'])
+@project_routes.route('/api/projects/getProjectsByCourseName/<string:name>', methods=["GET"])
 @auto.doc()
-def get_projects(token):
-    """
-    <span class="card-title">This Call will return an array of all projects available</span>
+def getProjectsByCourseName(name):
+    '''
+    <span class="card-title">This Function is will Activate a user and add tha campus to it</span>
     <br>
     <b>Route Parameters</b><br>
-        - seToken: 'seToken'
+        - validation_token: 'seToken|email_suffix'
     <br>
     <br>
     <b>Payload</b><br>
-     - NONE <br>
+     - NONE
     <br>
     <br>
     <b>Response</b>
     <br>
-    200 - JSON Array, Example:<br>
-    [<br>
-    {
-                'title': 'JCE',<br>
-                'email_ending': '@post.jce.ac.il',<br>
-                'master_user_id': 123453433341, (User that created the campus)<br>
-                'avatar_url': 'http://some.domain.com/imagefile.jpg'<br>
-    },<br>
-    ....<br>
-    {<br>
-    ...<br>
-    }req<br>
-    ]<br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'username' : 'github_username',<br>
+        'name' : 'Bob Dylan',<br>
+        'email' : 'email@domain.com',<br>
+        'isLecturer' : true,<br>
+        'seToken' : 'dds2d-sfvvsf-qqq-fdf33-sfaa',<br>
+        'avatar_url' : 'http://location.domain.com/image.jpg',<br>
+        'isFirstLogin' : false,<br>
+        'campuses_id_list': ['22314','243512',...,'356'],<br>
+        'classes_id_list': ['22314','243512',...,'356']<br>
+        }
+    </code>
     <br>
-    403 - Invalid Token<br>
-    500 - Server Error
-    """
-    if is_user_token_valid(token):
-        arr = []
-        query = Campus.all()
-        for c in query.run():
-            arr.append(dict(json.loads(c.to_JSON())))
-        print arr
-        if len(arr) != 0:
-            return Response(response=json.dumps(arr),
-                            status=200,
-                            mimetype="application/json")
-        else:
-            return Response(response=[],
-                            status=200,
-                            mimetype="application/json")
+    403 - Invalid Token
+    '''
+
+    arr = []
+    query = Project.all()
+    query.filter("courseName = ", name)
+
+    for p in query.run():
+        arr.append(dict(json.loads(p.to_JSON())))
+    print arr
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
     else:
-        return forbidden("Invalid Token")
-
-
-
-@project_routes.route('/api/Projects/<string:token>', methods=['GET'])
-@auto.doc()
-def get_campuses(token):
-    pass
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
 
 
 
