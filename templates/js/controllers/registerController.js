@@ -1,5 +1,5 @@
 angular.module('SeHub')
-.controller('registerController', ['$scope', '$cookies', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $cookies, $location, $mdToast, $mdDialog, apiService ,$rootScope)
+.controller('registerController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
 	
 	$scope.userHasNoName = false;
@@ -57,10 +57,9 @@ angular.module('SeHub')
 			{
 				console.log("DONE - 200");
 			  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
-		        .ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(ev));
-		        // TODO - ADD DELETE COOKIES
-		        // $cookies.remove("com.sehub.www");
-		        // $location.path("templates/views/home.html"); // Redirecting to home page // TODO REMOVE REMOVE!!
+		        .ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(ev)); // Pop-up alert for e-mail verification
+		        $cookieStore.remove("com.sehub.www"); // Removing the cookies
+		        $window.location.href = 'http://se-hub.appspot.com';
 			}).error(function()
 			{
 				$mdDialog.show($mdDialog.alert().title('Error - E-mail Verification').content('An error has occured in your e-mail address.')
@@ -68,31 +67,6 @@ angular.module('SeHub')
 			});
 		};
 	};
-
-
-	// TODO FOR LATER
-	// TODO FOR LATER
-
-	$scope.getPopWindowPosition = function()
-  	{
-    	return Object.keys($scope.toastPosition).filter(function(pos)
-    		{
-    			return $scope.toastPosition[pos];
-    		}).join(' ');
-  	};
-  	
-  	$scope.toastPosition =
-  	{
-	    bottom: false,
-	    top: true,
-	    left: false,
-	    right: true
-  	};
-
-  	// TODO FOR LATER
-  	// TODO FOR LATER
-
-	
 }]);
 
 
