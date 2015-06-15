@@ -31,20 +31,30 @@ auto = Autodoc()
 @auto.doc()
 def create_course(token):
     """
-    This call will create a new campus in the DB
-    :param token:  user seToken
-    Payload
-    {
-     'courseName': self.courseName,
-     'campusName': self.campusName,
-     'projects': self.projects
-     'startDate': self.startDate
-     'endDate': self.endDate
-     'taskFlag': self.taskFlag
-    }
-
-    :return:
-    code 200
+    <span class="card-title">This call will create a new course in the DB</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - JSON Object, Example: <br>
+     {<br>
+     'courseName': 'Advance Math',<br>
+     'campusName': 'JCE',<br>
+     'startDate': '2015-14-3'<br>
+     'endDate': '2015-29-6'<br>
+     'taskFlag': 'False'<br>
+    }<br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    201 - Created
+    <br>
+    400 - Bad Request
+    <br>
+    403 - Invalid token or not a lecturer
     """
     if not request.data:
         return bad_request()
@@ -64,6 +74,9 @@ def create_course(token):
         start_date = datetime.date(payload['startDate']['year'],payload['startDate']['month'],payload['startDate']['day'])
         end_date = datetime.date(payload['endDate']['year'],payload['endDate']['month'],payload['endDate']['day'])
 
+        if end_date <= start_date:
+            return bad_request("end date cant be before (or same day) start date")
+
         course = Course(courseName=payload['courseName'], campusName=payload['campusName'],
                         startDate=start_date, endDate=end_date)
 
@@ -75,12 +88,6 @@ def create_course(token):
                 return forbidden("Campus with same name already exists")
         except Exception as e:
             print e
-
-        #check if and projects needs to be added
-        # try:
-        #     course.projects=payload['projects']
-        # except Exception:
-        #     pass
 
 
     except Exception:
@@ -99,11 +106,11 @@ def create_course(token):
 @course_routes.route('/api/courses/getCourseByCampusName/<string:name>', methods=["GET"])
 @auto.doc()
 def getCourseByCampusName(name):
-    '''
-    <span class="card-title">This Function is will Activate a user and add tha campus to it</span>
+    """
+    <span class="card-title">>This Call will return an array of all courses in a given campus</span>
     <br>
     <b>Route Parameters</b><br>
-        - validation_token: 'seToken|email_suffix'
+        - name: 'campus name'
     <br>
     <br>
     <b>Payload</b><br>
@@ -115,21 +122,15 @@ def getCourseByCampusName(name):
     200 - JSON Example:<br>
     <code>
         {<br>
-        'username' : 'github_username',<br>
-        'name' : 'Bob Dylan',<br>
-        'email' : 'email@domain.com',<br>
-        'isLecturer' : true,<br>
-        'seToken' : 'dds2d-sfvvsf-qqq-fdf33-sfaa',<br>
-        'avatar_url' : 'http://location.domain.com/image.jpg',<br>
-        'isFirstLogin' : false,<br>
-        'campuses_id_list': ['22314','243512',...,'356'],<br>
-        'classes_id_list': ['22314','243512',...,'356']<br>
+        'courseName': 'Advance Math',<br>
+        'campusName': 'JCE',<br>
+        'startDate': '2015-14-3'<br>
+        'endDate': '2015-29-6'<br>
+        'taskFlag': 'False'<br>
         }
     </code>
     <br>
-    403 - Invalid Token
-    '''
-
+    """
     arr = []
     query = Course.all()
     query.filter("campusName = ", name)

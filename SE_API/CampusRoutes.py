@@ -119,9 +119,7 @@ def get_campuses(token):
     ]<br>
     <br>
     403 - Invalid Token<br>
-    500 - Server Error
     """
-
     if is_user_token_valid(token):
         arr = []
         query = Campus.all()

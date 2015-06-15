@@ -39,9 +39,10 @@ def create_project(token):
     <b>Payload</b><br>
      - JSON Object, Example: <br>
      {<br>
-     'title': 'Campus name',<br>
-     'email_ending': '@campus.ac.com',<br>
-     'avatar_url': 'http://location.domain.com/image.jpg'<br>
+     'projectName': 'Advance Math',<br>
+     'courseName': 'JCE',<br>
+     'logo_url': 'http://location.domain.com/image.jpg'<br>
+     'gitRepository': 'http://location.git.com/somthing'<br>
     }<br>
     <br>
     <br>
@@ -49,7 +50,9 @@ def create_project(token):
     <br>
     201 - Created
     <br>
-    403 - Invalid Token/Forbidden
+    400 - Bad Request
+    <br>
+    403 - Invalid token or not a lecturer
     """
     if not request.data:
         return bad_request()
@@ -80,11 +83,11 @@ def create_project(token):
 @project_routes.route('/api/projects/getProjectsByCourseName/<string:name>', methods=["GET"])
 @auto.doc()
 def getProjectsByCourseName(name):
-    '''
-    <span class="card-title">This Function is will Activate a user and add tha campus to it</span>
+    """
+    <span class="card-title">>This Call will return an array of all projects in a given course</span>
     <br>
     <b>Route Parameters</b><br>
-        - validation_token: 'seToken|email_suffix'
+        - name: 'course name'
     <br>
     <br>
     <b>Payload</b><br>
@@ -96,20 +99,16 @@ def getProjectsByCourseName(name):
     200 - JSON Example:<br>
     <code>
         {<br>
-        'username' : 'github_username',<br>
-        'name' : 'Bob Dylan',<br>
-        'email' : 'email@domain.com',<br>
-        'isLecturer' : true,<br>
-        'seToken' : 'dds2d-sfvvsf-qqq-fdf33-sfaa',<br>
-        'avatar_url' : 'http://location.domain.com/image.jpg',<br>
-        'isFirstLogin' : false,<br>
-        'campuses_id_list': ['22314','243512',...,'356'],<br>
-        'classes_id_list': ['22314','243512',...,'356']<br>
+        'projectName': 'Advance Math',<br>
+        'courseName': 'JCE',<br>
+        'grade': 98,<br>
+        'logo_url': 'http://location.domain.com/image.jpg',<br>
+        'gitRepository': 'http://location.git.com/somthing',<br>
+        'membersId': ['bob', 'dylan', 'quentin', 'terentino']<br>
         }
     </code>
     <br>
-    403 - Invalid Token
-    '''
+    """
 
     arr = []
     query = Project.all()
