@@ -48,13 +48,16 @@ def create_course(token):
     """
     if not request.data:
         return bad_request()
-    payload = json.loads(request.data)
     if not is_lecturer(token):  #todo: change to lecturer id
         return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
 
-    #todo: check legality
+    #try to parse payload
+    try:
+        payload = json.loads(request.data)
+    except Exception as e:
+        return bad_request(e)
 
 
     try:
@@ -64,10 +67,20 @@ def create_course(token):
         course = Course(courseName=payload['courseName'], campusName=payload['campusName'],
                         startDate=start_date, endDate=end_date)
 
+        #check if name already exists
         try:
-            course.projects=payload['projects']
-        except Exception:
-            pass
+            query = Course.all()
+            query.filter("courseName = ", payload['courseName'])
+            for c in query.run(limit=1):
+                return forbidden("Campus with same name already exists")
+        except Exception as e:
+            print e
+
+        #check if and projects needs to be added
+        # try:
+        #     course.projects=payload['projects']
+        # except Exception:
+        #     pass
 
 
     except Exception:
@@ -116,15 +129,23 @@ def getCourseByCampusName(name):
     <br>
     403 - Invalid Token
     '''
+
+    arr = []
     query = Course.all()
-    query.filter("title = ", name)
+    query.filter("campusName = ", name)
 
-    for c in query.run(limit=5):
-        return Response(response=c.key().id(),
+    for c in query.run():
+        arr.append(dict(json.loads(c.to_JSON())))
+    print arr
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
                         status=200,
-                        mimetype="application/json")  # Real response!
+                        mimetype="application/json")
+    else:
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
 
-    return bad_request("No Campus Found")
 
 @course_routes.route('/api/courses/help')
 def documentation():
