@@ -18,26 +18,37 @@
 			<br></br>
 			<div layout="row" layout-align="center center">
 				<p>Are You A Lecturer?</p>
-				<md-switch ng-click = "lecturerPrivilege(data.cb1)" ng-model="data.cb1" aria-label="Switch 1">
-					Switch 1: {{ data.cb1 }}
-					<div ng-if="data">
-						 <!-- <md-progress-circular class="md-hue-2" md-mode="indeterminate">
-						</md-progress-circular> -->
-					</div>
-				</md-switch>			
-
-				<!-- TODO original -->
-				<!-- <md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="data.cb5">
-	  			</md-switch> -->
+				<md-switch ng-model="user.isLecturer" aria-label="Switch 1">
+				</md-switch>	
 			</div>
 		</div>
 		<div>
+			<div ng-if="user.isLecturer">
+				<div>
+					<md-button ng-click = "lecturer($event)" ng-model="jsonCreateCampus" class="md-raised">Create Campus</md-button>
+					<div class = "createCampus" ng-if="createCampusClicked">
+						<md-input-container>
+							<label>Academic Lecturer Email</label>
+							<input type="text" ng-disabled="!createCampusClicked" ng-model="user.lecAcMail" required/>
+						</md-input-container>						
+						<md-input-container>
+							<label>Campus Name</label>
+							<input type="text" ng-disabled="!createCampusClicked" ng-model="user.campusName" required/>
+						</md-input-container>
+						<md-input-container>
+							<label>Campus Avatar Url (optional)</label>
+							<input type="text" ng-disabled="!createCampusClicked" ng-model="user.newCampusAvatar" required/>
+						</md-input-container>
+					</div>
+				</div>
+			</div>
 			<div class = "dropDown">
 				<md-select placeholder="Pick your Campus" ng-model="campus" style="z-index: 300" ng-change="dropdownClicked()">
-					<md-option ng-repeat="c in campuses" value="{{c.title}}">{{c.title}}</md-option>
+					<md-option ng-switch="user.isLecturer" ng-repeat="c in campuses" value="{{c.title}}">{{c.title}}</md-option>
 				</md-select> 
 			</div>
 		</div>
+
 		<div layout="col" layout-align="center center">
 			<div>
 				<div class="campusAvatar" ng-if="campusChecked">
