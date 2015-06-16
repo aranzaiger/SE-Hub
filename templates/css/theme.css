@@ -155,3 +155,9 @@ body.noscroll
   border-right: 2px black solid;
   border-radius: 1px black solid;
 }*/
+
+.gray-font{
+  color: #7f7f7f;
+  font-size: 300%;
+  text-shadow:#e0e0e0 1px 1px 0;
+}
