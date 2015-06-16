@@ -60,14 +60,14 @@ def getUserByToken(token):
     403 - No User Found
     """
     query = User.all()
-    query.filter("seToken = ", token)
+    query.filter("seToken =", token)
 
     for u in query.run(limit=5):
         return Response(response=u.to_JSON(),
                         status=200,
                         mimetype="application/json")  # Real response!
 
-    return bad_request("No User Found")
+    return no_content("No User Found")
 
 
 @user_routes.route('/api/users/updateUser/<string:token>', methods=["POST"])
@@ -83,8 +83,9 @@ def updateUser(token):
     <b>Payload</b><br>
      - JSON Object, Example: <br>
      {<br>
-         'name': 'Campus name',<br>
-         'isLecturer': '@campus.ac.com',<br>
+         'name': 'new name',<br>
+         'isLecturer': true,<br>
+         'campusName': 'JCE'<br>
     }<br>
     <br>
     <b>Response</b>
@@ -100,23 +101,29 @@ def updateUser(token):
     try:
         payload = json.loads(request.data)
     except Exception as e:
-        return bad_request(e)
+        return bad_request()
 
     user = get_user_by_token(token)
     if user is None:
         return bad_request("Not a user!")
 
     try:
-        user.name = payload['user']
+        user.name = payload['name']
+    except Exception:
+        pass
+
+    try:
+        user.campusName = payload['campusName']
     except Exception:
         pass
 
     try:
         user.isLecturer = payload['isLecturer']
-    except Exception:
-        pass
+    except Exception as e:
+        print e
 
-
+    db.put(user)
+    db.save
     return ok("User updated")
 
 
