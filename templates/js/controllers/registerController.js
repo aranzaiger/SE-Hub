@@ -56,9 +56,13 @@ angular.module('SeHub')
 
 	$scope.submitClicked = function(ev)
 	{
+		var emailValid = false;
 		if($scope.user.AcMail != null)
 		{
 			var fullMail = $scope.user.AcMail + $scope.campusObj.email_ending; // Holds the full academic email of the user
+			
+			console.log("Mail: " + fullMail);
+
 			apiService.sendValidationMail($scope.user.seToken, fullMail).success(function(data)
 			{
 				console.log("DONE - 200");
@@ -72,9 +76,13 @@ angular.module('SeHub')
 				$mdDialog.show($mdDialog.alert().title('Error - E-mail Verification').content('An error has occured in your e-mail address.')
 		        .ariaLabel('Email verification error alert dialog').ok('Got it!').targetEvent(ev));
 			});
+		}
+		else // TODO Fix when success to show mdDialog until 'Got it' clicked
+		{
+			$mdDialog.show($mdDialog.alert().title('Error - E-mail Verification').content('An error has occured in your e-mail address.')
+		        .ariaLabel('Email verification error alert dialog').ok('Got it!').targetEvent(ev));
 		};
 	};
-
 
 	$scope.createCampus = function(ev)
 	{
@@ -82,26 +90,24 @@ angular.module('SeHub')
 
 		if(!$scope.isLecturer) // "!isLecturer" Means => I Am Lecturer; if i am a lecturer (when pressing -> getting last data value before pressing)
 		{
-			if($scope.user.campusSuffixMail != null)
+			if($scope.user.campusMail != null)
 			{
-				validateEmail($scope.user.campusSuffixMail);
+				validateEmail($scope.user.campusMail); // Verify the email according to "xxx@name.suffix"
 			}
 		}
 	}  
 
-	validateEmail = function(email) // TODO ADD IT
+	validateEmail = function(email)
 	{
 	    var result = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-
-	    console.log("Email: " + email);
-
-	    if (!result.test(email))
+	    if (!result.test(email)) // TODO Fix when success to show mdDialog until 'Got it' clicked
 	    {
 	    	console.log(email + ", Error in email, should alert");
-   			alert('Please provide a valid e-mail address');
+   			// alert('Please provide a valid e-mail address');
+   			$mdDialog.show($mdDialog.alert().title('Error - E-mail Verification').content('An error has occured in your e-mail address.')
+		        .ariaLabel('Email verification error alert dialog').ok('Got it!').targetEvent(email));
     	}
-
-    	if(result.test(email))
+    	if(result.test(email)) // TODO Fix when success to show mdDialog until 'Got it' clicked
     	{
 	    	console.log("Im good");
 	    	apiService.sendValidationMail($scope.user.seToken, email).success(function(data)
@@ -119,26 +125,4 @@ angular.module('SeHub')
 			});
 		}
 	}
-
-			// TODO FOR LATER - toast
-	// TODO FOR LATER
-
-	// $scope.getPopWindowPosition = function()
- //  	{
- //    	return Object.keys($scope.toastPosition).filter(function(pos)
- //    		{
- //    			return $scope.toastPosition[pos];
- //    		}).join(' ');
- //  	};
-  	
- //  	$scope.toastPosition =
- //  	{
-	//     bottom: false,
-	//     top: true,
-	//     left: false,
-	//     right: true
- //  	};
-
-  	// TODO FOR LATER
-  	// TODO FOR LATER	
 }]);
