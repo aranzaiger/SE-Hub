@@ -2,10 +2,10 @@
 
 body{
   font-family: "Alef Hebrew",
-  “Helvetica Neue”,
-  Helvetica,
-  Arial,
-  sans-serif;
+               “Helvetica Neue”,
+               Helvetica,
+               Arial,
+               sans-serif;
 }
 
 .menuBtn {
@@ -144,11 +144,11 @@ body.noscroll
   }
 
 
-  .createCampus
-  {
-    position:relative;
-    /*float:right;*/
-  }
+.createCampus
+{
+  position:relative;
+}
+
 
 /*div.img campusAvatar
 {

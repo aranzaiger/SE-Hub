@@ -25,19 +25,19 @@
 		<div>
 			<div ng-if="user.isLecturer">
 				<div>
-					<md-button ng-click = "lecturer($event)" ng-model="jsonCreateCampus" class="md-raised">Create Campus</md-button>
+					<md-button ng-click = "createCampus($event)" ng-model="jsonCreateCampus" class="md-raised">Create Campus</md-button>
 					<div class = "createCampus" ng-if="createCampusClicked">
 						<md-input-container>
-							<label>Academic Lecturer Email</label>
-							<input type="text" ng-disabled="!createCampusClicked" ng-model="user.lecAcMail" required/>
+							<label>Academic Suffix Email</label>
+							<input type="text" ng-model="user.campusSuffixMail" ng-minlength="1" required/>
 						</md-input-container>						
 						<md-input-container>
 							<label>Campus Name</label>
-							<input type="text" ng-disabled="!createCampusClicked" ng-model="user.campusName" required/>
+							<input type="text" ng-if="createCampusClicked" ng-model="user.campusName" ng-minlength="1" required !important/>
 						</md-input-container>
 						<md-input-container>
 							<label>Campus Avatar Url (optional)</label>
-							<input type="text" ng-disabled="!createCampusClicked" ng-model="user.newCampusAvatar" required/>
+							<input type="text" ng-if="createCampusClicked" ng-model="user.newCampusAvatar"/>
 						</md-input-container>
 					</div>
 				</div>
@@ -48,7 +48,6 @@
 				</md-select> 
 			</div>
 		</div>
-
 		<div layout="col" layout-align="center center">
 			<div>
 				<div class="campusAvatar" ng-if="campusChecked">
@@ -76,13 +75,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- 	<div> // TODO return
-				<p>
-				<b>Note:</b> This setting can be changed in the future. <br>
-				But Choose Now for easy Registration...
-				</p>    
-			</div> -->
-
 	</md-card>
 	</md-content>
 </div>
