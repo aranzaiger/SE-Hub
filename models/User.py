@@ -12,6 +12,7 @@ class User(db.Model):
     seToken = db.StringProperty(required=True)
     avatar_url = db.StringProperty(required=True)
     isFirstLogin = db.BooleanProperty(default=True)
+    campusName = db.StringProperty(required=True, default="")
     campuses_id_list = db.StringListProperty(default=[])
     classes_id_list = db.StringListProperty(default=[])
 
