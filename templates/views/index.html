@@ -25,26 +25,28 @@
             <img ng-src="{{user.avatar_url}}" alt="">
         </div> -->
         <md-content class="se-menu">
-            <div class="user-box" layout="row" layout-padding>
-                <div flex="30"> <!-- Avatar -->
-                    <img ng-src="{{user.avatar_url}}" alt="">
-                </div>
-                <div class="user-data" layout="column" flex>
-                    <div>
-                        {{user.name}}
+            <div ng-if="!isInRegisterMode">
+                <div class="user-box" layout="row" layout-padding>
+                    <div flex="30"> <!-- Avatar -->
+                        <img ng-src="{{user.avatar_url}}" alt="">
                     </div>
-                    <div>
-                        {{user.email}}
+                    <div class="user-data" layout="column" flex>
+                        <div>
+                            {{user.name}}
+                        </div>
+                        <div>
+                            {{user.email}}
+                        </div>
                     </div>
                 </div>
+                
+                    <ul>
+                        <a ng-repeat="item in menuItems" ng-href="{{item.route}}">
+                            <li ng-class="[item.style]"><i ng-class="item.icon"></i> {{item.title}}</li>
+                            <md-divider ng-if="!$last"></md-divider>
+                        </a>
+                    </ul>
             </div>
-            
-                <ul>
-                    <a ng-repeat="item in menuItems" href="#">
-                        <li><i ng-class="item.icon"></i> {{item.title}}</li>
-                        <md-divider ng-if="!$last"></md-divider>
-                    </a>
-                </ul>
             <div ng-if="loadingData">
                 <md-progress-circular></md-progress-circular>
             </div>
