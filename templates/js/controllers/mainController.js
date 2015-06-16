@@ -40,37 +40,37 @@ angular.module('SeHub')
 			"title": "Home",
 			"icon": "fa fa-home",
 			"style": "selected",
-			"route": "/home"
+			"route": "#/home"
 		}, {
 			"title": "My Campuses",
 			"icon": "fa fa-university",
-			"style": "selected",
+			"style": "",
 			"route": "/campuses"
 		}, {
 			"title": "My Classes",
 			"icon": "fa fa-graduation-cap",
-			"style": "selected",
+			"style": "",
 			"route": "/campuses"
 		}, {
 			"title": "My Projects",
 			"icon": "fa fa-cube",
-			"style": "selected",
+			"style": "",
 			"route": "/campuses"
 		}, {
 			"title": "Tasks",
 			"icon": "fa fa-clipboard",
-			"style": "selected",
+			"style": "",
 			"route": "/campuses"
 		}, {
 			"title": "Settings",
 			"icon": "fa fa-cogs",
-			"style": "selected",
-			"route": "/campuses"
+			"style": "",
+			"route": "#/Settings"
 		}, {
 			"title": "Log Out",
 			"icon": "fa fa-power-off",
-			"style": "selected",
-			"route": "/campuses"
+			"style": "",
+			"route": "#/logout"
 		}];
 
 	}]);
