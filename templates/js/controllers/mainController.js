@@ -10,8 +10,9 @@ angular.module('SeHub')
 			if (data.message == 'No User Found') {
 				console.error("No User Found!");
 			}
-
+			$scope.loadingData = false;
 			$scope.user = data;
+			console.log(data);
 			if ($scope.user.isFirstLogin) {
 				$scope.menuObj = {};
 				$scope.isInRegisterMode = true;
@@ -23,24 +24,11 @@ angular.module('SeHub')
 
 		})
 
-		apiService.getUserByToken(token).success(function(data) // Get user token
-			{
-				$scope.user = data;
-				$scope.loadingData = false;
-
-				apiService.getAllCampuses($scope.user.seToken).success(function(data) // Get all the campuses
-					{
-						$scope.campuses = data;
-					}).error(function() {
-
-				});
-			});
-
 		$scope.menuItems = [{
 			"title": "Home",
 			"icon": "fa fa-home",
 			"style": "selected",
-			"route": "#/home"
+			"route": "/home"
 		}, {
 			"title": "My Campuses",
 			"icon": "fa fa-university",
@@ -65,12 +53,26 @@ angular.module('SeHub')
 			"title": "Settings",
 			"icon": "fa fa-cogs",
 			"style": "",
-			"route": "#/Settings"
+			"route": "/Settings"
 		}, {
 			"title": "Log Out",
 			"icon": "fa fa-power-off",
 			"style": "",
-			"route": "#/logout"
+			"route": "/logout"
 		}];
+
+		$scope.menuClicked = function(item){
+			var route = ""
+			for (var i = $scope.menuItems.length - 1; i >= 0; i--) {
+				if($scope.menuItems[i].title === item.title){
+					$scope.menuItems[i].style="selected";
+					route = $scope.menuItems[i].route;
+				}else{
+					$scope.menuItems[i].style = "";
+				}
+			};
+			$location.path(route);
+		}
+
 
 	}]);

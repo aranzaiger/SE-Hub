@@ -24,6 +24,7 @@ class User(db.Model):
                 'seToken' : self.seToken,
                 'avatar_url' : self.avatar_url,
                 'isFirstLogin' : self.isFirstLogin,
+                'campusName': self.campusName,
                 'campuses_id_list': self.campuses_id_list,
                 'classes_id_list': self.classes_id_list
                 }
