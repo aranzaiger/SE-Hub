@@ -67,7 +67,7 @@ class UserTestPlan(unittest.TestCase):
     def test_Lecturer_isLecturer(self):
         r = requests.get(self.__class__.url_+'api/users/getUserByToken/'+__CONFIG__['TOKENS']['LECTURER'])
         self.assertEquals(r.status_code, 200)
-        self.assertFalse(r.json()['isLecturer'])
+        self.assertTrue(r.json()['isLecturer'])
 
     def test_isClassIdListEmpty_Lecturer(self):
         r = requests.get(self.__class__.url_+'api/users/getUserByToken/'+__CONFIG__['TOKENS']['LECTURER'])
