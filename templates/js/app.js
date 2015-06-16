@@ -33,6 +33,10 @@ app.config(['$routeProvider', '$locationProvider',
 			.when('/register', {
 				templateUrl: 'templates/views/register.html',
 				controller: 'registerController'
+			})
+			.when('/home', {
+				templateUrl: 'templates/views/home.html',
+				controller: 'homeController'
 			});
 
 	}
