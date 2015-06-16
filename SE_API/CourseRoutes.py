@@ -57,7 +57,7 @@ def create_course(token):
     403 - Invalid token or not a lecturer
     """
     if not request.data:
-        return bad_request()
+        return bad_request("no data")
     if not is_lecturer(token):  #todo: change to lecturer id
         return forbidden("Invalid token or not a lecturer!")
 
@@ -77,20 +77,20 @@ def create_course(token):
         if end_date <= start_date:
             return bad_request("end date cant be before (or same day) start date")
 
-        course = Course(courseName=payload['courseName'], campusName=payload['campusName'],
+        course = Course(courseName=payload['courseName'], campusName=payload['campusName'], master_id=user.key().id(),
                         startDate=start_date, endDate=end_date)
-
         #check if name already exists
         try:
             query = Course.all()
             query.filter("courseName = ", payload['courseName'])
             for c in query.run(limit=1):
-                return forbidden("Campus with same name already exists")
+                return forbidden("Course with same name already exists")
         except Exception as e:
             print e
 
 
-    except Exception:
+    except Exception as e:
+        print e
         return bad_request()
 
 
