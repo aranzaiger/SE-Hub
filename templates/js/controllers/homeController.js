@@ -6,5 +6,4 @@ angular.module('SeHub')
 {
 
 
-
 }]);
