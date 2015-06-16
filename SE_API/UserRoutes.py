@@ -84,7 +84,8 @@ def updateUser(token):
      - JSON Object, Example: <br>
      {<br>
          'name': 'new name',<br>
-         'isLecturer': true<br>
+         'isLecturer': true,<br>
+         'campusName': 'JCE'<br>
     }<br>
     <br>
     <b>Response</b>
@@ -108,6 +109,11 @@ def updateUser(token):
 
     try:
         user.name = payload['name']
+    except Exception:
+        pass
+
+    try:
+        user.campusName = payload['campusName']
     except Exception:
         pass
 
