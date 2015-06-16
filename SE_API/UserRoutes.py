@@ -70,7 +70,7 @@ def getUserByToken(token):
     return bad_request("No User Found")
 
 
-@user_routes.route('/api/users/updateUser/<string:token>', methods=["GET"])
+@user_routes.route('/api/users/updateUser/<string:token>', methods=["POST"])
 @auto.doc()
 def updateUser(token):
     """
