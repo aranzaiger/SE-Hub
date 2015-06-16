@@ -214,7 +214,7 @@ def init_QA():
     qa_student = User(username='qa_student', name='Student QA', avatar_url='http://ava.com', email='just@mail.com',
                    isLecturer=False, accessToken='student_token_', seToken='_QA_TOKEN_TEST_STUDENT')
     qa_lecturer = User(username='qa_lecturer', name='Student QA', avatar_url='http://ava.com', email='just@mail.com',
-                   isLecturer=False, accessToken='student_token_', seToken='_QA_TOKEN_TEST_LECTURER')
+                   isLecturer=True, accessToken='student_token_', seToken='_QA_TOKEN_TEST_LECTURER')
     query = User.all().filter('username =', qa_student.username)
     for u in query.run():
         is_student_exist = True
