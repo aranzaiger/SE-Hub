@@ -16,17 +16,23 @@ class CoursesTestPlan(unittest.TestCase):
             print 'Initialized'
 
     def test_coursesCreate_Lecturer(self):
-        r = requests.get(self.__class__.url_+'api/courses/create/'+__CONFIG__['TOKENS']['LECTURER'])
+        payload = {'courseName': 'Advance Math', 'campusName': 'JCE', 'startDate':'2015-14-3','endDate': '2015-29-6','taskFlag': 'False'}
+        r = requests.post(self.__class__.url_+'api/courses/create/'+__CONFIG__['TOKENS']['LECTURER'],data=payload)
         self.assertEquals(r.status_code, 201)
 
     def test_coursesCreate_InvalidToken(self):
-        r = requests.get(self.__class__.url_+'api/courses/create/invalidToken')
+        payload = {'courseName': 'Advance Math', 'campusName': 'JCE', 'startDate':'2015-14-3','endDate': '2015-29-6','taskFlag': 'False'}
+        r = requests.post(self.__class__.url_+'api/courses/create/invalidToken',data=payload)
         self.assertEquals(r.status_code, 403)
 
     def test_coursesCreate_Student(self):
-        r = requests.get(self.__class__.url_+'api/courses/create/'+__CONFIG__['TOKENS']['STUDENT'])
+        payload = {'courseName': 'Advance Math', 'campusName': 'JCE', 'startDate':'2015-14-3','endDate': '2015-29-6','taskFlag': 'False'}
+        r = requests.post(self.__class__.url_+'api/courses/create/'+__CONFIG__['TOKENS']['STUDENT'],data=payload)
         self.assertEquals(r.status_code, 403)
 
+    def test_getCourseByCampusName(self):
+        r = requests.get(self.__class__.url_+'api/courses/getCourseByCampusName/'+__CONFIG__['TOKENS']['CAMPUS_NAME'])
+        self.assertEquals(r.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()

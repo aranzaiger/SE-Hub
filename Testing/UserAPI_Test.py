@@ -1,6 +1,7 @@
 __author__ = 'etye'
 import unittest
 import requests
+import json
 from Testing.config import __CONFIG__
 
 class UserTestPlan(unittest.TestCase):
@@ -79,6 +80,17 @@ class UserTestPlan(unittest.TestCase):
         self.assertEquals(r.status_code, 200)
         self.assertEquals(r.json()['campuses_id_list'],[])
 
+    def test_userUpdate_Student(self):
+        payload = {'name': 'New Name', 'isLecturer': 'false'}
+        r = requests.post(self.__class__.url_+'api/users/userUpdate/'+__CONFIG__['TOKENS']['STUDENT'],data=payload)
+        self.assertEquals(r.status_code, 200)
+        #data = {}
+        #data['name'] = 'New Name'
+        #data['isLecturer'] = 'false'
+        #json_data = json.dumps(data)
+        #r = requests.post(self.__class__.url_+'api/users/userUpdate/'+__CONFIG__['TOKENS']['STUDENT'],json_data)
+        #self.assertEquals(r.status_code, 200)
+        #self.assertEquals(r.json()['message'],'User updated')
 
 if __name__ == '__main__':
     unittest.main()

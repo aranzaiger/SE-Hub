@@ -9,6 +9,7 @@ __CONFIG__ = {
     },
     'TOKENS':{
         'STUDENT': '_QA_TOKEN_TEST_STUDENT',
-        'LECTURER': '_QA_TOKEN_TEST_LECTURER'
+        'LECTURER': '_QA_TOKEN_TEST_LECTURER',
+        'CAMPUS_NAME':'JCE'
     }
 }
