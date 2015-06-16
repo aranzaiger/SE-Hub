@@ -70,6 +70,57 @@ def getUserByToken(token):
     return bad_request("No User Found")
 
 
+@user_routes.route('/api/users/updateUser/<string:token>', methods=["GET"])
+@auto.doc()
+def updateUser(token):
+    """
+    <span class="card-title">>This Call will update user details</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - JSON Object, Example: <br>
+     {<br>
+         'name': 'Campus name',<br>
+         'isLecturer': '@campus.ac.com',<br>
+    }<br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - User updated
+    <br>
+    400 - Bad Request
+    """
+
+    if not request.data:
+        return bad_request()
+
+    try:
+        payload = json.loads(request.data)
+    except Exception as e:
+        return bad_request(e)
+
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Not a user!")
+
+    try:
+        user.name = payload['user']
+    except Exception:
+        pass
+
+    try:
+        user.isLecturer = payload['isLecturer']
+    except Exception:
+        pass
+
+
+    return ok("User updated")
+
+
+
 @user_routes.route('/api/users/help')
 def documentation():
     return auto.html()

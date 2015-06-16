@@ -3,7 +3,14 @@ angular.module('SeHub')
 {
 	$scope.userHasNoName = false;
 	$scope.campusChecked = false;
+	$scope.createCampusClicked = false;
 	$scope.isEmpty = true; // if the academic email line is empty
+	$scope.jsonCreateCampus =
+			{
+				"title": "Create Campus",
+				"email": "email_ending",
+				"avatar": "self.avatar.url"
+			}
 
 	$rootScope.seToken = $cookies['com.sehub.www'];
 	var token = $rootScope.seToken;
@@ -44,6 +51,7 @@ angular.module('SeHub')
 				}
 			};
 		};
+
 	};
 
 	$scope.submitClicked = function(ev)
@@ -56,6 +64,7 @@ angular.module('SeHub')
 				console.log("DONE - 200");
 			  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
 		        .ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(ev)); // Pop-up alert for e-mail verification
+		        // TODO ADD delete cookies and redirect only after pressed 'Got it'
 		        $cookieStore.remove("com.sehub.www"); // Removing the cookies
 		        $window.location.href = 'http://se-hub.appspot.com'; // Reference to 'welcome' page
 			}).error(function()
@@ -66,38 +75,38 @@ angular.module('SeHub')
 		};
 	};
 
-	$scope.lecturerPrivilege = function(data)
+
+	$scope.lecturer = function(ev)
 	{
-		// console.log("Now " + data);
-		var isLecturer;
-		if(!data) // if i am a lecturer (when pressing -> getting last data value before pressing) = "!data" => I Am Lecturer
+		console.log("inside");
+		$scope.createCampusClicked = true;
+
+		if(!$scope.isLecturer) // if i am a lecturer (when pressing -> getting last data value before pressing) = "!isLecturer" it means => I Am Lecturer
 		{
-			isLecturer = true;
-			console.log("im lecturer " + isLecturer);
+			// var jsonCreateCampus =
+			// {
+			// 	"title": "Create Campus",
+			// 	"email": "email_ending",
+			// 	"avatar": "self.avatar.url"
+			// }
+			console.log("YES lecturer " + $scope.jsonCreateCampus.title);
+
+			if($scope.user.lecAcMail != null)
+			{
+				apiService.sendValidationMail($scope.user.seToken, $scope.user.lecAcMail).success(function(data)
+				{
+					console.log("DONE - 200");
+				  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
+			        .ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(ev)); // Pop-up alert for e-mail verification
+			        // TODO ADD delete cookies and redirect only after pressed 'Got it'
+			        $cookieStore.remove("com.sehub.www"); // Removing the cookies
+			        $window.location.href = 'http://se-hub.appspot.com'; // Reference to 'welcome' page
+				}).error(function()
+				{
+					$mdDialog.show($mdDialog.alert().title('Error - E-mail Verification').content('An error has occured in your e-mail address or in the campus name.')
+			        .ariaLabel('Email verification error alert dialog').ok('Got it!').targetEvent(ev));
+				});
+			}
 		}
-	}
-
-
-	// TODO FOR LATER - toast
-	// TODO FOR LATER
-
-	// $scope.getPopWindowPosition = function()
- //  	{
- //    	return Object.keys($scope.toastPosition).filter(function(pos)
- //    		{
- //    			return $scope.toastPosition[pos];
- //    		}).join(' ');
- //  	};
-  	
- //  	$scope.toastPosition =
- //  	{
-	//     bottom: false,
-	//     top: true,
-	//     left: false,
-	//     right: true
- //  	};
-
-  	// TODO FOR LATER
-  	// TODO FOR LATER
-  	
+	}  	
 }]);

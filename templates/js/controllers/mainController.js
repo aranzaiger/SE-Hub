@@ -17,7 +17,10 @@ angular.module('SeHub')
 			$scope.isInRegisterMode = true;
 			$scope.loadingData = false;
 			$location.path('/register')
+		}else{
+			$location.path('/home')
 		}
+
 	})
 
 	$scope.loadingData = false;

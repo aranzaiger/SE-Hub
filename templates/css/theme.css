@@ -1,3 +1,13 @@
+@import url(http://fonts.googleapis.com/earlyaccess/alefhebrew.css);
+
+body{
+  font-family: "Alef Hebrew",
+               “Helvetica Neue”,
+               Helvetica,
+               Arial,
+               sans-serif;
+}
+
 .menuBtn {
   background-color: transparent;
   border: none;
@@ -133,6 +143,13 @@ body.noscroll
     margin-top: auto;
   }
 
+
+.createCampus
+{
+  position:relative;
+  /*float:right;*/
+}
+
 /*div.img campusAvatar
 {
   border: 1px solid #0000ff;
@@ -148,3 +165,9 @@ body.noscroll
   border-right: 2px black solid;
   border-radius: 1px black solid;
 }*/
+
+.gray-font{
+  color: #7f7f7f;
+  font-size: 300%;
+  text-shadow:#e0e0e0 1px 1px 0;
+}
