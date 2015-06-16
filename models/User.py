@@ -12,7 +12,7 @@ class User(db.Model):
     seToken = db.StringProperty(required=True)
     avatar_url = db.StringProperty(required=True)
     isFirstLogin = db.BooleanProperty(default=True)
-    campusName = db.StringProperty(required=True, default="")
+    campusName = db.StringProperty(default="")
     campuses_id_list = db.StringListProperty(default=[])
     classes_id_list = db.StringListProperty(default=[])
 
@@ -24,6 +24,7 @@ class User(db.Model):
                 'seToken' : self.seToken,
                 'avatar_url' : self.avatar_url,
                 'isFirstLogin' : self.isFirstLogin,
+                'campusName': self.campusName,
                 'campuses_id_list': self.campuses_id_list,
                 'classes_id_list': self.classes_id_list
                 }
