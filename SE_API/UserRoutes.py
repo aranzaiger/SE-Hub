@@ -67,7 +67,7 @@ def getUserByToken(token):
                         status=200,
                         mimetype="application/json")  # Real response!
 
-    return bad_request("No User Found")
+    return no_content("No User Found")
 
 
 @user_routes.route('/api/users/updateUser/<string:token>', methods=["POST"])
