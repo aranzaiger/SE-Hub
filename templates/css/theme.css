@@ -133,6 +133,13 @@ body.noscroll
     margin-top: auto;
   }
 
+
+.createCampus
+{
+  position:relative;
+  /*float:right;*/
+}
+
 /*div.img campusAvatar
 {
   border: 1px solid #0000ff;
