@@ -76,37 +76,69 @@ angular.module('SeHub')
 	};
 
 
-	$scope.lecturer = function(ev)
+	$scope.createCampus = function(ev)
 	{
-		console.log("inside");
 		$scope.createCampusClicked = true;
 
-		if(!$scope.isLecturer) // if i am a lecturer (when pressing -> getting last data value before pressing) = "!isLecturer" it means => I Am Lecturer
+		if(!$scope.isLecturer) // "!isLecturer" Means => I Am Lecturer; if i am a lecturer (when pressing -> getting last data value before pressing)
 		{
-			// var jsonCreateCampus =
-			// {
-			// 	"title": "Create Campus",
-			// 	"email": "email_ending",
-			// 	"avatar": "self.avatar.url"
-			// }
-			console.log("YES lecturer " + $scope.jsonCreateCampus.title);
-
-			if($scope.user.lecAcMail != null)
+			if($scope.user.campusSuffixMail != null)
 			{
-				apiService.sendValidationMail($scope.user.seToken, $scope.user.lecAcMail).success(function(data)
-				{
-					console.log("DONE - 200");
-				  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
-			        .ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(ev)); // Pop-up alert for e-mail verification
-			        // TODO ADD delete cookies and redirect only after pressed 'Got it'
-			        $cookieStore.remove("com.sehub.www"); // Removing the cookies
-			        $window.location.href = 'http://se-hub.appspot.com'; // Reference to 'welcome' page
-				}).error(function()
-				{
-					$mdDialog.show($mdDialog.alert().title('Error - E-mail Verification').content('An error has occured in your e-mail address or in the campus name.')
-			        .ariaLabel('Email verification error alert dialog').ok('Got it!').targetEvent(ev));
-				});
+				validateEmail($scope.user.campusSuffixMail);
 			}
 		}
-	}  	
+	}  
+
+	validateEmail = function(email) // TODO ADD IT
+	{
+	    var result = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+
+	    console.log("Email: " + email);
+
+	    if (!result.test(email))
+	    {
+	    	console.log(email + ", Error in email, should alert");
+   			alert('Please provide a valid e-mail address');
+    	}
+
+    	if(result.test(email))
+    	{
+	    	console.log("Im good");
+	    	apiService.sendValidationMail($scope.user.seToken, email).success(function(data)
+			{
+				console.log("DONE - 200");
+			  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
+		        .ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(email)); // Pop-up alert for e-mail verification
+		        // TODO ADD delete cookies and redirect only after pressed 'Got it'
+		        $cookieStore.remove("com.sehub.www"); // Removing the cookies
+		        $window.location.href = 'http://se-hub.appspot.com'; // Reference to 'welcome' page
+			}).error(function()
+			{
+				$mdDialog.show($mdDialog.alert().title('Error - E-mail Verification').content('An error has occured in your e-mail address or in the campus name.')
+		        .ariaLabel('Email verification error alert dialog').ok('Got it!').targetEvent(email));
+			});
+		}
+	}
+
+			// TODO FOR LATER - toast
+	// TODO FOR LATER
+
+	// $scope.getPopWindowPosition = function()
+ //  	{
+ //    	return Object.keys($scope.toastPosition).filter(function(pos)
+ //    		{
+ //    			return $scope.toastPosition[pos];
+ //    		}).join(' ');
+ //  	};
+  	
+ //  	$scope.toastPosition =
+ //  	{
+	//     bottom: false,
+	//     top: true,
+	//     left: false,
+	//     right: true
+ //  	};
+
+  	// TODO FOR LATER
+  	// TODO FOR LATER	
 }]);
