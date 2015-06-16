@@ -213,9 +213,19 @@ body.noscroll
   .se-menu li:hover{
     background-color: #E2E2E2;
     font-weight: bold;
+    cursor: pointer;
   }
-  .se-menu li .selected{
+
+  .se-menu li:active{
+    background-color: #B2B2B2;
+    text-shadow:#e0e0e0 1px 1px 0;
+    font-weight: bold;
+  }
+
+  .se-menu .selected{
     background-color: #E2E2E2;
+    text-shadow:#e0e0e0 1px 1px 0;
+    font-weight: bold;
   }
 
   .user-box{

@@ -10,8 +10,9 @@ angular.module('SeHub')
 			if (data.message == 'No User Found') {
 				console.error("No User Found!");
 			}
-
+			$scope.loadingData = false;
 			$scope.user = data;
+			console.log(data);
 			if ($scope.user.isFirstLogin) {
 				$scope.menuObj = {};
 				$scope.isInRegisterMode = true;
@@ -23,19 +24,6 @@ angular.module('SeHub')
 
 		})
 
-		apiService.getUserByToken(token).success(function(data) // Get user token
-			{
-				$scope.user = data;
-				$scope.loadingData = false;
-
-				apiService.getAllCampuses($scope.user.seToken).success(function(data) // Get all the campuses
-					{
-						$scope.campuses = data;
-					}).error(function() {
-
-				});
-			});
-
 		$scope.menuItems = [{
 			"title": "Home",
 			"icon": "fa fa-home",
@@ -44,33 +32,47 @@ angular.module('SeHub')
 		}, {
 			"title": "My Campuses",
 			"icon": "fa fa-university",
-			"style": "selected",
+			"style": "",
 			"route": "/campuses"
 		}, {
 			"title": "My Classes",
 			"icon": "fa fa-graduation-cap",
-			"style": "selected",
+			"style": "",
 			"route": "/campuses"
 		}, {
 			"title": "My Projects",
 			"icon": "fa fa-cube",
-			"style": "selected",
+			"style": "",
 			"route": "/campuses"
 		}, {
 			"title": "Tasks",
 			"icon": "fa fa-clipboard",
-			"style": "selected",
+			"style": "",
 			"route": "/campuses"
 		}, {
 			"title": "Settings",
 			"icon": "fa fa-cogs",
-			"style": "selected",
-			"route": "/campuses"
+			"style": "",
+			"route": "/Settings"
 		}, {
 			"title": "Log Out",
 			"icon": "fa fa-power-off",
-			"style": "selected",
-			"route": "/campuses"
+			"style": "",
+			"route": "/logout"
 		}];
+
+		$scope.menuClicked = function(item){
+			var route = ""
+			for (var i = $scope.menuItems.length - 1; i >= 0; i--) {
+				if($scope.menuItems[i].title === item.title){
+					$scope.menuItems[i].style="selected";
+					route = $scope.menuItems[i].route;
+				}else{
+					$scope.menuItems[i].style = "";
+				}
+			};
+			$location.path(route);
+		}
+
 
 	}]);

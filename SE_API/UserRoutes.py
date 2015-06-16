@@ -60,7 +60,7 @@ def getUserByToken(token):
     403 - No User Found
     """
     query = User.all()
-    query.filter("seToken = ", token)
+    query.filter("seToken =", token)
 
     for u in query.run(limit=5):
         return Response(response=u.to_JSON(),
