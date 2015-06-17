@@ -5,6 +5,59 @@
 	<md-content layout-padding>
 		<md-card layout-padding>
 			<h1><i class="fa fa-cogs"></i> {{title}}</h1>
+		<div layout="row">
+			<div>
+				<md-card layout-padding>
+					<div id="profile" layout="column">
+						<div class="user-box" layout="row">
+							<div>
+								<img ng-src="{{user.avatar_url}}" alt="" style="width:20%">
+							</div>
+							<div flex="70%">
+								<md-button class="md-raised" ng-click="changeProfileMode()">
+									<i ng-class="profileModeIcon"></i> {{profileMode}}
+								</md-button>
+							</div>
+						</div>
+					</div>
+					<div layout="column" ng-if="!isEditMode">
+						<div>
+							<h2>{{user.name}}</h2>
+						</div>
+						<div>
+							Email: {{user.email}}
+						</div>
+						<div>
+							I Am a: {{(user.isLecturer) ? "Lecturer" : "Student"}}
+						</div>
+					</div>
+
+					<!-- Starting Edit Mode Div -->
+					<div layout="column" ng-if="isEditMode">
+						<div>
+							<md-input-container>
+							      <label>Full Name</label>
+							      <input ng-model="user.name">
+						    </md-input-container>
+						</div>
+						<div>
+							<md-input-container>
+							      <label>Email</label>
+							      <input ng-model="user.email">
+						    </md-input-container>
+						</div>
+						<div>
+							<md-switch ng-model="user.isLecturer" aria-label="Switch 1">
+								I Am a: {{(user.isLecturer) ? "Lecturer" : "Student"}}
+  							</md-switch>
+						</div>
+					</div>
+				</md-card>
+			</div>
+		</div>
 		</md-card>
+
+
+
 	</md-content>
 </div>

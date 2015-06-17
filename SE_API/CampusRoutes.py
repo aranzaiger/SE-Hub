@@ -79,7 +79,6 @@ def create_campus(token):
     except Exception:
         return bad_request()
 
-
     send_create_campus_request(user.email, user.name, campus.title)
     notify_se_hub_campus_request(campus, campus.title)
     return ok()
