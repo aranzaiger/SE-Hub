@@ -52,10 +52,6 @@ app.register_blueprint(project_routes)
 
 auto = Autodoc(app)
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return app.send_static_file('views/404/index.html')
-
 @app.route('/')
 def wellcomePage():
     return app.send_static_file('index.html')

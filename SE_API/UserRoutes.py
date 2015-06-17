@@ -25,7 +25,7 @@ from SE_API.Respones_Utils import *
 user_routes = Blueprint("user_routes", __name__)
 auto = Autodoc()
 
-
+@user_routes.route('/api/users/getUserByToken/', defaults={'token': None})
 @user_routes.route('/api/users/getUserByToken/<string:token>', methods=["GET"])
 @auto.doc()
 def getUserByToken(token):
@@ -59,6 +59,9 @@ def getUserByToken(token):
     <br>
     403 - No User Found
     """
+    if token is None:
+        return no_content("Token Is Empty, No User Found")
+
     query = User.all()
     query.filter("seToken =", token)
 
