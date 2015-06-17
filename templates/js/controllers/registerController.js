@@ -6,11 +6,11 @@ angular.module('SeHub')
 	$scope.createCampusClicked = false;
 	$scope.isEmpty = true; // if the academic email line is empty
 	$scope.jsonCreateCampus =
-			{
-				"title": "Create Campus",
-				"email": "email_ending",
-				"avatar": "self.avatar.url"
-			}
+	{
+		"title": "Create Campus",
+		"email": "email_ending",
+		"avatar": "self.avatar.url"
+	}
 
 	$rootScope.seToken = $cookies['com.sehub.www'];
 	var token = $rootScope.seToken;
@@ -57,10 +57,25 @@ angular.module('SeHub')
 	$scope.submitClicked = function(ev)
 	{
 		var emailValid = false;
+		var jsonUpdateUser =
+		{
+			"lecturerStat": "$scope.user.isLecturer",
+			"campName": "$scope.campusName"
+		}
+
 		if($scope.user.AcMail != null)
 		{
 			var fullMail = $scope.user.AcMail + $scope.campusObj.email_ending; // Holds the full academic email of the user
 			
+			apiService.updateUser($scope.user.seToken, jsonUpdateUser).success(function(data)
+			{
+				
+			}).error(function()
+			{
+				// TODO Error
+				console.log("Error occured on updateUser");
+			});
+
 			console.log("Mail: " + fullMail);
 
 			apiService.sendValidationMail($scope.user.seToken, fullMail).success(function(data)
