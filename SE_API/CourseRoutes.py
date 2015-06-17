@@ -42,9 +42,9 @@ def create_course(token):
      {<br>
      'courseName': 'Advance Math',<br>
      'campusName': 'JCE',<br>
-     'startDate': '2015-14-3'<br>
-     'endDate': '2015-29-6'<br>
-     'taskFlag': 'False'<br>
+     'startDate': {'year': 2015, 'month' : 4, 'day' : 3}<br>
+     'endDate': {'year': 2016, 'month' : 5, 'day' : 14}<br>
+     'taskFlag': false<br>
     }<br>
     <br>
     <br>
@@ -67,8 +67,7 @@ def create_course(token):
     try:
         payload = json.loads(request.data)
     except Exception as e:
-        return bad_request(e)
-
+        return bad_request()
 
     try:
         start_date = datetime.date(payload['startDate']['year'],payload['startDate']['month'],payload['startDate']['day'])

@@ -213,6 +213,7 @@ body.noscroll
   .se-menu li:hover{
     background-color: #E2E2E2;
     font-weight: bold;
+    cursor: pointer;
   }
 
   .se-menu li:active{

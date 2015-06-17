@@ -9,7 +9,6 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		},
