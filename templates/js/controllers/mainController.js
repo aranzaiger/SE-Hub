@@ -2,7 +2,7 @@ angular.module('SeHub')
 	.controller('mainController', ['$scope', '$rootScope', 'dataService','apiService', '$cookies', '$cookieStore', '$location', '$window',
 
 		function($scope, $rootScope, dataService, apiService, $cookies, $cookieStore, $location, $window) {
-
+			top.setIsEnterd = true;
 			var token = $cookies['com.sehub.www'];
 
 			$scope.loadingData = true;
@@ -81,6 +81,7 @@ angular.module('SeHub')
 						$scope.menuItems[i].style = "";
 					}
 				};
+				top.setIsEnterd = false;
 				$location.path(route);
 			}
 

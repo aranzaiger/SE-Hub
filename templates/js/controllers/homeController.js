@@ -65,4 +65,7 @@ angular.module('SeHub')
 
 
 
+
+    // animation
+    $scope.isEnterd = top.setIsEnterd;
 }]);
