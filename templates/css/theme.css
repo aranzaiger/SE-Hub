@@ -111,43 +111,82 @@ body.noscroll
  
   }*/
 
-  .campusAvatar img
-  {
+.campusAvatar img
+{
 /*
-    margin-top: 1em;
-    margin-right: 1em;
-    position: center;
-    */
+  margin-top: 1em;
+  margin-right: 1em;
+  position: center;
+  */
 
-    border-radius: 40px;
-    position:center;
-    width: 80px;
-    height: 80px;
-    margin: 6px; 
-    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-  }
+  border-radius: 40px;
+  position:center;
+  width: 80px;
+  height: 80px;
+  margin: 6px; 
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+}
 
-  .spacer{
-    margin-right: auto;
-    margin-left: auto;
-  }
+.spacer{
+  margin-right: auto;
+  margin-left: auto;
+}
 
-  .port_spacer{
-    margin-top: auto;
-    margin-bottom: auto;
-  }
+.port_spacer
+{
+  margin-top: auto;
+  margin-bottom: auto;
+}
 
-  .mail_suffix{
-    margin-top: auto;
-  }
+.mail_suffix
+{
+  margin-top: auto;
+}
 
 
 .createCampus
 {
   position:relative;
 }
+
+.listdemoBasicUsage md-divider
+{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.md-avatar img  
+{
+  /*TODO*/
+}
+
+.feedContent
+{
+  padding-left: 6%;
+  font-size: 15px;
+  display:table;
+}
+
+.md-no-sticky
+{
+  background-color: blue;
+}
+
+.roundUserAvatar
+{
+  width: 6%;
+  height: auto;
+  border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
+  /*background: url(http://i61.tinypic.com/v86f7.png) no-repeat;*/
+  box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+}
+
 
 
 /*div.img campusAvatar
