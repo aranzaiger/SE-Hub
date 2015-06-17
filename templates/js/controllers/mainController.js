@@ -1,7 +1,7 @@
 angular.module('SeHub')
-	.controller('mainController', ['$scope', '$rootScope', 'apiService', '$cookies', '$cookieStore', '$location', '$window',
+	.controller('mainController', ['$scope', '$rootScope', 'dataService','apiService', '$cookies', '$cookieStore', '$location', '$window',
 
-		function($scope, $rootScope, apiService, $cookies, $cookieStore, $location, $window) {
+		function($scope, $rootScope, dataService, apiService, $cookies, $cookieStore, $location, $window) {
 
 			var token = $cookies['com.sehub.www'];
 
@@ -14,6 +14,7 @@ angular.module('SeHub')
 				}
 				$scope.loadingData = false;
 				$scope.user = data;
+				dataService.initService($scope); //Start Data Sync Service (For User)
 				console.log(data);
 				if ($scope.user.isFirstLogin) {
 					$scope.menuObj = {};
@@ -24,7 +25,9 @@ angular.module('SeHub')
 					$location.path('/home')
 				}
 
-			})
+			});
+
+			
 
 			$scope.menuItems = [{
 				"title": "Dash Board",

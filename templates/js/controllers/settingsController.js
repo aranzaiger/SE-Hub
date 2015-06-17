@@ -1,5 +1,6 @@
 angular.module('SeHub')
-	.controller('settingsController', ['$scope', '$rootScope', 'apiService', '$cookies', '$location', function($scope, $rootScope, apiService, $cookies, $location) {
+	.controller('settingsController', ['$scope', '$rootScope', 'dataService','apiService', '$cookies', '$location', 
+		function($scope, $rootScope, dataService ,apiService, $cookies, $location) {
 
 		var token = $cookies['com.sehub.www'];
 
@@ -34,6 +35,7 @@ angular.module('SeHub')
 				$scope.profileMode = "Save Profile";
 				$scope.profileModeIcon = "fa fa-floppy-o";
 			} else {
+				dataService.userBrodcast($scope.user);
 				$scope.profileMode = "Edit Profile";
 				$scope.profileModeIcon = "fa fa-pencil";
 			}
