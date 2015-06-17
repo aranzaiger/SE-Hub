@@ -81,7 +81,7 @@ class UserTestPlan(unittest.TestCase):
         self.assertEquals(r.json()['campuses_id_list'],[])
 
     def test_userUpdate_Student(self):
-        payload = {'name': 'New Name', 'isLecturer': 'false'}
+        payload = {'name': 'New Name', 'isLecturer': False}
         r = requests.post(self.__class__.url_+'api/users/userUpdate/'+__CONFIG__['TOKENS']['STUDENT'],data=payload)
         self.assertEquals(r.status_code, 200)
         #data = {}

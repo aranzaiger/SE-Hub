@@ -2,7 +2,7 @@ __author__ = 'etye'
 
 
 __CONFIG__ = {
-    'DEBUG': True,
+    'DEBUG': False,
     'PATHS': {
         'DEBUG': 'http://localhost:8080/',
         'PRODUCTION': 'http://se-hub.appspot.com/'
