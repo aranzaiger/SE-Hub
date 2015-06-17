@@ -146,10 +146,10 @@ body.noscroll
 }
 
 
-  .createCampus
-  {
-    position:relative;
-  }
+.createCampus
+{
+  position:relative;
+}
 
 .listdemoBasicUsage md-divider
 {
@@ -187,15 +187,6 @@ body.noscroll
   -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
 }
 
-
-
-/*div.img campusAvatar
-{
-  border: 1px solid #0000ff;
-  padding-right: 10px;
-  float:right;
-  }*/
-
 /*.dropDown /* TODO *
 {
   border-bottom: 2px black solid;
@@ -205,7 +196,8 @@ body.noscroll
   border-radius: 1px black solid;
   }*/
 
-  .gray-font{
+  .gray-font
+  {
     color: #7f7f7f;
     font-size: 300%;
     text-shadow:#e0e0e0 1px 1px 0;
@@ -323,7 +315,7 @@ body.noscroll
   }
 
 
-  md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button {
+/*  md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button {
   font-size: inherit;
   height: inherit;
   text-align: left;
@@ -343,6 +335,6 @@ md-list-item, md-list-item .md-list-item-inner {
   -ms-flex-align: center;
   align-items: center;
   min-height: 48px;
-}
+}*/
 
 /*End Effects for MD*/
