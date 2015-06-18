@@ -35,7 +35,13 @@ angular.module('SeHub')
 					$scope.profileMode = "Save Profile";
 					$scope.profileModeIcon = "fa fa-floppy-o";
 				} else {
-					dataService.userBrodcast($scope.user);
+					apiService.updateUser(token, $scope.user).success(function(data){
+						console.info('User Saved');
+						dataService.userBrodcast($scope.user);
+
+					}).error(function(e){
+						console.error('Fail To Save User');
+					});
 					$scope.profileMode = "Edit Profile";
 					$scope.profileModeIcon = "fa fa-pencil";
 				}
