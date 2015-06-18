@@ -10,20 +10,6 @@ angular.module('SeHub')
     $scope.messages = [
       {
         face : imagePath,
-        what: 'I need to go to luna-park',
-        who: 'Matan Bar Yosef',
-        when: '3:08PM',
-        notes: " Lets do something"
-      },
-      {
-        face : imagePath,
-        what: 'Lets Lets Lets',
-        who: 'Matan Bar Yosef',
-        when: '4:33PM',
-        notes: " Lets go drink something"
-      },
-      {
-        face : imagePath,
         what: 'Let me tell you a secret',
         who: 'Sagi Dayan',
         when: '4:15PM',
