@@ -66,7 +66,7 @@ def create_campus(token):
     #check if name already exists
     try:
         query = Campus.all()
-        query.filter("title = ", payload['title'])
+        query.filter("title =", payload['title'])
         for c in query.run(limit=1):
             return forbidden("Campus with same name already exists")
     except Exception as e:
