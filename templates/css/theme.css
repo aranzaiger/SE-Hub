@@ -76,28 +76,21 @@ body.noscroll
   margin-top: 1em;
   margin-right: 1em;
   position: center;
-
   -webkit-border-radius: 30%;
   -moz-border-radius: 30%;
   border-radius: 30%;
-
-
 }
 
-/*.avatar {
-  background: rgba(0, 0, 0, 0.2);
-  }*/
-
-  .avatar img {
-    border-radius: 40px;
-    position:center;
-    width: 80px;
-    height: 80px;
-    margin: 6px;  /*centers the image in the parent element */
-    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-  }
+.avatar img {
+  border-radius: 40px;
+  position:center;
+  width: 80px;
+  height: 80px;
+  margin: 6px;  /*centers the image in the parent element */
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+}
 
   /* Added BY devMatan */
 
@@ -111,14 +104,8 @@ body.noscroll
  
   }*/
 
-  .campusAvatar img
-  {
-/*
-  margin-top: 1em;
-  margin-right: 1em;
-  position: center;
-  */
-
+.campusAvatar img
+{
   border-radius: 40px;
   position:center;
   width: 80px;
@@ -162,6 +149,26 @@ body.noscroll
   /*TODO*/
 }
 
+.feed
+{
+  overflow-y: scroll;
+  height: 300px;
+  /*width: 100%;*/
+}
+
+.feedMessages
+{
+  overflow: scroll;
+  height: 300px;
+  width: 100%;
+}
+.feedTasks
+{
+  overflow: scroll;
+  height: 300px;
+  width: 100%;
+}
+
 .feedContent
 {
   padding-left: 6%;
@@ -181,7 +188,6 @@ body.noscroll
   border-radius: 150px;
   -webkit-border-radius: 150px;
   -moz-border-radius: 150px;
-  /*background: url(http://i61.tinypic.com/v86f7.png) no-repeat;*/
   box-shadow: 0 0 8px rgba(0, 0, 0, .8);
   -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
   -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
@@ -302,7 +308,6 @@ body.noscroll
   .user-box img{
     width: 100%;
     border: 4px #7f7f7f solid;
-
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -349,6 +354,41 @@ body.noscroll
     border-radius: 50%;
     box-sizing: content-box;
   }
+
+
+/*gridList Effects*/
+
+md-grid-list {
+  margin: 8px; }
+.gray{
+  background:#f5f5f5;
+
+}
+
+.aliceblue {
+  background: aliceblue; 
+}
+  .green {
+  background: #b9f6ca;
+}
+  .yellow {
+  background: #ffff8d;
+}
+  .blue {
+  background: #84ffff;
+}
+  .purple {
+  background: #b388ff;
+}
+  .red {
+  background: #ff8a80;
+}
+  md-grid-tile {
+  transition: all 400ms ease-out 50ms;
+}
+
+/*END gridList Effects*/
+
 
 
 /*  md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button {
