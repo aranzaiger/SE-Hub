@@ -2,7 +2,7 @@ var DEBUG = true;
 
 var welcome = angular.module('welcome', ['ngMaterial', 'seHub.services', 'ngRoute' , 'ngCookies']);
 
-var app = angular.module('SeHub', ['ngMaterial', 'ngRoute', 'seHub.services', 'ngCookies']);
+var app = angular.module('SeHub', ['ngMaterial', 'ngRoute', 'seHub.services', 'ngCookies', 'chart.js']);
 
 
 welcome.config(function($mdThemingProvider) {

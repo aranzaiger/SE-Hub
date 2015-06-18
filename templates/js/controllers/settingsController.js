@@ -35,11 +35,11 @@ angular.module('SeHub')
 					$scope.profileMode = "Save Profile";
 					$scope.profileModeIcon = "fa fa-floppy-o";
 				} else {
-					apiService.updateUser(token, $scope.user).success(function(data){
+					apiService.updateUser(token, $scope.user).success(function(data) {
 						console.info('User Saved');
 						dataService.userBrodcast($scope.user);
 
-					}).error(function(e){
+					}).error(function(e) {
 						console.error('Fail To Save User');
 					});
 					$scope.profileMode = "Edit Profile";
@@ -78,6 +78,15 @@ angular.module('SeHub')
 				'master_user_id': 123453433341,
 				'avatar_url': 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR9M4uQgaJP1zyiCGw-dK31hU8buWqeuOi9vTXBd4Y8hQcFTZqA'
 			}];
+
+
+			$scope.labels = ['Commits', 'Issues Assigned', 'Messages', 'Open Tasks'];
+			$scope.series = ['Project A', 'Project B'];
+
+			$scope.data = [
+				[54, 3, 15, 3],
+				[28, 48, 40, 3]
+			];
 
 
 		}
