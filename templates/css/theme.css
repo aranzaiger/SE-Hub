@@ -2,10 +2,10 @@
 
 body{
   font-family: "Alef Hebrew",
-               “Helvetica Neue”,
-               Helvetica,
-               Arial,
-               sans-serif;
+  “Helvetica Neue”,
+  Helvetica,
+  Arial,
+  sans-serif;
 }
 
 .menuBtn {
@@ -76,28 +76,21 @@ body.noscroll
   margin-top: 1em;
   margin-right: 1em;
   position: center;
-
   -webkit-border-radius: 30%;
   -moz-border-radius: 30%;
   border-radius: 30%;
-
-
 }
 
-/*.avatar {
-  background: rgba(0, 0, 0, 0.2);
-  }*/
-
-  .avatar img {
-    border-radius: 40px;
-    position:center;
-    width: 80px;
-    height: 80px;
-    margin: 6px;  /*centers the image in the parent element */
-    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-  }
+.avatar img {
+  border-radius: 40px;
+  position:center;
+  width: 80px;
+  height: 80px;
+  margin: 6px;
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+}
 
   /* Added BY devMatan */
 
@@ -111,37 +104,33 @@ body.noscroll
  
   }*/
 
-  .campusAvatar img
-  {
-/*
-    margin-top: 1em;
-    margin-right: 1em;
-    position: center;
-    */
+.campusAvatar img
+{
+  border-radius: 40px;
+  position:center;
+  width: 80px;
+  height: 80px;
+  margin: 6px; 
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+}
 
-    border-radius: 40px;
-    position:center;
-    width: 80px;
-    height: 80px;
-    margin: 6px; 
-    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-  }
+.spacer{
+  margin-right: auto;
+  margin-left: auto;
+}
 
-  .spacer{
-    margin-right: auto;
-    margin-left: auto;
-  }
+.port_spacer
+{
+  margin-top: auto;
+  margin-bottom: auto;
+}
 
-  .port_spacer{
-    margin-top: auto;
-    margin-bottom: auto;
-  }
-
-  .mail_suffix{
-    margin-top: auto;
-  }
+.mail_suffix
+{
+  margin-top: auto;
+}
 
 
 .createCampus
@@ -149,13 +138,55 @@ body.noscroll
   position:relative;
 }
 
-
-/*div.img campusAvatar
+.listdemoBasicUsage md-divider
 {
-  border: 1px solid #0000ff;
-  padding-right: 10px;
-  float:right;
-  }*/
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.feed
+{
+  overflow-y: scroll;
+  height: 300px;
+  /*width: 100%;*/
+}
+
+/*.feedMessages
+{
+  overflow: scroll;
+  height: 300px;
+  width: 100%;
+}
+.feedTasks
+{
+  overflow: scroll;
+  height: 300px;
+  width: 100%;
+}
+
+.feedContent
+{
+  padding-left: 6%;
+  font-size: 15px;
+  display:table;
+}*/
+
+.md-no-sticky
+{
+  background-color: blue;
+}
+
+.roundUserAvatar
+{
+  width: 6%;
+  height: auto;
+  border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+}
 
 /*.dropDown /* TODO *
 {
@@ -166,10 +197,47 @@ body.noscroll
   border-radius: 1px black solid;
   }*/
 
-  .gray-font{
+  .gray-font
+  {
     color: #7f7f7f;
     font-size: 300%;
     text-shadow:#e0e0e0 1px 1px 0;
+    opacity: 0;
+    -webkit-animation-duration: 8s; 
+    animation-duration: 8s; 
+    -webkit-animation-fill-mode: both; 
+    animation-fill-mode: both; 
+    overflow: hidden;
+    height: 100%;
+  } 
+
+  @-webkit-keyframes fadeOutUp { 
+    0% { 
+      opacity: 1; 
+      -webkit-transform: translateY(0); 
+    } 
+    100% { 
+      opacity: 0; 
+      -webkit-transform: translateY(-200px); 
+      /*-webkit-transform: scale(0,0); */
+      height: 0px;
+    } 
+  } 
+  @keyframes fadeOutUp { 
+    0% { 
+      opacity: 1; 
+      transform: translateY(0); 
+    } 
+    100% { 
+      opacity: 0; 
+      transform: translateY(-200px); 
+      /*transform: scale(0,0); */
+      height: 0px;
+    } 
+  } 
+  .fadeOutUp { 
+    -webkit-animation-name: fadeOutUp; 
+    animation-name: fadeOutUp; 
   }
 
   .user-pane-menu{
@@ -189,7 +257,6 @@ body.noscroll
     -moz-border-radius: 100px;
     border-radius: 50px;
     width: 30%;
-    /*top: -40px;*/
     position: relative;
     z-index: 50;
   }
@@ -235,7 +302,6 @@ body.noscroll
   .user-box img{
     width: 100%;
     border: 4px #7f7f7f solid;
-
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -248,3 +314,111 @@ body.noscroll
     text-decoration: none !important;
     color: #7f7f7f;
   }
+
+  /*Settings Style*/
+
+  .settingList .settingListItem:hover{
+    background-color: #E2E2E2;
+    font-weight: bold;
+  }
+
+  .settingList .settingListItemRoot{
+    list-style: none;
+    padding: 0;
+    padding-left: 0;
+  }
+
+  .settingList .settingListItem{
+    width: 100%;
+    padding: 15px 0px auto 15px;
+  }
+
+
+  /*End Settings*/
+
+
+  /*md Effects*/
+
+  .md-avatar{
+    width: 40px;
+    height: 40px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 16px;
+    border-radius: 50%;
+    box-sizing: content-box;
+  }
+
+/*gridList Effects*/
+
+md-grid-list
+{
+  margin: 8px;
+}
+.gray
+{
+  background:#f5f5f5;
+}
+
+.aliceblue {
+  background: aliceblue; 
+}
+  .green {
+  background: #b9f6ca;
+}
+  .yellow {
+  background: #ffff8d;
+}
+  .blue {
+  background: #84ffff;
+}
+  .purple {
+  background: #b388ff;
+}
+  .red {
+  background: #ff8a80;
+}
+
+.whiteframedemoBasicUsage md-whiteframe {
+  background: #fff;
+  margin: 20px;
+  padding: 20px;
+}
+
+
+/*  md-grid-tile {
+  transition: all 400ms ease-out 50ms;
+}*/
+
+/*END gridList Effects*/
+
+
+.tasksContent
+{
+  /*float:left;*/
+}
+
+
+  md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button {
+  font-size: inherit;
+  height: inherit;
+  text-align: left;
+  text-transform: none;
+  width: 300px;
+  white-space: normal;
+}
+
+/*md-list-item, md-list-item .md-list-item-inner {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 48px;
+  }*/
+
+/*End Effects for MD*/

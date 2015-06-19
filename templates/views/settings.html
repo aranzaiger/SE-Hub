@@ -5,6 +5,112 @@
 	<md-content layout-padding>
 		<md-card layout-padding>
 			<h1><i class="fa fa-cogs"></i> {{title}}</h1>
+		<div layout="row">
+			<div>
+				<md-card layout-padding>
+					<div id="profile" layout="column">
+					<!-- User Profile Box -->
+						<div class="user-box" layout="row">
+							<div>
+								<img ng-src="{{user.avatar_url}}" alt="" style="width:20%">
+							</div>
+							<div flex="70%">
+								<md-button class="md-raised" ng-click="changeProfileMode()">
+									<i ng-class="profileModeIcon"></i> {{profileMode}}
+								</md-button>
+							</div>
+						</div>
+					</div>
+					<!-- Start View Profile -->
+					<div layout="column" ng-if="!isEditMode">
+						<div>
+							<h2>{{user.name}}</h2>
+						</div>
+						<div>
+							Email: {{user.email}}
+						</div>
+						<div>
+							I Am a: {{(user.isLecturer) ? "Lecturer" : "Student"}}
+						</div>
+					</div>
+					<!-- End View Profile -->
+					<!-- Starting Edit Mode Div -->
+					<div layout="column" ng-if="isEditMode">
+						<div>
+							<md-input-container>
+							      <label>Full Name</label>
+							      <input ng-model="user.name">
+						    </md-input-container>
+						</div>
+						<div>
+							<md-input-container>
+							      <label>Email</label>
+							      <input ng-model="user.email">
+						    </md-input-container>
+						</div>
+						<div>
+							<md-switch ng-model="user.isLecturer" aria-label="Switch 1">
+								I Am a: {{(user.isLecturer) ? "Lecturer" : "Student"}}
+  							</md-switch>
+						</div>
+					</div>
+					<!-- End Edit Div -->
+					<canvas id="bar" class="chart chart-bar" data="data"
+  						labels="labels" series="series"></canvas> 
+				</md-card>
+			</div>
+			<!-- Campuses & Classes Div -->
+			<div flex>
+				<md-card layout-padding>
+					<h3><i class="fa fa-graduation-cap"></i> My Classes</h3>
+					<div class="settingList">
+						<div class="settingListRoot">
+	                        <div ng-repeat="course in courses" class="settingListItem" layout="row">
+	                        	<div>
+                            		<img alt="{{ person.name }}" ng-src="{{ course.campus_avatar }}" class="md-avatar" />
+	                        	</div>
+                            	<div class="port_spacer">
+					    			{{ course.courseName }} - <strong>IN</strong> {{course.campusName}}
+                            	</div>
+					    		<div class="spacer"></div>
+					    		<div>
+						    		<md-button class="">
+						    		X
+						    		</md-button>
+					    		</div>
+	                            <md-divider ng-if="!$last"></md-divider>
+	                        </div>
+	                    </div>
+					</div>
+
+					<h3><i class="fa fa-university"></i> My Campuses</h3>
+
+					<div class="settingList">
+						<div class="settingListRoot">
+	                        <div ng-repeat="campus in campuses" class="settingListItem" layout="row">
+	                        	<div>
+                            		<img alt="{{ person.name }}" ng-src="{{ campus.avatar_url }}" class="md-avatar" />
+	                        	</div>
+                            	<div class="port_spacer">
+					    			{{ campus.title }} - 
+                            	</div>
+					    		<div class="spacer"></div>
+					    		<div>
+						    		<md-button class="">
+						    		X
+						    		</md-button>
+					    		</div>
+	                            <md-divider ng-if="!$last"></md-divider>
+	                        </div>
+	                    </div>
+					</div>
+				</md-card>
+			</div>
+			<!-- End Campuses & Classes Div -->
+		</div>
 		</md-card>
+
+
+
 	</md-content>
 </div>

@@ -3,7 +3,7 @@
 		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 	</div>
 	<md-content layout-padding>
-		<md-card class="gray-font">
+		<md-card class="gray-font fadeOutUp" ng-if="isEnterd">
 			<div layout="row">
 				<div class="spacer"></div>
 				<div>
@@ -15,12 +15,59 @@
 				<div class="spacer"></div>
 				<div>
 					<h1>Welcome To SE-Hub</h1>
-					<p>
-						This Is your Home Page
-					</p>
+					<P>Software Engineering Course Made Easy</P>
+					v1.0
 				</div>
 				<div class="spacer"></div>
 			</div>
 		</md-card>
 	</md-content>
+	
+	<md-content layout-padding>
+		<md-card>
+			<div class = "feed">
+				<md-grid-list
+			        md-cols-sm="1" md-cols-md="2" md-cols-gt-md="6"
+			        md-row-height-gt-md="1:1" md-row-height="2:2"
+			        md-gutter="12px" md-gutter-gt-sm="8px" >
+				    <md-grid-tile class="aliceblue"
+				        md-rowspan="2" md-colspan="3" md-colspan-sm="1">
+						<md-grid-tile-header>
+					        <h3>Messages</h3>
+						</md-grid-tile-header>
+						In The Future Will Enter Wanted MESSAGES Text Here
+				    </md-grid-tile>
+			    	<md-grid-tile class="gray"
+						md-rowspan="2" md-colspan="3" md-colspan-sm="1">
+						<md-grid-tile-header>
+				        	<h3>Tasks</h3>
+						</md-grid-tile-header>
+						<!-- In The Future Will Enter Wanted TASKS Text Here -->
+						<div class = "tasksContent" style:"text-align= left;">
+							For Task 3 Press: <a href="http://localhost:8080/home#/tasks">Task #3</a>
+							<br>=====================</br>
+							For Task 4 Press: <a href="http://localhost:8080/home#/home">Task #4</a>
+						</div>
+
+					</md-grid-tile>
+				</md-grid-list>
+			</div>
+		</md-card>
+	</md-content>
+
+
+	<!-- <div layout="row" layout-fill style="padding-right: 320px;">
+		<md-whiteframe class="md-whiteframe-z4" layout layout-align="center center">
+			<span>.md-whiteframe-z4</span>
+		</md-whiteframe>
+		<md-whiteframe class="md-whiteframe-z5" layout layout-align="center center">
+			<span>.md-whiteframe-z5</span>
+		</md-whiteframe>
+	</div> -->
+
+
+
+
+
+
 </div>
