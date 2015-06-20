@@ -22,52 +22,93 @@
 			</div>
 		</md-card>
 	</md-content>
-	
-	<md-content layout-padding>
-		<md-card>
-			<div class = "feed">
-				<md-grid-list
-			        md-cols-sm="1" md-cols-md="2" md-cols-gt-md="6"
-			        md-row-height-gt-md="1:1" md-row-height="2:2"
-			        md-gutter="12px" md-gutter-gt-sm="8px" >
-				    <md-grid-tile class="aliceblue"
-				        md-rowspan="2" md-colspan="3" md-colspan-sm="1">
-						<md-grid-tile-header>
-					        <h3>Messages</h3>
-						</md-grid-tile-header>
-						In The Future Will Enter Wanted MESSAGES Text Here
-				    </md-grid-tile>
-			    	<md-grid-tile class="gray"
-						md-rowspan="2" md-colspan="3" md-colspan-sm="1">
-						<md-grid-tile-header>
-				        	<h3>Tasks</h3>
-						</md-grid-tile-header>
-						<!-- In The Future Will Enter Wanted TASKS Text Here -->
-						<div class = "tasksContent" style:"text-align= left;">
-							For Task 3 Press: <a href="http://localhost:8080/home#/tasks">Task #3</a>
-							<br>=====================</br>
-							For Task 4 Press: <a href="http://localhost:8080/home#/home">Task #4</a>
-						</div>
-
-					</md-grid-tile>
-				</md-grid-list>
+	<div ng-if="user.isLecturer"> <!-- Lecturer Mode -->
+		<md-content layout-padding>
+			<div layout="row" layout-margin layout-padding>
+				<div>
+					<md-card>
+						<p class = "messagesFeed">Messages</p>
+					</md-card>
+				</div>
+				<div>
+					<md-card>
+						<p class = "tasksFeed">Tasks</p>
+					</md-card>
+				</div>
 			</div>
-		</md-card>
-	</md-content>
+			<div layout="row" layout-margin layout-padding>
+				<div>
+					<md-card>
+						<p id = "bindText" class = "messagesContent"></p>
+					</md-card>
+				</div>
+				<div>
+					<md-card>
+						<p class = "tasksContent"> 
+							For Task 3 Press: <a href="http://localhost:8080/home#/tasks">Task #3</a>
+							<br></br>
+							For Task 4 Press: <a href="http://localhost:8080/home#/home">Task #4</a>
+							<br></br>
+							For Task 5 Press: <a href="http://localhost:8080/home#/home">Task #5</a>
+							<br></br>
+							For Task 6 Press: <a href="http://localhost:8080/home#/home">Task #6</a>
+							<br></br>
+							For Task 7 Press: <a href="http://localhost:8080/home#/home">Task #7</a>
+							<br></br>
+							For Task 8 Press: <a href="http://localhost:8080/home#/home">Task #8</a>
+						</p>
+					</md-card>
+				</div>
+			</div>
+			<div layout-margin layout padding>
+				<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary">Add Message</md-button>
+			</div>
+			<div ng-if="addMsg">
+				<div layout = "row" layout-margin layout padding layout-align = "left center">	
+					<md-button ng-click="postMessageClicked(msgToAdd)" ng class="md-raised md-primary">Post</md-button>
+					<md-button ng-click="clearAllClicked()" ng class="md-raised md-primary">Clear All</md-button>
+				</div>
+				<div class="port_spacer"></div>
+				<md-input-container>
+				<label> Write Your Desired Message Here And Press Post</label>
+					<input type="text" id="msg" md-maxlength="150" minlength="1" ng-model="msgToAdd" required>
+				</md-input-container>
+			</div>
+		</md-content>
+	</div>
+	<div ng-if="isStudent"> <!-- Student Mode -->
+		<md-content layout-padding>
+			<div layout="row" layout-margin layout-padding>
+				<div>
+					<md-card>
+						<p class = "messagesFeed">Messages</p>
+					</md-card>
+				</div>
+				<div>
+					<md-card>
+						<p class = "tasksFeed">Tasks</p>
+					</md-card>
+				</div>
+			</div>
+			<div layout="row" layout-margin layout-padding>
+				<div>
+					<md-card>
+						<p id = "bindText" class = "messagesContent"></p>
+					</md-card>
+				</div>
+				<div>
+					<md-card>
+						<p class = "tasksContent"> 
+							For Task 3 Press: <a href="http://localhost:8080/home#/tasks">Task #3</a>
+							<br></br>
+							For Task 4 Press: <a href="http://localhost:8080/home#/home">Task #4</a>
+							<br></br>
+							For Task 5 Press: <a href="http://localhost:8080/home#/home">Task #5</a>
+						</p>
 
-
-	<!-- <div layout="row" layout-fill style="padding-right: 320px;">
-		<md-whiteframe class="md-whiteframe-z4" layout layout-align="center center">
-			<span>.md-whiteframe-z4</span>
-		</md-whiteframe>
-		<md-whiteframe class="md-whiteframe-z5" layout layout-align="center center">
-			<span>.md-whiteframe-z5</span>
-		</md-whiteframe>
-	</div> -->
-
-
-
-
-
-
+					</md-card>
+				</div>
+			</div>
+		</md-content>
+	</div>
 </div>
