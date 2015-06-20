@@ -33,9 +33,9 @@ md-list .md-button {
 https://github.com/google/material-design-icons
 */
 
-p {
+/*p {
   margin-left: 2em;
-}
+}*/
 
 .menuBtn {
   background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIyNHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDI0IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGcgaWQ9IkhlYWRlciI+CiAgICA8Zz4KICAgICAgICA8cmVjdCB4PSItNjE4IiB5PSItMjIzMiIgZmlsbD0ibm9uZSIgd2lkdGg9IjE0MDAiIGhlaWdodD0iMzYwMCIvPgogICAgPC9nPgo8L2c+CjxnIGlkPSJMYWJlbCI+CjwvZz4KPGcgaWQ9Ikljb24iPgogICAgPGc+CiAgICAgICAgPHJlY3QgZmlsbD0ibm9uZSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+CiAgICAgICAgPHBhdGggZD0iTTMsMThoMTh2LTJIM1YxOHogTTMsMTNoMTh2LTJIM1YxM3ogTTMsNnYyaDE4VjZIM3oiIHN0eWxlPSJmaWxsOiNmM2YzZjM7Ii8+CiAgICA8L2c+CjwvZz4KPGcgaWQ9IkdyaWQiIGRpc3BsYXk9Im5vbmUiPgogICAgPGcgZGlzcGxheT0iaW5saW5lIj4KICAgIDwvZz4KPC9nPgo8L3N2Zz4=) no-repeat  center center;
@@ -147,7 +147,7 @@ body.noscroll
 .feed
 {
   overflow-y: scroll;
-  height: 300px;
+  height: 350px;
   /*width: 100%;*/
 }
 
@@ -349,17 +349,11 @@ body.noscroll
     box-sizing: content-box;
   }
 
-/*gridList Effects*/
 
-md-grid-list
-{
-  margin: 8px;
-}
-.gray
-{
+/* Colors*/
+.gray{
   background:#f5f5f5;
 }
-
 .aliceblue {
   background: aliceblue; 
 }
@@ -378,6 +372,7 @@ md-grid-list
   .red {
   background: #ff8a80;
 }
+/* End Colors */
 
 .whiteframedemoBasicUsage md-whiteframe {
   background: #fff;
@@ -385,40 +380,40 @@ md-grid-list
   padding: 20px;
 }
 
-
-/*  md-grid-tile {
-  transition: all 400ms ease-out 50ms;
-}*/
-
-/*END gridList Effects*/
-
-
 .tasksContent
 {
-  /*float:left;*/
+  padding-left: 4px;
+  padding-right: 4px;
+  margin: 5px;
+  background-color: aliceblue;
+  overflow: scroll;
+  height:250;
+  width:500;
 }
-
-
-  md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button {
-  font-size: inherit;
-  height: inherit;
-  text-align: left;
-  text-transform: none;
-  width: 300px;
-  white-space: normal;
+.messagesContent
+{
+  padding-left: 4px;
+  padding-right: 4px;
+  margin: 5px;
+  background-color: #f5f5f5;
+  overflow: scroll;
+  height:250;
+  width:500;
 }
-
-/*md-list-item, md-list-item .md-list-item-inner {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  min-height: 48px;
-  }*/
-
-/*End Effects for MD*/
+p.tasksFeed
+{
+  padding-left: 4px;
+  margin: 5px;
+  width:500;
+  height: auto;
+  background-color: aliceblue;
+ 
+}
+p.messagesFeed
+{
+  padding-left: 4px;
+  margin: 5px;
+  width:500;
+  height: auto;
+  background-color: #f5f5f5;
+}
