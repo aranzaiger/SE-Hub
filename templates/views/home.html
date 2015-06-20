@@ -22,7 +22,6 @@
 			</div>
 		</md-card>
 	</md-content>
-	
 	<div ng-if="user.isLecturer"> <!-- Lecturer Mode -->
 		<md-content layout-padding>
 			<div layout="row" layout-margin layout-padding>
@@ -69,7 +68,7 @@
 					<md-button ng-click="postMessageClicked(msgToAdd)" ng class="md-raised md-primary">Post</md-button>
 					<md-button ng-click="clearAllClicked()" ng class="md-raised md-primary">Clear All</md-button>
 				</div>
-				<div class="port_spacer">
+				<div class="port_spacer"></div>
 				<md-input-container>
 				<label> Write Your Desired Message Here And Press Post</label>
 					<input type="text" id="msg" md-maxlength="150" minlength="1" ng-model="msgToAdd" required>
@@ -77,7 +76,7 @@
 			</div>
 		</md-content>
 	</div>
-	<div ng-if="!user.isLecturer"> <!-- Student Mode -->
+	<div ng-if="isStudent"> <!-- Student Mode -->
 		<md-content layout-padding>
 			<div layout="row" layout-margin layout-padding>
 				<div>
@@ -112,5 +111,4 @@
 			</div>
 		</md-content>
 	</div>
-
 </div>
