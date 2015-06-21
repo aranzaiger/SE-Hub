@@ -41,7 +41,7 @@ def create_project(token):
      {<br>
      'projectName': 'Advance Math',<br>
      'courseName': 'JCE',<br>
-     'logo_url': 'http://location.domain.com/image.jpg'<br>
+     'logo_url': 'http://location.domain.com/image.jpg',<br>
      'gitRepository': 'http://location.git.com/somthing'<br>
     }<br>
     <br>
@@ -57,10 +57,12 @@ def create_project(token):
     if not request.data:
         return bad_request()
     payload = json.loads(request.data)
-    if not is_lecturer(token):  #todo: change to lecturer id
-        return forbidden("Invalid token or not a lecturer!")
+    #if not is_lecturer(token):  #todo: change to lecturer id
+     #   return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Wrong user Token")
 
     #todo: check legality
 

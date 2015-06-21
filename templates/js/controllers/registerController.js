@@ -83,7 +83,7 @@ angular.module('SeHub')
 				console.log("DONE - 200");
 			  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
 		        .ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(ev)); // Pop-up alert for e-mail verification
-		        // TODO ADD- delete cookies and redirect only after pressed 'Got it'
+		        // TODO ADD delete cookies and redirect only after pressed 'Got it'
 		        $cookieStore.remove("com.sehub.www"); // Removing the cookies
 		        $window.location.href = 'http://se-hub.appspot.com'; // Reference to 'welcome' page
 			}).error(function()
@@ -117,6 +117,8 @@ angular.module('SeHub')
 	    var result = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 	    if (!result.test(email)) // TODO Fix when success to show mdDialog until 'Got it' clicked
 	    {
+	    	console.log(email + ", Error in email, should alert");
+   			// alert('Please provide a valid e-mail address');
    			$mdDialog.show($mdDialog.alert().title('Error - E-mail Verification').content('An error has occured in your e-mail address.')
 		        .ariaLabel('Email verification error alert dialog').ok('Got it!').targetEvent(email));
     	}
