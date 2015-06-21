@@ -130,6 +130,53 @@ def getProjectsByCourseName(name):
 
 
 
+@project_routes.route('/api/projects/deleteProject/<string:token>/<string:projectid>', methods=['DELETE'])
+@auto.doc()
+def deleteProject(token,projectid):
+    """
+    <span class="card-title">This Call will delete a specific Project</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+        - courseid: 'projectid'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    202 - Deleted Project
+    <br>
+    ....<br>
+    {<br>
+    ...<br>
+    }req<br>
+
+    ]<br>
+    400 - no such Project
+    <br>
+    403 - Invalid token or not the owner of Project!<br>
+    """
+
+    # if not is_lecturer(token):  #todo: change to lecturer id
+    #     return forbidden("Invalid token or not a lecturer!")
+
+    user = get_user_by_token(token)
+    p = Project.get_by_id(int(projectid))
+
+    if p is None:
+        return bad_request("no such Project")
+
+    if p.master_id == user.key().id():
+        db.delete(p)
+        db.save
+        return accepted("Project deleted")
+
+    return forbidden("user is not owner of Project")
+
+
 
 @project_routes.route('/api/projects/help')
 def documentation():
