@@ -48,7 +48,7 @@ def create_campus(token):
     <br>
     <b>Response</b>
     <br>
-    201 - Created
+    200 - OK
     <br>
     403 - Invalid Token/Forbidden
     """
