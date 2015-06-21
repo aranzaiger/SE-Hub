@@ -25,6 +25,7 @@ class Course(db.Model):
                     'year': self.endDate.year,
                     'month': self.endDate.month,
                     'day': self.endDate.day,
-                }
-                }
+                },
+                'id' : self.key().id()
+        }
         return json.dumps(data)

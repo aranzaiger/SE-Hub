@@ -19,6 +19,7 @@ class TaskComponent(db.Model):
                 'type' : self.type,
                 'label' : self.label,
                 'isMandatory' : self.isMandatory,
-                'order' : self.order
+                'order' : self.order,
+                'id' : self.key().id()
                 }
         return json.dumps(data)

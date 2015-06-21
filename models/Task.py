@@ -21,6 +21,7 @@ class Task(db.Model):
                     'day': self.dueDate.day
                 },
                 'isPersonal' : self.isPersonal,
+                'id' : self.key().id()
                 }
         return json.dumps(data)
 
