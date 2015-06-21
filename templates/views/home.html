@@ -3,7 +3,7 @@
 		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 	</div>
 	<md-content layout-padding>
-		<md-card class="gray-font">
+		<md-card class="gray-font fadeOutUp" ng-if="isEnterd">
 			<div layout="row">
 				<div class="spacer"></div>
 				<div>
@@ -15,12 +15,54 @@
 				<div class="spacer"></div>
 				<div>
 					<h1>Welcome To SE-Hub</h1>
-					<p>
-						This Is your Home Page
-					</p>
+					<P>Software Engineering Course Made Easy</P>
+					v1.0
 				</div>
 				<div class="spacer"></div>
 			</div>
 		</md-card>
 	</md-content>
+	<md-content layout-padding>
+		<md-card>
+		<div class = "feed" ><!--  layout-align="center center"> -->
+			<div>
+				<md-subheader class="md-no-sticky" style = "background-color:aliceblue; margin-right:0;">Messages</md-subheader>
+				<md-list-item class="md-3-line" ng-repeat="item in messages">
+					<div class="md-list-item-text" style="border: 1px solid black;">
+						<img ng-src="{{user.avatar_url}}" class="roundUserAvatar" alt="{{item.who}}" style="margin:8px"/> 
+						<!-- Instead of "user.avatar.url" suppose to be "postedUserAvatarUrl" -->
+						
+						<div class="spacer"></div>
+						<br></br>
+						<md-divider class = "feedContent">
+							<h4>{{ item.who }}</h4>
+							<h5>{{ item.what }}</h5>
+							<h5><b>{{ item.notes }}</b></h5>
+							<h6>{{ item.when }}</h6>
+						</md-divider>	
+					</div>
+				</md-list-item>
+			</div>
+		</md-card>
+	</md-content>
+	<div class="port_spacer"></div>
+	<div>
+		<md-content>
+			<md-card style="margin:0">
+				<!-- <md-list> -->
+				<md-subheader class="md-no-sticky" style = "background-color:aliceblue; margin-right:0;">Tasks</md-subheader>
+				<md-list-item class="md-3-line" ng-repeat="item in tasks">
+				<!-- <img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" /> -->
+					<div class="md-list-item-text" style="border: 1px solid black;">
+						<md-divider class = "feedContent">
+							<h6><u><em>Ex: {{ item.ExNum }}</em></u></h6>
+							<h5>Task Title: {{ item.notes }}</h5>
+							<h6>Due Date: {{ item.dueDate }}</h6>
+						</md-divider>	
+					</div>
+				</md-list-item>
+			</md-card>
+		</md-content>	
+</div>
+		<!-- </md-card> -->
 </div>

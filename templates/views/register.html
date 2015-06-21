@@ -12,7 +12,7 @@
 			<div>
 				<md-input-container ng-if="userHasNoName">
 					<label>Full Name: </label>
-					<input ng-model="user.name" required>
+					<input ng-model="user.name" ng-minlength="1" required>
 				</md-input-container>
 			</div>
 			<br></br>
@@ -29,7 +29,7 @@
 					<div class = "createCampus" ng-if="createCampusClicked">
 						<md-input-container>
 							<label>Academic Suffix Email</label>
-							<input type="text" ng-model="user.campusSuffixMail" ng-minlength="1" required/>
+							<input type="text" ng-model="user.campusMail" ng-minlength="1" required/>
 						</md-input-container>						
 						<md-input-container>
 							<label>Campus Name</label>
@@ -65,7 +65,7 @@
 				<div>
 					<md-input-container>
 						<label>Academic Email</label>
-						<input type="text" ng-model="user.AcMail" required/>
+						<input type="text" ng-model="user.AcMail" ng-length="1" required/>
 					</md-input-container>
 				</div>
 			</div>

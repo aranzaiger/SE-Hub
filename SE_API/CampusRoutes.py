@@ -79,11 +79,9 @@ def create_campus(token):
     except Exception:
         return bad_request()
 
-
     send_create_campus_request(user.email, user.name, campus.title)
     notify_se_hub_campus_request(campus, campus.title)
     return ok()
-
 
 
 
@@ -125,7 +123,11 @@ def get_campuses(token):
         query = Campus.all()
         for c in query.run():
             arr.append(dict(json.loads(c.to_JSON())))
+        print "ARR:"
         print arr
+        for c in arr:
+            print"c:"
+            print c
         if len(arr) != 0:
             return Response(response=json.dumps(arr),
                             status=200,
@@ -136,6 +138,63 @@ def get_campuses(token):
                             mimetype="application/json")
     else:
         return forbidden("Invalid Token")
+
+
+@campus_routes.route('/api/campuses/deleteCampus/<string:token>/<string:campusName>', methods=['DELETE'])
+@auto.doc()
+def deleteCampus(token,campusName):
+    """
+    <span class="card-title">This Call will delete a specific campus</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+        - title: 'campusName'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    202 - Deleted campus
+    <br>
+    204 - No Matching Campus Found
+    <br>
+    ....<br>
+    {<br>
+    ...<br>
+    }req<br>
+
+    ]<br>
+    400 - Bad Request
+    <br>
+    403 - Invalid token or not a lecturer!<br>
+    """
+
+    if not is_lecturer(token):  #todo: change to lecturer id
+        return forbidden("Invalid token or not a lecturer!")
+
+
+    user = get_user_by_token(token)
+    query = Campus.all()
+    query.filter('master_user_id =',user.key().id())
+
+    try:
+        query.filter('title =', campusName)
+    except Exception as e:
+        print e
+        return bad_request("invalid campus title attribute")
+
+
+    for c in query.run():
+        db.delete(c)
+        db.save
+        return accepted("campus deleted")
+
+
+    return bad_request("no such campus found")
+
 
 
 
