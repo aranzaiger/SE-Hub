@@ -29,6 +29,7 @@ from SE_API.UserRoutes import user_routes
 from SE_API.CampusRoutes import campus_routes
 from SE_API.CourseRoutes import course_routes
 from SE_API.ProjectRoutes import project_routes
+from SE_API.TaskRoutes import task_routes
 
 
 
@@ -49,12 +50,9 @@ app.register_blueprint(user_routes)
 app.register_blueprint(campus_routes)
 app.register_blueprint(course_routes)
 app.register_blueprint(project_routes)
+app.register_blueprint(task_routes)
 
 auto = Autodoc(app)
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return app.send_static_file('views/404/index.html')
 
 @app.route('/')
 def wellcomePage():
