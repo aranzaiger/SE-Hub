@@ -106,7 +106,8 @@ def getProjectsByCourseName(name):
         'grade': 98,<br>
         'logo_url': 'http://location.domain.com/image.jpg',<br>
         'gitRepository': 'http://location.git.com/somthing',<br>
-        'membersId': ['bob', 'dylan', 'quentin', 'terentino']<br>
+        'membersId': ['bob', 'dylan', 'quentin', 'terentino'],<br>
+        'id' : 1234567890<br>
         }
     </code>
     <br>

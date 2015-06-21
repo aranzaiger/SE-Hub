@@ -189,6 +189,8 @@ def getCourseByCampusName(name):
         'startDate': '2015-14-3'<br>
         'endDate': '2015-29-6'<br>
         'taskFlag': 'False'<br>
+        'id' : 1234567890<br>
+
         }
     </code>
     <br>
@@ -232,7 +234,9 @@ def getMessagesByCourseName(name):
         'campusName': 'JCE',<br>
         'startDate': '2015-14-3'<br>
         'endDate': '2015-29-6'<br>
-        'taskFlag': 'False'<br>
+        'taskFlag': false,<br>
+        'id' : 1234567890<br>
+
         }
     </code>
     <br>

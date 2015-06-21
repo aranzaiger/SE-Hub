@@ -108,7 +108,8 @@ def get_campuses(token):
                 'title': 'JCE',<br>
                 'email_ending': '@post.jce.ac.il',<br>
                 'master_user_id': 123453433341, (User that created the campus)<br>
-                'avatar_url': 'http://some.domain.com/imagefile.jpg'<br>
+                'avatar_url': 'http://some.domain.com/imagefile.jpg',<br>
+                'id' : 1234567890<br>
     },<br>
     ....<br>
     {<br>
