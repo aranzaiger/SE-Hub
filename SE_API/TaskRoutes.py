@@ -269,10 +269,6 @@ def documentation():
 
 
 
-@task_routes.route('/api/tasks/help')
-def documentation():
-    return auto.html()
-
 
 
 
