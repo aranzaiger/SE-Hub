@@ -1,6 +1,7 @@
 __author__ = 'etye'
 import unittest
 import requests
+import json
 from Testing.config import __CONFIG__
 
 class UserTestPlan(unittest.TestCase):
@@ -79,6 +80,54 @@ class UserTestPlan(unittest.TestCase):
         self.assertEquals(r.status_code, 200)
         self.assertEquals(r.json()['campuses_id_list'],[])
 
+    #/api/users/updateUser/<string:token>
+
+    def test_updateUser_lecturer(self):
+        url=self.__class__.url_+'api/users/updateUser/'+__CONFIG__['TOKENS']['LECTURER']
+        data = {
+            'name': 'new name',
+            'isLecturer': True,
+            'campusName': 'JCE'
+        }
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        r = requests.post(url, data=json.dumps(data), headers=headers)
+        self.assertEquals(r.status_code, 200)
+        self.assertEquals(r._content, '{"message": "User updated"}')
+
+    def test_updateUser_student(self):
+        url=self.__class__.url_+'api/users/updateUser/'+__CONFIG__['TOKENS']['STUDENT']
+        data = {
+            'name': 'new name',
+            'isLecturer': True,
+            'campusName': 'JCE'
+        }
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        r = requests.post(url, data=json.dumps(data), headers=headers)
+        self.assertEquals(r.status_code, 200)
+        self.assertEquals(r._content, '{"message": "User updated"}')
+
+    def test_updateUser_INVALID_TOKEN(self):
+        url=self.__class__.url_+'api/users/updateUser/invalidToken'
+        data = {
+            'name': 'new name',
+            'isLecturer': True,
+            'campusName': 'JCE'
+        }
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        r = requests.post(url, data=json.dumps(data), headers=headers)
+        self.assertEquals(r.status_code, 400)
+        self.assertEquals(r._content, '{"message": "Not a user!"}')
+
+    def test_updateUser_HEBREW_TOKEN(self):
+        url=self.__class__.url_+'api/users/updateUser/?????'
+        data = {
+            'name': 'new name',
+            'isLecturer': True,
+            'campusName': 'JCE'
+        }
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        r = requests.post(url, data=json.dumps(data), headers=headers)
+        self.assertEquals(r.status_code, 404)
 
 if __name__ == '__main__':
     unittest.main()
