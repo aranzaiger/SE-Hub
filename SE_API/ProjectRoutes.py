@@ -41,7 +41,7 @@ def create_project(token):
      {<br>
      'projectName': 'Advance Math',<br>
      'courseName': 'JCE',<br>
-     'logo_url': 'http://location.domain.com/image.jpg'<br>
+     'logo_url': 'http://location.domain.com/image.jpg',<br>
      'gitRepository': 'http://location.git.com/somthing'<br>
     }<br>
     <br>
@@ -57,10 +57,12 @@ def create_project(token):
     if not request.data:
         return bad_request()
     payload = json.loads(request.data)
-    if not is_lecturer(token):  #todo: change to lecturer id
-        return forbidden("Invalid token or not a lecturer!")
+    #if not is_lecturer(token):  #todo: change to lecturer id
+     #   return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Wrong user Token")
 
     #todo: check legality
 
@@ -104,7 +106,8 @@ def getProjectsByCourseName(name):
         'grade': 98,<br>
         'logo_url': 'http://location.domain.com/image.jpg',<br>
         'gitRepository': 'http://location.git.com/somthing',<br>
-        'membersId': ['bob', 'dylan', 'quentin', 'terentino']<br>
+        'membersId': ['bob', 'dylan', 'quentin', 'terentino'],<br>
+        'id' : 1234567890<br>
         }
     </code>
     <br>
@@ -126,6 +129,53 @@ def getProjectsByCourseName(name):
                         status=200,
                         mimetype="application/json")
 
+
+
+@project_routes.route('/api/projects/deleteProject/<string:token>/<string:projectid>', methods=['DELETE'])
+@auto.doc()
+def deleteProject(token,projectid):
+    """
+    <span class="card-title">This Call will delete a specific Project</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+        - courseid: 'projectid'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    202 - Deleted Project
+    <br>
+    ....<br>
+    {<br>
+    ...<br>
+    }req<br>
+
+    ]<br>
+    400 - no such Project
+    <br>
+    403 - Invalid token or not the owner of Project!<br>
+    """
+
+    # if not is_lecturer(token):  #todo: change to lecturer id
+    #     return forbidden("Invalid token or not a lecturer!")
+
+    user = get_user_by_token(token)
+    p = Project.get_by_id(int(projectid))
+
+    if p is None:
+        return bad_request("no such Project")
+
+    if p.master_id == user.key().id():
+        db.delete(p)
+        db.save
+        return accepted("Project deleted")
+
+    return forbidden("user is not owner of Project")
 
 
 

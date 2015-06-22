@@ -49,6 +49,10 @@ app.config(['$routeProvider', '$locationProvider',
 			.when('/myClasses', {
 				templateUrl: 'templates/views/myClasses.html',
 				controller: 'myClassesController'
+			})
+			.when('/tasks/new', {
+				templateUrl: 'templates/views/newTask.html',
+				controller: 'newTasksController'
 			});
 	}
 ]);
