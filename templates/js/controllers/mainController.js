@@ -48,7 +48,7 @@ angular.module('SeHub')
 				"title": "My Projects",
 				"icon": "fa fa-cube",
 				"style": "",
-				"route": "/campuses"
+				"route": "/projects"
 			}, {
 				"title": "Tasks",
 				"icon": "fa fa-clipboard",
