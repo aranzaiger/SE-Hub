@@ -4,6 +4,30 @@
 		<h2>
 			<i class="fa fa-info-circle"></i> Task Info: 
 		</h2>
+		<div layout="column">
+			<div>
+				<md-input-container>
+					<label>Title</label>
+					<input ng-model="task.task.title" required>
+    			</md-input-container>
+			</div>
+			<div>
+				<md-input-container>
+				<label>Description</label>
+				<textarea ng-model="task.task.description" required></textarea>
+			</div>
+			<div>
+				<md-switch ng-model="task.isPersonal" aria-label="Switch 1">
+    				This Is: a {{(task.isPersonal) ? "Personal" : "Project"}} Task
+  				</md-switch>
+			</div>
+			<div>
+				Due Date:
+				<datepicker date-format="d MMMM yyyy" style="width:100%" ng-click="dueTime()">
+				  <input ng-model="task.date" type="text"/>
+				</datepicker>
+			</div>
+		</div>
 	</div>
 
 	<div layout="column" flex="30" layout-padding>
@@ -34,15 +58,45 @@
   			<div flex="70"></div>
   			<md-button class="md-primary" ng-click="addComponent()">Add Component</md-button>
   		</div>
+  	</div>
 
-	</div flex="50" layout-padding>
+	<div flex="50" layout-padding>
 		<!-- <md-card style="background-image: url('http://www.stationeryhq.com/content/images/thumbs/0000324_clipboard_500.png')">
 
 		</md-card> -->
 		<h2>
 			<i class="fa fa-eye"></i> Task Preview:
 		</h2>
-		<p>{{task.toString()}}</p>
+		
+		<md-card layout-padding>
+			<h3><i class="fa fa-clipboard"></i> {{task.task.title}}</h3>
+			<h4>Due At: {{ task.date }}</h4>
+			<p>{{ dueTimeFromNow }}</p>
+			<p>{{task.task.description}}</p>
+			<p>{{(task.isPersonal) ? "Personal" : "Project"}} Task</p>
+			<div ng-repeat="component in task.components">
+				<!-- if text box -->
+				<div ng-if="component.type == 'textbox'">
+					<md-input-container>
+						<label>{{component.label}}</label>
+						<input ng-model="component.value">
+    				</md-input-container>
+				</div>
+				<!-- if Text Area -->
+				<div ng-if="component.type == 'textarea'">
+					<md-input-container>
+						<label>{{component.label}}</label>
+						<textarea ng-model="component.value"></textarea>
+    				</md-input-container>
+				</div>
+				<!-- if Checkbox -->
+				<div ng-if="component.type == 'checkbox'">
+					<md-checkbox ng-model="component.value" aria-label="Checkbox 1">
+			          {{ component.label}}
+			        </md-checkbox>
+				</div>
+			</div>
+		</md-card>
 	</div>
 
 </div>
