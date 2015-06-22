@@ -5,6 +5,7 @@ angular.module('SeHub')
   $scope.addMsg = false;
   $scope.msgToPost = "";
   $scope.oldText = "";
+  $scope.messages = [];
 
   var imagePath = $scope.user.avatar_url;
   $scope.phones = [
@@ -28,23 +29,36 @@ angular.module('SeHub')
     $scope.addMsg = true; // Reveal the "POST" Button
   }
 
-  $scope.postMessageClicked = function(msg) // Posting the message itself
+  $scope.msg = {};
+  $scope.postMessageClicked = function() // Posting the message itself
   {  
-    if(msg != null)
+    if($scope.msg.msgToAdd != null)
     {
-      $scope.prevText = "- " + msg;
-      implementText = document.getElementById("msg").value;
-      $scope.prevText +=  "<br></br>";
-      document.getElementById("bindText").innerHTML += $scope.prevText;
+      console.log($scope.msg.msgToAdd);
+      $scope.messages.push({"text": $scope.msg.msgToAdd});
     }
-    document.getElementById("msg").value = '';
-    $scope.prevText = '';  
+    $scope.msg.msgToAdd = null;
   }
 
   $scope.clearAllClicked = function() // Clear Screen from text
   {
-    document.getElementById("bindText").innerHTML = "";
+    $scope.messages = []; 
   }
+
+  $scope.chooseCourseClicked = function()
+  {
+    console.log("choose course Clicked!!");
+
+
+  }
+
+  $scope.chooseProjectClicked = function()
+  {
+    console.log("choose project Clicked!!");
+
+  }
+
+
 
   // animation
   $scope.isEnterd = top.setIsEnterd;

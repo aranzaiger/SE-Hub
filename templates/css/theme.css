@@ -380,6 +380,36 @@ body.noscroll
   padding: 20px;
 }
 
+.projectExhibit
+{
+  padding-left: 4px;
+  padding-right: 4px;
+  margin: 5px;
+  background-color: aliceblue;
+  overflow: scroll;
+  overflow-y: visible;
+  height:250;
+  width:300;
+}
+.projectDropDown
+{
+  border: 10px;
+  border-color: solid red;
+}
+
+.addMessage
+{
+  font-size: 2em;
+}
+.tasksContent
+{
+  word-break: break-word;
+}
+.messagesContent .msgSent
+{
+  word-break: break-word;
+}
+
 .tasksContent
 {
   padding-left: 4px;
@@ -387,8 +417,9 @@ body.noscroll
   margin: 5px;
   background-color: aliceblue;
   overflow: scroll;
+  overflow-y: visible;
   height:250;
-  width:500;
+  width:340;
 }
 .messagesContent
 {
@@ -398,13 +429,13 @@ body.noscroll
   background-color: #f5f5f5;
   overflow: scroll;
   height:250;
-  width:500;
+  width:690;
 }
 p.tasksFeed
 {
   padding-left: 4px;
   margin: 5px;
-  width:500;
+  width:340;
   height: auto;
   background-color: aliceblue;
  
@@ -413,7 +444,7 @@ p.messagesFeed
 {
   padding-left: 4px;
   margin: 5px;
-  width:500;
+  width:690;
   height: auto;
   background-color: #f5f5f5;
 }

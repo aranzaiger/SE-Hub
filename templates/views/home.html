@@ -1,8 +1,8 @@
-<div>
+<div layout-padding layout-margin>
 	<div class="loader" ng-if="loadingData">
 		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 	</div>
-	<md-content layout-padding>
+	<md-content >
 		<md-card class="gray-font fadeOutUp" ng-if="isEnterd">
 			<div layout="row">
 				<div class="spacer"></div>
@@ -22,27 +22,55 @@
 			</div>
 		</md-card>
 	</md-content>
+	<md-content>
+		<h1 style="margin-left:15px;"><i class="fa fa-dashboard"></i> Dash Board</h1>
+	</md-content>
 	<div ng-if="user.isLecturer"> <!-- Lecturer Mode -->
-		<md-content layout-padding>
-			<div layout="row" layout-margin layout-padding>
-				<div>
+		<md-content>
+			<div layout="row">
+				<div flex="65">
 					<md-card>
 						<p class = "messagesFeed">Messages</p>
 					</md-card>
 				</div>
-				<div>
+				<div flex="34">
 					<md-card>
 						<p class = "tasksFeed">Tasks</p>
 					</md-card>
 				</div>
 			</div>
-			<div layout="row" layout-margin layout-padding>
-				<div>
+			<div layout="row">
+				<div  flex="65">
 					<md-card>
-						<p id = "bindText" class = "messagesContent"></p>
+					<div class = "messagesContent"> 
+						<md-card ng-repeat = "msg in messages">
+							<div layout="column">
+								<div layout="row" layout-margin layout-padding>
+									<div flex="10" class="md-avatar">
+										<img ng-src="{{user.avatar_url}}" style="width:100%">
+									</div>
+									<div flex>	
+										<div layout = "column">
+											<div>
+												<b>{{user.name}}</b>
+											</div>
+											<div>
+												class_name
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div flex="69" class="msgSent" layout-margin layout-padding>
+										{{msg.text}}
+									</div>
+								</div>	
+							</div>
+						</md-card>
+					</div>
 					</md-card>
 				</div>
-				<div>
+				<div flex="34">
 					<md-card>
 						<p class = "tasksContent"> 
 							For Task 3 Press: <a href="http://localhost:8080/home#/tasks">Task #3</a>
@@ -60,43 +88,129 @@
 					</md-card>
 				</div>
 			</div>
-			<div layout-margin layout padding>
-				<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary">Add Message</md-button>
+			<div class ="addMessage" layout-margin layout padding>
+				<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary"><i class="fa fa-comments"></i></md-button>
 			</div>
 			<div ng-if="addMsg">
 				<div layout = "row" layout-margin layout padding layout-align = "left center">	
-					<md-button ng-click="postMessageClicked(msgToAdd)" ng class="md-raised md-primary">Post</md-button>
+					<md-button ng-click="postMessageClicked()" ng class="md-raised md-primary">Post</md-button>
 					<md-button ng-click="clearAllClicked()" ng class="md-raised md-primary">Clear All</md-button>
 				</div>
 				<div class="port_spacer"></div>
 				<md-input-container>
 				<label> Write Your Desired Message Here And Press Post</label>
-					<input type="text" id="msg" md-maxlength="150" minlength="1" ng-model="msgToAdd" required>
+					<input type="text" minlength="1" ng-model="msg.msgToAdd" required>
 				</md-input-container>
+			</div>
+		</md-content>
+
+		<md-content layout-padding layout-margin>
+			<h1>
+				<em><i class="fa fa-folder-open"></i> Project Evaluation</em>
+			</h1>
+			<md-select placeholder="Choose Project" ng-model="project" ng-click="chooseProjectClicked()" style="z-index: 300" class="projectDropDown">
+			</md-select>
+			<div layout = "column" layout-margin layout-padding>
+				<div layout="row">
+					<md-card flex class = "projectExhibit">
+						a
+						a
+						a
+					</md-card>
+					<md-card flex class = "projectExhibit">
+						s
+						s
+						s
+					</md-card>
+					<md-card flex class = "projectExhibit">
+						d
+						d
+						d
+					</md-card>
+				</div>
+				<div layout="row">
+					<md-card flex class = "projectExhibit">
+						e
+						e
+						e
+					</md-card>
+					<md-card flex class = "projectExhibit">
+						q
+						q
+						q
+					</md-card>
+					<md-card flex class = "projectExhibit">
+						w
+						w
+						w
+					</md-card>
+				</div>
+				<div layout="row">
+					<md-card flex class = "projectExhibit">
+						b
+						b
+						b
+					</md-card>
+					<md-card flex class = "projectExhibit">
+						r
+						r
+						r
+					</md-card>
+					<md-card flex class = "projectExhibit">
+						x
+						x
+						x
+					</md-card>
+				</div>
 			</div>
 		</md-content>
 	</div>
 	<div ng-if="isStudent"> <!-- Student Mode -->
-		<md-content layout-padding>
-			<div layout="row" layout-margin layout-padding>
-				<div>
+		<md-content>
+			<div layout="row">
+				<div flex="65">
 					<md-card>
 						<p class = "messagesFeed">Messages</p>
 					</md-card>
 				</div>
-				<div>
+				<div flex="34">
 					<md-card>
 						<p class = "tasksFeed">Tasks</p>
 					</md-card>
 				</div>
 			</div>
-			<div layout="row" layout-margin layout-padding>
-				<div>
+			<div layout="row">
+				<div  flex="65">
 					<md-card>
-						<p id = "bindText" class = "messagesContent"></p>
+					<div class = "messagesContent"> 
+						<md-card ng-repeat = "msg in messages">
+							<div layout="column">
+								<div layout="row" layout-margin layout-padding>
+									<div flex="10" class="md-avatar">
+										<img ng-src="{{user.avatar_url}}" style="width:100%">
+									</div>
+									<div flex>	
+										<div layout = "column">
+											<div>
+												<b>{{user.name}}</b>
+											</div>
+											<div>
+												class_name
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div flex="69" class="msgSent" layout-margin layout-padding>
+										{{msg.text}}
+									</div>
+								</div>	
+							</div>
+						</md-card>
+					</div>
 					</md-card>
 				</div>
-				<div>
+				<div flex="34">
 					<md-card>
 						<p class = "tasksContent"> 
 							For Task 3 Press: <a href="http://localhost:8080/home#/tasks">Task #3</a>
@@ -104,11 +218,20 @@
 							For Task 4 Press: <a href="http://localhost:8080/home#/home">Task #4</a>
 							<br></br>
 							For Task 5 Press: <a href="http://localhost:8080/home#/home">Task #5</a>
+							<br></br>
+							For Task 6 Press: <a href="http://localhost:8080/home#/home">Task #6</a>
+							<br></br>
+							For Task 7 Press: <a href="http://localhost:8080/home#/home">Task #7</a>
+							<br></br>
+							For Task 8 Press: <a href="http://localhost:8080/home#/home">Task #8</a>
 						</p>
-
 					</md-card>
 				</div>
 			</div>
+			<!-- <md-button ng-click="chooseCourseClicked()" ng class="md-raised md-primary">Choose Course</md-button>		 -->
+			<md-select placeholder="Choose Course" ng-model="course" ng-click="chooseCourseClicked()" style="z-index: 300">
+				<!-- <md-option ng-switch="user.isLecturer" ng-repeat="c in courses" value="{{c.title}}">{{c.title}}</md-option> -->
+			</md-select>
 		</md-content>
 	</div>
 </div>

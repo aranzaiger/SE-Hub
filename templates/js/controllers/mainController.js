@@ -43,7 +43,7 @@ angular.module('SeHub')
 				"title": "My Classes",
 				"icon": "fa fa-graduation-cap",
 				"style": "",
-				"route": "/campuses"
+				"route": "/myClasses"
 			}, {
 				"title": "My Projects",
 				"icon": "fa fa-cube",

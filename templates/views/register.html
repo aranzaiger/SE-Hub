@@ -19,7 +19,7 @@
 			<div layout="row" layout-align="center center">
 				<p>Are You A Lecturer?</p>
 				<md-switch ng-model="user.isLecturer" aria-label="Switch 1">
-				</md-switch>	
+				</md-switch>
 			</div>
 		</div>
 		<div>
@@ -45,7 +45,7 @@
 			<div class = "dropDown">
 				<md-select placeholder="Pick your Campus" ng-model="campus" style="z-index: 300" ng-change="dropdownClicked()">
 					<md-option ng-switch="user.isLecturer" ng-repeat="c in campuses" value="{{c.title}}">{{c.title}}</md-option>
-				</md-select> 
+				</md-select>
 			</div>
 		</div>
 		<div layout="col" layout-align="center center">
