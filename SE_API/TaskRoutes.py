@@ -137,8 +137,6 @@ def create_task(token):
         db.put(component)
         db.save
 
-
-
     return created()
 
 
@@ -202,6 +200,66 @@ def getAllTasks(courseName):
                         mimetype="application/json")
     else:
         return no_content()
+
+
+@task_routes.route('/api/tasks/getAllFutureTasks/<string:courseName>', methods=["GET"])
+@auto.doc()
+def getAllFutureTasks(courseName):
+    """
+    <span class="card-title">>This Call will return an array of all Future Tasks in a course, ordered by date</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - name: 'course name'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'title' : 'Task1',<br>
+        'courseName' : 'advance Math',<br>
+        'description' : 'prepare by sunday',<br>
+        'dueDate' : {
+                    'year' : 2015,
+                    'month' : 12,
+                    'day' : 23
+                    }<br>
+        'isPersonal' : true,<br>
+        'task_id' : 589689456894<br>
+    }<br>
+    </code>
+    <br>
+    """
+
+    arr = []
+    query = Task.all()
+    query.filter("courseName = ", courseName)
+
+    for t in query.run():
+        taskDic =dict(json.loads(t.to_JSON()))
+        #add a key 'forSortDate' for sorting dates
+        taskTime = datetime.datetime(taskDic['dueDate']['year'], taskDic['dueDate']['month'], taskDic['dueDate']['day'])
+        if taskTime >= datetime.date.today():
+            taskDic['forSortDate'] = taskTime
+            arr.append(taskDic)
+
+    #sort array by date, and remove added key
+    arr = sorted(arr, key=itemgetter('forSortDate'), reverse=False)
+    for i in arr:
+        del i['forSortDate']
+
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
+    else:
+        return no_content()
+
 
 
 @task_routes.route('/api/tasks/getTaskComponents/<string:taskId>', methods=["GET"])
