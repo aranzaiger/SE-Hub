@@ -321,6 +321,107 @@ def getTaskComponents(taskId):
 
 
 
+@task_routes.route('/api/tasks/deleteTask/<string:token>/<string:taskid>', methods=['DELETE'])
+@auto.doc()
+def deleteTask(token,taskid):
+    """
+    <span class="card-title">This Call will delete a specific Task</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+        - taskid: 'taskid'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    202 - Deleted Course
+    <br>
+    ....<br>
+    {<br>
+    ...<br>
+    }req<br>
+
+    ]<br>
+    400 - no such Course
+    <br>
+    403 - Invalid token or not a lecturer or lecturer is not owner of Course!<br>
+    """
+
+    if not is_lecturer(token):
+        return forbidden("Invalid token or not a lecturer!")
+
+    #todo: check if lecturer is owner of course
+    #return forbidden("lecturer is not owner of course")
+
+    user = get_user_by_token(token)
+    c = Task.get_by_id(int(taskid))
+
+    if c is None:
+        return bad_request("no such Task")
+
+
+    db.delete(c)
+    db.save
+    return accepted("Task deleted")
+
+
+@task_routes.route('/api/tasks/deleteTaskComponents/<string:token>/<string:taskid>', methods=['DELETE'])
+@auto.doc()
+def deleteTaskComponents(token,taskid):
+    """
+    <span class="card-title">This Call will delete a specific Task's components</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+        - taskid: 'taskid'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    202 - Deleted Course
+    <br>
+    ....<br>
+    {<br>
+    ...<br>
+    }req<br>
+
+    ]<br>
+    400 - no such Task
+    <br>
+    403 - Invalid token or not a lecturer or lecturer is not owner of Task!<br>
+    """
+
+    if not is_lecturer(token):
+        return forbidden("Invalid token or not a lecturer!")
+
+    #todo: check if lecturer is owner of course
+    #return forbidden("lecturer is not owner of course")
+
+    user = get_user_by_token(token)
+    t = Task.get_by_id(int(taskid))
+
+    if t is None:
+        return bad_request("no such Task")
+
+    query = TaskComponent.all()
+    query.filter('taskId = ', t.key().id())
+
+    for tc in query.run():
+        db.delete(tc)
+
+    db.save
+    return accepted("Task deleted")
+
+
+
 @task_routes.route('/api/tasks/help')
 def documentation():
     return auto.html()
