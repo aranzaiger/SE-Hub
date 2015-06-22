@@ -48,7 +48,7 @@ def create_campus(token):
     <br>
     <b>Response</b>
     <br>
-    201 - Created
+    200 - OK
     <br>
     403 - Invalid Token/Forbidden
     """
@@ -108,7 +108,8 @@ def get_campuses(token):
                 'title': 'JCE',<br>
                 'email_ending': '@post.jce.ac.il',<br>
                 'master_user_id': 123453433341, (User that created the campus)<br>
-                'avatar_url': 'http://some.domain.com/imagefile.jpg'<br>
+                'avatar_url': 'http://some.domain.com/imagefile.jpg',<br>
+                'id' : 1234567890<br>
     },<br>
     ....<br>
     {<br>
@@ -140,15 +141,16 @@ def get_campuses(token):
         return forbidden("Invalid Token")
 
 
-@campus_routes.route('/api/campuses/deleteCampus/<string:token>/<string:campusName>', methods=['DELETE'])
+
+@campus_routes.route('/api/campuses/deleteCampus/<string:token>/<string:campusid>', methods=['DELETE'])
 @auto.doc()
-def deleteCampus(token,campusName):
+def deleteCampus(token,campusid):
     """
     <span class="card-title">This Call will delete a specific campus</span>
     <br>
     <b>Route Parameters</b><br>
         - seToken: 'seToken'
-        - title: 'campusName'
+        - campusid: 'campusid'
     <br>
     <br>
     <b>Payload</b><br>
@@ -159,42 +161,33 @@ def deleteCampus(token,campusName):
     <br>
     202 - Deleted campus
     <br>
-    204 - No Matching Campus Found
-    <br>
     ....<br>
     {<br>
     ...<br>
     }req<br>
 
     ]<br>
-    400 - Bad Request
+    400 - no such campus
     <br>
-    403 - Invalid token or not a lecturer!<br>
+    403 - Invalid token or not a lecturer or lecturer is not owner of campus!<br>
     """
 
     if not is_lecturer(token):  #todo: change to lecturer id
         return forbidden("Invalid token or not a lecturer!")
 
-
     user = get_user_by_token(token)
-    query = Campus.all()
-    query.filter('master_user_id =',user.key().id())
+    camp = Campus.get_by_id(int(campusid))
 
-    try:
-        query.filter('title =', campusName)
-    except Exception as e:
-        print e
-        return bad_request("invalid campus title attribute")
+    if camp is None:
+        return bad_request("no such campus")
 
 
-    for c in query.run():
-        db.delete(c)
+    if camp.master_user_id == user.key().id():
+        db.delete(camp)
         db.save
         return accepted("campus deleted")
 
-
-    return bad_request("no such campus found")
-
+    return forbidden("lecturer is not owner of campus")
 
 
 

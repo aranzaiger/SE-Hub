@@ -20,5 +20,6 @@ class Project(db.Model):
                 'logo_url' : self.logo_url,
                 'gitRepository' : self.gitRepository,
                 'membersId' : self.membersId,
+                'id' : self.key().id()
                 }
         return json.dumps(data)

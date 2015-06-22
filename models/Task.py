@@ -9,10 +9,7 @@ class Task(db.Model):
     courseName = db.StringProperty(required=True)
     description = db.StringProperty(required=True,default=" ")
     dueDate = db.DateProperty(required=True)
-    #isProject = db.BooleanProperty(required=False)
-    isClose = db.BooleanProperty(required=True, default=False)
-    isDone = db.BooleanProperty(required=True, default=False)
-    taskGrade = db.IntegerProperty(required=True, default=0)
+    isPersonal = db.BooleanProperty(required=True, default=True)
 
     def to_JSON(self):
         data = {'title' : self.title,
@@ -23,10 +20,8 @@ class Task(db.Model):
                     'month': self.dueDate.month,
                     'day': self.dueDate.day
                 },
-                #'isProject' : self.isProject,
-                'isClose' : self.isClose,
-                'isDone' : self.isDone,
-                'taskGrade' : self.taskGrade,
+                'isPersonal' : self.isPersonal,
+                'id' : self.key().id()
                 }
         return json.dumps(data)
 

@@ -18,6 +18,7 @@ class Message(db.Model):
                     'day': self.msgDate.day,
                     'hour': self.msgDate.hour,
                     'minute': self.msgDate.minute
-                }
+                },
+                'id' : self.key().id()
         }
         return json.dumps(data)

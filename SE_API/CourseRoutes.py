@@ -189,6 +189,8 @@ def getCourseByCampusName(name):
         'startDate': '2015-14-3'<br>
         'endDate': '2015-29-6'<br>
         'taskFlag': 'False'<br>
+        'id' : 1234567890<br>
+
         }
     </code>
     <br>
@@ -232,7 +234,9 @@ def getMessagesByCourseName(name):
         'campusName': 'JCE',<br>
         'startDate': '2015-14-3'<br>
         'endDate': '2015-29-6'<br>
-        'taskFlag': 'False'<br>
+        'taskFlag': false,<br>
+        'id' : 1234567890<br>
+
         }
     </code>
     <br>
@@ -272,15 +276,21 @@ def getMessagesByCourseName(name):
 #----------------------------------------------------------
 #                     DELETE
 #----------------------------------------------------------
-@course_routes.route('/api/courses/deleteCourse/<string:token>/<string:courseName>', methods=['DELETE'])
+
+
+
+
+
+
+@course_routes.route('/api/courses/deleteCourse/<string:token>/<string:courseid>', methods=['DELETE'])
 @auto.doc()
-def deleteCourse(token,courseName):
+def deleteCourse(token,courseid):
     """
-    <span class="card-title">This Call will delete a specific course</span>
+    <span class="card-title">This Call will delete a specific Course</span>
     <br>
     <b>Route Parameters</b><br>
         - seToken: 'seToken'
-        - title: 'courseName'
+        - courseid: 'courseid'
     <br>
     <br>
     <b>Payload</b><br>
@@ -289,9 +299,7 @@ def deleteCourse(token,courseName):
     <br>
     <b>Response</b>
     <br>
-    202 - Deleted campus
-    <br>
-    204 - No Matching Campus Found
+    202 - Deleted Course
     <br>
     ....<br>
     {<br>
@@ -299,33 +307,27 @@ def deleteCourse(token,courseName):
     }req<br>
 
     ]<br>
-    400 - Bad Request
+    400 - no such Course
     <br>
-    403 - Invalid token or not a lecturer!<br>
+    403 - Invalid token or not a lecturer or lecturer is not owner of Course!<br>
     """
 
     if not is_lecturer(token):  #todo: change to lecturer id
         return forbidden("Invalid token or not a lecturer!")
 
-
     user = get_user_by_token(token)
-    query = Course.all()
-    query.filter('master_id =',user.key().id())
+    c = Course.get_by_id(int(courseid))
 
-    try:
-        query.filter('courseName =', courseName)
-    except Exception as e:
-        print e
-        return bad_request("invalid course title attribute")
+    if c is None:
+        return bad_request("no such course")
 
 
-    for c in query.run():
+    if c.master_id == user.key().id():
         db.delete(c)
         db.save
         return accepted("course deleted")
 
-
-    return bad_request("no such course or not owner of course")
+    return forbidden("lecturer is not owner of course")
 
 
 @course_routes.route('/api/courses/deleteCoursesByCampus/<string:token>/<string:campusName>', methods=['DELETE'])
