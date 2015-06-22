@@ -33,9 +33,9 @@ md-list .md-button {
 https://github.com/google/material-design-icons
 */
 
-p {
+/*p {
   margin-left: 2em;
-}
+}*/
 
 .menuBtn {
   background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjRweCIgaGVpZ2h0PSIyNHB4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDI0IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGcgaWQ9IkhlYWRlciI+CiAgICA8Zz4KICAgICAgICA8cmVjdCB4PSItNjE4IiB5PSItMjIzMiIgZmlsbD0ibm9uZSIgd2lkdGg9IjE0MDAiIGhlaWdodD0iMzYwMCIvPgogICAgPC9nPgo8L2c+CjxnIGlkPSJMYWJlbCI+CjwvZz4KPGcgaWQ9Ikljb24iPgogICAgPGc+CiAgICAgICAgPHJlY3QgZmlsbD0ibm9uZSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+CiAgICAgICAgPHBhdGggZD0iTTMsMThoMTh2LTJIM1YxOHogTTMsMTNoMTh2LTJIM1YxM3ogTTMsNnYyaDE4VjZIM3oiIHN0eWxlPSJmaWxsOiNmM2YzZjM7Ii8+CiAgICA8L2c+CjwvZz4KPGcgaWQ9IkdyaWQiIGRpc3BsYXk9Im5vbmUiPgogICAgPGcgZGlzcGxheT0iaW5saW5lIj4KICAgIDwvZz4KPC9nPgo8L3N2Zz4=) no-repeat  center center;
@@ -76,28 +76,21 @@ body.noscroll
   margin-top: 1em;
   margin-right: 1em;
   position: center;
-
   -webkit-border-radius: 30%;
   -moz-border-radius: 30%;
   border-radius: 30%;
-
-
 }
 
-/*.avatar {
-  background: rgba(0, 0, 0, 0.2);
-  }*/
-
-  .avatar img {
-    border-radius: 40px;
-    position:center;
-    width: 80px;
-    height: 80px;
-    margin: 6px;  /*centers the image in the parent element */
-    -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-    box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
-  }
+.avatar img {
+  border-radius: 40px;
+  position:center;
+  width: 80px;
+  height: 80px;
+  margin: 6px;
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+}
 
   /* Added BY devMatan */
 
@@ -111,14 +104,8 @@ body.noscroll
  
   }*/
 
-  .campusAvatar img
-  {
-/*
-  margin-top: 1em;
-  margin-right: 1em;
-  position: center;
-  */
-
+.campusAvatar img
+{
   border-radius: 40px;
   position:center;
   width: 80px;
@@ -157,9 +144,24 @@ body.noscroll
   margin-bottom: 10px;
 }
 
-.md-avatar img  
+.feed
 {
-  /*TODO*/
+  overflow-y: scroll;
+  height: 350px;
+  /*width: 100%;*/
+}
+
+/*.feedMessages
+{
+  overflow: scroll;
+  height: 300px;
+  width: 100%;
+}
+.feedTasks
+{
+  overflow: scroll;
+  height: 300px;
+  width: 100%;
 }
 
 .feedContent
@@ -167,7 +169,7 @@ body.noscroll
   padding-left: 6%;
   font-size: 15px;
   display:table;
-}
+}*/
 
 .md-no-sticky
 {
@@ -181,7 +183,6 @@ body.noscroll
   border-radius: 150px;
   -webkit-border-radius: 150px;
   -moz-border-radius: 150px;
-  /*background: url(http://i61.tinypic.com/v86f7.png) no-repeat;*/
   box-shadow: 0 0 8px rgba(0, 0, 0, .8);
   -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
   -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
@@ -256,7 +257,6 @@ body.noscroll
     -moz-border-radius: 100px;
     border-radius: 50px;
     width: 30%;
-    /*top: -40px;*/
     position: relative;
     z-index: 50;
   }
@@ -282,8 +282,17 @@ body.noscroll
     font-weight: bold;
     cursor: pointer;
   }
-  .se-menu li .selected{
+
+  .se-menu li:active{
+    background-color: #B2B2B2;
+    text-shadow:#e0e0e0 1px 1px 0;
+    font-weight: bold;
+  }
+
+  .se-menu .selected{
     background-color: #E2E2E2;
+    text-shadow:#e0e0e0 1px 1px 0;
+    font-weight: bold;
   }
 
   .user-box{
@@ -293,7 +302,6 @@ body.noscroll
   .user-box img{
     width: 100%;
     border: 4px #7f7f7f solid;
-
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -342,26 +350,70 @@ body.noscroll
   }
 
 
-/*  md-list-item .md-no-style.md-button, md-list-item.md-no-proxy.md-button {
-  font-size: inherit;
-  height: inherit;
-  text-align: left;
-  text-transform: none;
-  width: 100%;
-  white-space: normal;
+/* Colors*/
+.gray{
+  background:#f5f5f5;
+}
+.aliceblue {
+  background: aliceblue; 
+}
+  .green {
+  background: #b9f6ca;
+}
+  .yellow {
+  background: #ffff8d;
+}
+  .blue {
+  background: #84ffff;
+}
+  .purple {
+  background: #b388ff;
+}
+  .red {
+  background: #ff8a80;
+}
+/* End Colors */
+
+.whiteframedemoBasicUsage md-whiteframe {
+  background: #fff;
+  margin: 20px;
+  padding: 20px;
 }
 
-md-list-item, md-list-item .md-list-item-inner {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  min-height: 48px;
-  }*/
-
-/*End Effects for MD*/
+.tasksContent
+{
+  padding-left: 4px;
+  padding-right: 4px;
+  margin: 5px;
+  background-color: aliceblue;
+  overflow: scroll;
+  height:250;
+  width:500;
+}
+.messagesContent
+{
+  padding-left: 4px;
+  padding-right: 4px;
+  margin: 5px;
+  background-color: #f5f5f5;
+  overflow: scroll;
+  height:250;
+  width:500;
+}
+p.tasksFeed
+{
+  padding-left: 4px;
+  margin: 5px;
+  width:500;
+  height: auto;
+  background-color: aliceblue;
+ 
+}
+p.messagesFeed
+{
+  padding-left: 4px;
+  margin: 5px;
+  width:500;
+  height: auto;
+  background-color: #f5f5f5;
+}

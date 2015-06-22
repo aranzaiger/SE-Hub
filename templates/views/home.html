@@ -22,47 +22,93 @@
 			</div>
 		</md-card>
 	</md-content>
-	<md-content layout-padding>
-		<md-card>
-		<div class = "feed" ><!--  layout-align="center center"> -->
-			<div>
-				<md-subheader class="md-no-sticky" style = "background-color:aliceblue; margin-right:0;">Messages</md-subheader>
-				<md-list-item class="md-3-line" ng-repeat="item in messages">
-					<div class="md-list-item-text" style="border: 1px solid black;">
-						<img ng-src="{{user.avatar_url}}" class="roundUserAvatar" alt="{{item.who}}" style="margin:8px"/> 
-						<!-- Instead of "user.avatar.url" suppose to be "postedUserAvatarUrl" -->
-						
-						<div class="spacer"></div>
-						<br></br>
-						<md-divider class = "feedContent">
-							<h4>{{ item.who }}</h4>
-							<h5>{{ item.what }}</h5>
-							<h5><b>{{ item.notes }}</b></h5>
-							<h6>{{ item.when }}</h6>
-						</md-divider>	
-					</div>
-				</md-list-item>
+	<div ng-if="user.isLecturer"> <!-- Lecturer Mode -->
+		<md-content layout-padding>
+			<div layout="row" layout-margin layout-padding>
+				<div>
+					<md-card>
+						<p class = "messagesFeed">Messages</p>
+					</md-card>
+				</div>
+				<div>
+					<md-card>
+						<p class = "tasksFeed">Tasks</p>
+					</md-card>
+				</div>
 			</div>
-		</md-card>
-	</md-content>
-	<div class="port_spacer"></div>
-	<div>
-		<md-content>
-			<md-card style="margin:0">
-				<!-- <md-list> -->
-				<md-subheader class="md-no-sticky" style = "background-color:aliceblue; margin-right:0;">Tasks</md-subheader>
-				<md-list-item class="md-3-line" ng-repeat="item in tasks">
-				<!-- <img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" /> -->
-					<div class="md-list-item-text" style="border: 1px solid black;">
-						<md-divider class = "feedContent">
-							<h6><u><em>Ex: {{ item.ExNum }}</em></u></h6>
-							<h5>Task Title: {{ item.notes }}</h5>
-							<h6>Due Date: {{ item.dueDate }}</h6>
-						</md-divider>	
-					</div>
-				</md-list-item>
-			</md-card>
-		</md-content>	
-</div>
-		<!-- </md-card> -->
+			<div layout="row" layout-margin layout-padding>
+				<div>
+					<md-card>
+						<p id = "bindText" class = "messagesContent"></p>
+					</md-card>
+				</div>
+				<div>
+					<md-card>
+						<p class = "tasksContent"> 
+							For Task 3 Press: <a href="http://localhost:8080/home#/tasks">Task #3</a>
+							<br></br>
+							For Task 4 Press: <a href="http://localhost:8080/home#/home">Task #4</a>
+							<br></br>
+							For Task 5 Press: <a href="http://localhost:8080/home#/home">Task #5</a>
+							<br></br>
+							For Task 6 Press: <a href="http://localhost:8080/home#/home">Task #6</a>
+							<br></br>
+							For Task 7 Press: <a href="http://localhost:8080/home#/home">Task #7</a>
+							<br></br>
+							For Task 8 Press: <a href="http://localhost:8080/home#/home">Task #8</a>
+						</p>
+					</md-card>
+				</div>
+			</div>
+			<div layout-margin layout padding>
+				<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary">Add Message</md-button>
+			</div>
+			<div ng-if="addMsg">
+				<div layout = "row" layout-margin layout padding layout-align = "left center">	
+					<md-button ng-click="postMessageClicked(msgToAdd)" ng class="md-raised md-primary">Post</md-button>
+					<md-button ng-click="clearAllClicked()" ng class="md-raised md-primary">Clear All</md-button>
+				</div>
+				<div class="port_spacer"></div>
+				<md-input-container>
+				<label> Write Your Desired Message Here And Press Post</label>
+					<input type="text" id="msg" md-maxlength="150" minlength="1" ng-model="msgToAdd" required>
+				</md-input-container>
+			</div>
+		</md-content>
+	</div>
+	<div ng-if="isStudent"> <!-- Student Mode -->
+		<md-content layout-padding>
+			<div layout="row" layout-margin layout-padding>
+				<div>
+					<md-card>
+						<p class = "messagesFeed">Messages</p>
+					</md-card>
+				</div>
+				<div>
+					<md-card>
+						<p class = "tasksFeed">Tasks</p>
+					</md-card>
+				</div>
+			</div>
+			<div layout="row" layout-margin layout-padding>
+				<div>
+					<md-card>
+						<p id = "bindText" class = "messagesContent"></p>
+					</md-card>
+				</div>
+				<div>
+					<md-card>
+						<p class = "tasksContent"> 
+							For Task 3 Press: <a href="http://localhost:8080/home#/tasks">Task #3</a>
+							<br></br>
+							For Task 4 Press: <a href="http://localhost:8080/home#/home">Task #4</a>
+							<br></br>
+							For Task 5 Press: <a href="http://localhost:8080/home#/home">Task #5</a>
+						</p>
+
+					</md-card>
+				</div>
+			</div>
+		</md-content>
+	</div>
 </div>
