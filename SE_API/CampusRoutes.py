@@ -48,7 +48,7 @@ def create_campus(token):
     <br>
     <b>Response</b>
     <br>
-    201 - Created
+    200 - OK
     <br>
     403 - Invalid Token/Forbidden
     """
@@ -66,7 +66,7 @@ def create_campus(token):
     #check if name already exists
     try:
         query = Campus.all()
-        query.filter("title = ", payload['title'])
+        query.filter("title =", payload['title'])
         for c in query.run(limit=1):
             return forbidden("Campus with same name already exists")
     except Exception as e:
@@ -82,7 +82,6 @@ def create_campus(token):
     send_create_campus_request(user.email, user.name, campus.title)
     notify_se_hub_campus_request(campus, campus.title)
     return ok()
-
 
 
 
@@ -109,7 +108,8 @@ def get_campuses(token):
                 'title': 'JCE',<br>
                 'email_ending': '@post.jce.ac.il',<br>
                 'master_user_id': 123453433341, (User that created the campus)<br>
-                'avatar_url': 'http://some.domain.com/imagefile.jpg'<br>
+                'avatar_url': 'http://some.domain.com/imagefile.jpg',<br>
+                'id' : 1234567890<br>
     },<br>
     ....<br>
     {<br>
@@ -124,7 +124,11 @@ def get_campuses(token):
         query = Campus.all()
         for c in query.run():
             arr.append(dict(json.loads(c.to_JSON())))
+        print "ARR:"
         print arr
+        for c in arr:
+            print"c:"
+            print c
         if len(arr) != 0:
             return Response(response=json.dumps(arr),
                             status=200,
@@ -135,6 +139,55 @@ def get_campuses(token):
                             mimetype="application/json")
     else:
         return forbidden("Invalid Token")
+
+
+
+@campus_routes.route('/api/campuses/deleteCampus/<string:token>/<string:campusid>', methods=['DELETE'])
+@auto.doc()
+def deleteCampus(token,campusid):
+    """
+    <span class="card-title">This Call will delete a specific campus</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+        - campusid: 'campusid'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    202 - Deleted campus
+    <br>
+    ....<br>
+    {<br>
+    ...<br>
+    }req<br>
+
+    ]<br>
+    400 - no such campus
+    <br>
+    403 - Invalid token or not a lecturer or lecturer is not owner of campus!<br>
+    """
+
+    if not is_lecturer(token):  #todo: change to lecturer id
+        return forbidden("Invalid token or not a lecturer!")
+
+    user = get_user_by_token(token)
+    camp = Campus.get_by_id(int(campusid))
+
+    if camp is None:
+        return bad_request("no such campus")
+
+
+    if camp.master_user_id == user.key().id():
+        db.delete(camp)
+        db.save
+        return accepted("campus deleted")
+
+    return forbidden("lecturer is not owner of campus")
 
 
 

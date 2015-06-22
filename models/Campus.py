@@ -14,7 +14,8 @@ class Campus(db.Model):
         data = {'title': self.title,
                 'email_ending': self.email_ending,
                 'master_user_id': self.master_user_id,
-                'avatar_url': self.avatar_url
+                'avatar_url': self.avatar_url,
+                'id' : self.key().id()
                 }
         return json.dumps(data)
 

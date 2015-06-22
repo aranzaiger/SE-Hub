@@ -13,6 +13,14 @@ def get_user_by_token(token):
         return u
     return None
 
+def get_campus_by_campusName(campusName):
+    query = Campus.all()
+    query.filter("title = ", campusName)
+
+    for u in query.run(limit = 1):
+        return u
+    return None
+
 def get_campus_by_suffix(suffix):
     query = Campus.all()
     query.filter("email_ending = ", suffix)
