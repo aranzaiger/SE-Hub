@@ -53,6 +53,10 @@ app.config(['$routeProvider', '$locationProvider',
 			.when('/tasks/new', {
 				templateUrl: 'templates/views/newTask.html',
 				controller: 'newTasksController'
+			})
+			.when('/projects', {
+				templateUrl: 'templates/views/projects.html',
+				controller: 'projectsController'
 			});
 	}
 ]);
