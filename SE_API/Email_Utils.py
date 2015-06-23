@@ -105,7 +105,7 @@ def notify_se_hub_campus_request(campus, campus_name):
 
     message.body = """
     a new Campus request
-    """+str(campus.to_JSON())
+    """ + str(campus.to_JSON())
 
     message.html = """
     <html><head></head><body>

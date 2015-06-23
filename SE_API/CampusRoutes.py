@@ -83,7 +83,9 @@ def create_campus(token):
         return bad_request()
 
     send_create_campus_request(user.email, user.name, campus.title)
+    db.put(campus)
     notify_se_hub_campus_request(campus, campus.title)
+    db.delete(campus)
     return ok()
 
 
