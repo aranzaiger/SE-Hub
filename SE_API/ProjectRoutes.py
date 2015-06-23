@@ -69,7 +69,7 @@ def create_project(token):
     #todo: check legality
 
     try:
-        project = Project(projectName=payload['projectName'], courseName=payload['courseName'], masterId=user.key().id(), gitRepository=payload['gitRepository'], membersId=[token])
+        project = Project(projectName=payload['projectName'], courseName=payload['courseName'], master_id=user.key().id(), gitRepository=payload['gitRepository'], membersId=[token])
     except Exception as e:
         print e
         return bad_request()
@@ -77,7 +77,7 @@ def create_project(token):
     db.put(project)
     db.save
     return Response(response=project.to_JSON(),
-                                status=201,
+                                status=200,
                                 mimetype="application/json")
 
 #----------------------------------------------------------
