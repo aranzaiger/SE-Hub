@@ -30,12 +30,14 @@ angular.module('SeHub')
 	$scope.createCourseClicked = function()
 	{
 		$scope.isNewCourse = true;
+		$scope.showMyClass = false;
 		console.log("create course Clicked!!");
 	}
 
 	$scope.showMyCourses = function()
 	{
 		$scope.showMyClass = true;
+		$scope.isNewCourse = false;
 	}
 
 	$scope.submitNewClassClicked = function()
