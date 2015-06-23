@@ -1,3 +1,4 @@
+
 var DEBUG = true;
 
 var service = angular.module('seHub.services', []);
@@ -39,6 +40,16 @@ service.factory('apiService', ['$http', function($http) {
 				method: "POST",
 				url: url,
 				data: payLoad
+			};
+			return $http(req);
+		},
+		getCourseByCampusName: function(token){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getAll/" + token;
+			req = {
+				method : "GET",
+				url : url,
+				data: token
+
 			};
 			return $http(req);
 		},

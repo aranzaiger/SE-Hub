@@ -26,7 +26,7 @@ angular.module('SeHub')
 		if($scope.user.name === ";")
 		{
 			$scope.user.name = "";
-			$scope.user.name = $scope.user.username
+			$scope.user.name = $scope.user.username;
 			$scope.userHasNoName = true;
 		}
 
