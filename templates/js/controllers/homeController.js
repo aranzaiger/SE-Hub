@@ -6,17 +6,28 @@ angular.module('SeHub')
   $scope.msgToPost = "";
   $scope.oldText = "";
   $scope.messages = [];
+  $scope.msg = {};
+
+  $rootScope.seToken = $cookies['com.sehub.www'];
+  var token = $rootScope.seToken;
 
   var imagePath = $scope.user.avatar_url;
+  //var campusName = '';
+  $scope.course = '';
+  // $scope.campusName = '';
+
   $scope.phones = [
     { type: 'Home', number: '(972) 865-82861' },
     { type: 'Cell', number: '(972) 5251-32309' },
   ];
 
+
+
   if($scope.user.isLecturer)
   {
     $scope.isStudent = false;
     console.log("Lecturer Mode!");
+    //  console.log($scope.campusName);
   }
   else
   {
@@ -24,12 +35,20 @@ angular.module('SeHub')
     console.log("Student Mode!");
   }
 
+  // apiService.getCourseByCampusName($scope.user.classes_id_list[0]).success(function(data)
+  // {
+  //   console.log("Campus Name is ON! " + $scope.user.classes_id_list[0])
+  //   $scope.course = data;
+  // }).error(function()
+  // {
+  //   console.log("Error on ===> getCourseByCampusName")
+  // });
+
+
   $scope.addMessageClicked = function()
   {
     $scope.addMsg = true; // Reveal the "POST" Button
   }
-
-  $scope.msg = {};
   $scope.postMessageClicked = function() // Posting the message itself
   {  
     if($scope.msg.msgToAdd != null)
@@ -48,14 +67,11 @@ angular.module('SeHub')
   $scope.chooseCourseClicked = function()
   {
     console.log("choose course Clicked!!");
-
-
   }
 
   $scope.chooseProjectClicked = function()
   {
     console.log("choose project Clicked!!");
-
   }
 
 
