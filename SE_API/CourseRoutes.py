@@ -279,9 +279,6 @@ def getMessagesByCourseName(name):
 
 
 
-
-
-
 @course_routes.route('/api/courses/deleteCourse/<string:token>/<string:courseid>', methods=['DELETE'])
 @auto.doc()
 def deleteCourse(token,courseid):
@@ -389,6 +386,11 @@ def deleteCoursesByCampus(token,campusName):
 
     return no_content()
 
+
+
+#----------------------------------------------------------
+#                     DOCUMENTATION
+#----------------------------------------------------------
 
 @course_routes.route('/api/courses/help')
 def documentation():

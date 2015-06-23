@@ -21,10 +21,12 @@ from models.Project import Project
 from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
 
-
-
 project_routes = Blueprint("project_routes", __name__)
 auto = Autodoc()
+
+#----------------------------------------------------------
+#                     POST
+#----------------------------------------------------------
 
 @project_routes.route('/api/projects/create/<string:token>', methods=['POST'])
 @auto.doc()
@@ -78,9 +80,14 @@ def create_project(token):
                                 status=201,
                                 mimetype="application/json")
 
+#----------------------------------------------------------
+#                     PUT
+#----------------------------------------------------------
 
 
-
+#----------------------------------------------------------
+#                     GET
+#----------------------------------------------------------
 
 @project_routes.route('/api/projects/getProjectsByCourseName/<string:name>', methods=["GET"])
 @auto.doc()
@@ -131,6 +138,12 @@ def getProjectsByCourseName(name):
 
 
 
+#----------------------------------------------------------
+#                     DELETE
+#----------------------------------------------------------
+
+
+
 @project_routes.route('/api/projects/deleteProject/<string:token>/<string:projectid>', methods=['DELETE'])
 @auto.doc()
 def deleteProject(token,projectid):
@@ -178,6 +191,11 @@ def deleteProject(token,projectid):
     return forbidden("user is not owner of Project")
 
 
+
+
+#----------------------------------------------------------
+#                     DOCUMENTATION
+#----------------------------------------------------------
 
 @project_routes.route('/api/projects/help')
 def documentation():
