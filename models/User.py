@@ -15,6 +15,7 @@ class User(db.Model):
     campusName = db.StringProperty(required=True, default=" ")
     campuses_id_list = db.StringListProperty(default=[])
     courses_id_list = db.StringListProperty(default=[])
+    projects_id_list = db.StringListProperty(default=[])
 
     def to_JSON(self):
         data = {'username' : self.username,
@@ -25,6 +26,7 @@ class User(db.Model):
                 'isFirstLogin' : self.isFirstLogin,
                 'campusName': self.campusName,
                 'campuses_id_list': self.campuses_id_list,
-                'courses_id_list': self.courses_id_list
+                'courses_id_list': self.courses_id_list,
+                'projects_id_list': self.projects_id_list
                 }
         return json.dumps(data)

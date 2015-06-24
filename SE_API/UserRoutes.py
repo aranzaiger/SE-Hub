@@ -269,9 +269,6 @@ def getUserByToken(token):
                         mimetype="application/json")  # Real response!
 
 
-
-
-
     return no_content("No User Found")
 
 

@@ -153,20 +153,72 @@ def get_campuses(token):
         return forbidden("Invalid Token")
 
 
+@campus_routes.route('/api/campuses/getCampusesByUser/<string:token>', methods=['GET'])
+@auto.doc()
+def getCampusesByUser(token):
+    """
+    <span class="card-title">This Call will return an array of all Campuses of a certain User</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Array, Example:<br>
+    [<br>
+    {
+                'title': 'JCE',<br>
+                'email_ending': '@post.jce.ac.il',<br>
+                'master_user_id': 123453433341, (User that created the campus)<br>
+                'avatar_url': 'http://some.domain.com/imagefile.jpg',<br>
+                'id' : 1234567890<br>
+    },<br>
+    ....<br>
+    {<br>
+    ...<br>
+    }req<br>
+    ]<br>
+    <br>
+    403 - Invalid Token<br>
+    """
+
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad user Token")
+
+    arr = []
+    for i in user['campuses_id_list']:
+        campus = Campus.get_by_id(int(i))
+        arr.append(dict(json.loads(campus.to_JSON())))
+
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
+    else:
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
+
 #----------------------------------------------------------
 #                     DELETE
 #----------------------------------------------------------
 
 
-@campus_routes.route('/api/campuses/deleteCampus/<string:token>/<string:campusid>', methods=['DELETE'])
+@campus_routes.route('/api/campuses/deleteCampus/<string:token>/<string:campusId>', methods=['DELETE'])
 @auto.doc()
-def deleteCampus(token,campusid):
+def deleteCampus(token,campusId):
     """
     <span class="card-title">This Call will delete a specific campus</span>
     <br>
     <b>Route Parameters</b><br>
         - seToken: 'seToken'
-        - campusid: 'campusid'
+        - campusId: 1234567890
     <br>
     <br>
     <b>Payload</b><br>
@@ -192,7 +244,7 @@ def deleteCampus(token,campusid):
         return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
-    camp = Campus.get_by_id(int(campusid))
+    camp = Campus.get_by_id(int(campusId))
 
     if camp is None:
         return bad_request("no such campus")
