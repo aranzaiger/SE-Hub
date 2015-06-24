@@ -38,9 +38,9 @@ app.config(['$routeProvider', '$locationProvider',
 				templateUrl: 'templates/views/home.html',
 				controller: 'homeController'
 			})
-			.when('/Settings', {
-				templateUrl: 'templates/views/settings.html',
-				controller: 'settingsController'
+			.when('/profile/:id', {
+				templateUrl: 'templates/views/profile.html',
+				controller: 'profileController'
 			})
 			.when('/tasks', {
 				templateUrl: 'templates/views/tasks.html',

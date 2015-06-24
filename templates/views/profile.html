@@ -15,7 +15,7 @@
 								<img ng-src="{{user.avatar_url}}" alt="" style="width:20%">
 							</div>
 							<div flex="70%">
-								<md-button class="md-raised" ng-click="changeProfileMode()">
+								<md-button class="md-raised" ng-click="changeProfileMode()" ng-if="isUser()">
 									<i ng-class="profileModeIcon"></i> {{profileMode}}
 								</md-button>
 							</div>

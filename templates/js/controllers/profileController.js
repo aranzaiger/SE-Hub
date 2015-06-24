@@ -1,13 +1,14 @@
 angular.module('SeHub')
-	.controller('profileController', ['$scope', '$rootScope', 'dataService', 'apiService', '$cookies', '$location',
-		function($scope, $rootScope, dataService, apiService, $cookies, $location) {
+	.controller('profileController', ['$scope', '$rootScope', 'dataService', 'apiService',
+										'$cookies', '$location', '$routeParams',
+		function($scope, $rootScope, dataService, apiService, $cookies, $location, $routeParams) {
 
 			var token = $cookies['com.sehub.www'];
 
 			$scope.loadingData = true;
 			$scope.isInRegisterMode = false;
 
-			$scope.title = "Profile"
+			$scope.title = "Profile " + $routeParams.id; 
 
 			apiService.getUserByToken(token).success(function(data) {
 				if (data.message == 'No User Found') {
@@ -15,6 +16,7 @@ angular.module('SeHub')
 				}
 				$scope.loadingData = false;
 				$scope.user = data;
+		
 				console.log(data);
 				if ($scope.user.isFirstLogin) {
 					$scope.menuObj = {};
@@ -87,6 +89,9 @@ angular.module('SeHub')
 				[28, 48, 40, 3]
 			];
 
+			$scope.isUser = function(){
+				return $scope.user.id.toString() === $routeParams.id;
+			}
 
 		}
 	]);
