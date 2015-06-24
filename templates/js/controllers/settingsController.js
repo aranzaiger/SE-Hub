@@ -22,7 +22,6 @@ angular.module('SeHub')
 					$scope.loadingData = false;
 					$location.path('/register')
 				}
-
 			});
 
 			$scope.isEditMode = false;
