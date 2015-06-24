@@ -1,6 +1,7 @@
 <div layout-padding>
 	<div layout="row">
 	<div flex="20" layout-padding>
+		<md-card layout-padding>
 		<h2>
 			<i class="fa fa-info-circle"></i> Task Info: 
 		</h2>
@@ -28,45 +29,47 @@
 				</datepicker>
 			</div>
 			<div layout="row">
-			<div flex="60"></div>
-			<div>
-				<md-button class="md-raised md-primary"><i class="fa fa-paper-plane"></i> Submit</md-button>
-			</div>
+				<div flex="60"></div>
+				<div>
+					<md-button class="md-raised md-primary"><i class="fa fa-paper-plane"></i> Submit</md-button>
+				</div>
 			</div>
 		</div>
+			</md-card>
+	<div layout="column" layout-padding>
+		<md-card layout-padding>
+			<div>
+				<h2>
+					<i class="fa fa-cubes"></i> Add A component: 
+				</h2>
+			</div>
+			<div>
+				Select Type:
+				<md-select placeholder="Component Type" ng-model="newComp.type">
+	        		<md-option ng-repeat="component in componentTypes" value="{{component.type}}">{{component.type}}</md-option>
+	      		</md-select> 
+			</div>
+			<div>
+				<md-input-container>
+					<label>Label</label>
+					<input ng-model="newComp.label" required>
+	    		</md-input-container>
+			</div>
+			<div>
+				<md-switch ng-model="newComp.isMandatory" aria-label="Switch 1">
+	    			Mandatory?: {{ newComp.isMandatory}}
+	  			</md-switch>
+	  		</div>
+	  		<div layout="row">
+	  			<div flex="65"></div>
+	  			<md-button class="md-raised" ng-click="addComponent()"><i class="fa fa-plus"></i> Add To Task</md-button>
+	  		</div>
+	  		</md-card>
+  	</div>
 	</div>
 
-	<div layout="column" flex="30" layout-padding>
-		
-		<div>
-			<h2>
-				<i class="fa fa-cubes"></i> Add A component: 
-			</h2>
-		</div>
-		<div>
-			Select Type:
-			<md-select placeholder="Component Type" ng-model="newComp.type">
-        		<md-option ng-repeat="component in componentTypes" value="{{component.type}}">{{component.type}}</md-option>
-      		</md-select> 
-		</div>
-		<div>
-			<md-input-container>
-				<label>Label</label>
-				<input ng-model="newComp.label" required>
-    		</md-input-container>
-		</div>
-		<div>
-			<md-switch ng-model="newComp.isMandatory" aria-label="Switch 1">
-    			Mandatory?: {{ newComp.isMandatory}}
-  			</md-switch>
-  		</div>
-  		<div layout="row">
-  			<div flex="65"></div>
-  			<md-button class="md-raised" ng-click="addComponent()"><i class="fa fa-plus"></i> Add To Task</md-button>
-  		</div>
-  	</div>
 
-	<div flex="50" layout-padding>
+	<div flex="80" layout-padding>
 		<!-- <md-card style="background-image: url('http://www.stationeryhq.com/content/images/thumbs/0000324_clipboard_500.png')">
 
 		</md-card> -->
