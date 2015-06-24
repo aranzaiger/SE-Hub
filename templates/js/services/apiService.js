@@ -47,8 +47,7 @@ service.factory('apiService', ['$http', function($http) {
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getAll/" + token;
 			req = {
 				method : "GET",
-				url : url,
-				data: token
+				url : url
 
 			};
 			return $http(req);
@@ -67,6 +66,16 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
+
+			};
+			return $http(req);
+		},
+		createMessage: function(token, payLoad){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCourseMessages/" + token;
+			req = {
+				method : "POST",
+				url : url,
+				data: payLoad
 
 			};
 			return $http(req);
