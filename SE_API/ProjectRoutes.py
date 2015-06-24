@@ -142,9 +142,9 @@ def joinProject(token, projectId):
 #                     GET
 #----------------------------------------------------------
 
-@project_routes.route('/api/projects/getProjectsByCourseName/<string:name>', methods=["GET"])
+@project_routes.route('/api/projects/getProjectsByCourse/<string:name>', methods=["GET"])
 @auto.doc()
-def getProjectsByCourseName(name):
+def getProjectsByCourse(name):
     """
     <span class="card-title">>This Call will return an array of all projects in a given course</span>
     <br>
