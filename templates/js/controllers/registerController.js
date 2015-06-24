@@ -30,7 +30,7 @@ angular.module('SeHub')
 			$scope.userHasNoName = true;
 		}
 
-		apiService.getAllCampuses($scope.user.seToken).success(function(data) // Get all the campuses
+		apiService.getAllCampuses(token).success(function(data) // Get all the campuses
 		{
 			$scope.campuses = data;
 		}).error(function()
@@ -78,7 +78,7 @@ angular.module('SeHub')
 
 			console.log("Mail: " + fullMail);
 
-			apiService.sendValidationMail($scope.user.seToken, fullMail).success(function(data)
+			apiService.sendValidationMail(token, fullMail).success(function(data)
 			{
 				console.log("DONE - 200");
 			  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
@@ -123,7 +123,7 @@ angular.module('SeHub')
     	if(result.test(email)) // TODO Fix when success to show mdDialog until 'Got it' clicked
     	{
 	    	console.log("Im good");
-	    	apiService.sendValidationMail($scope.user.seToken, email).success(function(data)
+	    	apiService.sendValidationMail(token, email).success(function(data)
 			{
 				console.log("DONE - 200");
 			  	$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
