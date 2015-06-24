@@ -25,10 +25,14 @@ from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
 
 
-
-
 task_routes = Blueprint("task_routes", __name__)
 auto = Autodoc()
+
+
+
+#----------------------------------------------------------
+#                     POST
+#----------------------------------------------------------
 
 @task_routes.route('/api/tasks/create/<string:token>', methods=['POST'])
 @auto.doc()
@@ -140,8 +144,13 @@ def create_task(token):
     return created()
 
 
+#----------------------------------------------------------
+#                     PUT
+#----------------------------------------------------------
 
-
+#----------------------------------------------------------
+#                     GET
+#----------------------------------------------------------
 
 
 @task_routes.route('/api/tasks/getAllTasks/<string:courseName>', methods=["GET"])
@@ -321,6 +330,12 @@ def getTaskComponents(taskId):
 
 
 
+#----------------------------------------------------------
+#                     DELETE
+#----------------------------------------------------------
+
+
+
 @task_routes.route('/api/tasks/deleteTask/<string:token>/<string:taskid>', methods=['DELETE'])
 @auto.doc()
 def deleteTask(token,taskid):
@@ -421,6 +436,11 @@ def deleteTaskComponents(token,taskid):
     return accepted("Task deleted")
 
 
+
+
+#----------------------------------------------------------
+#                     DOCUMENTATION
+#----------------------------------------------------------
 
 @task_routes.route('/api/tasks/help')
 def documentation():

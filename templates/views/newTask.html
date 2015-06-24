@@ -27,6 +27,12 @@
 				  <input ng-model="task.date" type="text"/>
 				</datepicker>
 			</div>
+			<div layout="row">
+			<div flex="60"></div>
+			<div>
+				<md-button class="md-raised md-primary"><i class="fa fa-paper-plane"></i> Submit</md-button>
+			</div>
+			</div>
 		</div>
 	</div>
 
@@ -55,8 +61,8 @@
   			</md-switch>
   		</div>
   		<div layout="row">
-  			<div flex="70"></div>
-  			<md-button class="md-primary" ng-click="addComponent()">Add Component</md-button>
+  			<div flex="65"></div>
+  			<md-button class="md-raised" ng-click="addComponent()"><i class="fa fa-plus"></i> Add To Task</md-button>
   		</div>
   	</div>
 
