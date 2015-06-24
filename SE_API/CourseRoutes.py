@@ -47,13 +47,12 @@ def create_course(token):
     <br>
     <b>Payload</b><br>
      - JSON Object, Example: <br>
-     {<br>
-     'courseName': 'Advance Math',<br>
-     'campusName': 'JCE',<br>
-     'startDate': {'year': 2015, 'month' : 4, 'day' : 3}<br>
-     'endDate': {'year': 2016, 'month' : 5, 'day' : 14}<br>
-     'taskFlag': false<br>
-    }<br>
+         {<br>
+         'courseName': 'Advance Math',<br>
+         'campusName': 'JCE',<br>
+         'startDate': {'year': 2015, 'month' : 4, 'day' : 3},<br>
+         'endDate': {'year': 2016, 'month' : 5, 'day' : 14}<br>
+        }<br>
     <br>
     <br>
     <b>Response</b>
@@ -75,7 +74,7 @@ def create_course(token):
     try:
         payload = json.loads(request.data)
     except Exception as e:
-        return bad_request()
+        return bad_request("incorrect JSON format")
 
     try:
         start_date = datetime.date(payload['startDate']['year'],payload['startDate']['month'],payload['startDate']['day'])
@@ -98,9 +97,14 @@ def create_course(token):
 
     except Exception as e:
         print e
-        return bad_request()
+        return bad_request(2)
 
     db.put(course)
+
+    #add course to user course list
+    user.courses_id_list.append(str(course.key().id()))
+    db.put(user)
+
     db.save
     return Response(response=course.to_JSON(),
                                 status=201,
@@ -149,10 +153,15 @@ def createMessage(token):
         return bad_request("here")
 
     try:
-        msg = Message(courseName=payload['courseName'], message=payload['message'], msgDate=datetime.datetime.now())
+        msg = Message(groupId=payload['groupId'], message=payload['message'], msgDate=datetime.datetime.now(), master_id=user.key().id())
     except Exception as e:
         print e
         return bad_request("there")
+
+    try:
+        msg['isProject'] = payload['isProject']
+    except Exception as e:
+        pass
 
     db.save(msg)
     db.save
@@ -210,6 +219,66 @@ def getCourseByCampusName(name):
         return Response(response=[],
                         status=200,
                         mimetype="application/json")
+
+@course_routes.route('/api/courses/getCoursesByUser/<string:token>/<string:campusId>', methods=['GET'])
+@auto.doc()
+def getCampusesByUser(token,campusId):
+    """
+    <span class="card-title">This Call will return an array of all Campuses of a certain User</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'<br>
+        - campusId: 1234354543<br>
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Array, Example:<br>
+    [<br>
+    {
+                'title': 'JCE',<br>
+                'email_ending': '@post.jce.ac.il',<br>
+                'master_user_id': 123453433341, (User that created the campus)<br>
+                'avatar_url': 'http://some.domain.com/imagefile.jpg',<br>
+                'id' : 1234567890<br>
+    },<br>
+    ....<br>
+    {<br>
+    ...<br>
+    }req<br>
+    ]<br>
+    <br>
+    403 - Invalid Token<br>
+    """
+
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad user Token")
+
+    campus = Campus.get_by_id(int(campusId))
+    if campus is None:
+        return bad_request("No such Campus")
+
+
+    arr = []
+    for i in user['courses_id_list']:
+        course = Course.get_by_id(int(i))
+        if course.courseName == campus.title:
+            arr.append(dict(json.loads(course.to_JSON())))
+
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
+    else:
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
+
 
 @course_routes.route('/api/courses/getMessagesByCourseName/<string:name>', methods=["GET"])
 @auto.doc()
@@ -286,7 +355,7 @@ def deleteCourse(token,courseid):
     <span class="card-title">This Call will delete a specific Course</span>
     <br>
     <b>Route Parameters</b><br>
-        - seToken: 'seToken'
+        - seToken: 'seToken'<br>
         - courseid: 'courseid'
     <br>
     <br>
