@@ -14,18 +14,17 @@ class User(db.Model):
     isFirstLogin = db.BooleanProperty(default=True)
     campusName = db.StringProperty(required=True, default=" ")
     campuses_id_list = db.StringListProperty(default=[])
-    classes_id_list = db.StringListProperty(default=[])
+    courses_id_list = db.StringListProperty(default=[])
 
     def to_JSON(self):
         data = {'username' : self.username,
                 'name' : self.name,
                 'email' : self.email,
                 'isLecturer' : self.isLecturer,
-                'seToken' : self.seToken,
                 'avatar_url' : self.avatar_url,
                 'isFirstLogin' : self.isFirstLogin,
                 'campusName': self.campusName,
                 'campuses_id_list': self.campuses_id_list,
-                'classes_id_list': self.classes_id_list
+                'courses_id_list': self.courses_id_list
                 }
         return json.dumps(data)

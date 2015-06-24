@@ -22,10 +22,13 @@ from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
 from SE_API.Email_Utils import *
 
-
-
 campus_routes = Blueprint("campus_routes", __name__)
 auto = Autodoc()
+
+
+#----------------------------------------------------------
+#                     POST
+#----------------------------------------------------------
 
 @campus_routes.route('/api/campuses/create/<string:token>', methods=['POST'])
 @auto.doc()
@@ -80,11 +83,20 @@ def create_campus(token):
         return bad_request()
 
     send_create_campus_request(user.email, user.name, campus.title)
+    db.put(campus)
     notify_se_hub_campus_request(campus, campus.title)
+    db.delete(campus)
     return ok()
 
 
 
+#----------------------------------------------------------
+#                     PUT
+#----------------------------------------------------------
+
+#----------------------------------------------------------
+#                     GET
+#----------------------------------------------------------
 
 @campus_routes.route('/api/campuses/getAll/<string:token>', methods=['GET'])
 @auto.doc()
@@ -141,6 +153,10 @@ def get_campuses(token):
         return forbidden("Invalid Token")
 
 
+#----------------------------------------------------------
+#                     DELETE
+#----------------------------------------------------------
+
 
 @campus_routes.route('/api/campuses/deleteCampus/<string:token>/<string:campusid>', methods=['DELETE'])
 @auto.doc()
@@ -190,6 +206,10 @@ def deleteCampus(token,campusid):
     return forbidden("lecturer is not owner of campus")
 
 
+
+#----------------------------------------------------------
+#                     DOCUMENTATION
+#----------------------------------------------------------
 
 @campus_routes.route('/api/campuses/help')
 def documentation():
