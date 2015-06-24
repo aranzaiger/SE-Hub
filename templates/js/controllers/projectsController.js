@@ -10,7 +10,14 @@ angular.module('SeHub')
 
 	}
 
+	$scope.projects = ['AMI', 'LULU', 'XIN Zhau', 'LUMI lu', 'Shimi', 'Azligi zligi', 'Drugs'];
 
+	// apiService.getProjectsByCourse(courseId).success(function(data) // Get all the campuses
+	// {
+	// 	$scope.projects = data;
+	// }).error(function() {
+	// // TODO
+	// });
 
 
 }]);

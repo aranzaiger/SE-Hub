@@ -71,7 +71,7 @@ service.factory('apiService', ['$http', function($http) {
 			return $http(req);
 		},
 		createMessage: function(token, payLoad){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCourseMessages/" + token;
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/createMessage/" + token;
 			req = {
 				method : "POST",
 				url : url,
@@ -80,8 +80,45 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		getCourseMessages: function(token, courseName){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCourseMessages/" + token + '/' + courseName;
+		getMessagesByCourseName: function(token, courseName){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getMessagesByCourseName/" + token + '/' + courseName;
+			req = {
+				method : "GET",
+				url : url
+
+			};
+			return $http(req);
+		},
+		createCourse: function(token, payLoad){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/create/" + token;
+			req = {
+				method : "POST",
+				url : url,
+				data: payLoad
+
+			};
+			return $http(req);
+		},
+		getCampusesByUser: function(){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCampusesByUser/" + token;
+			req = {
+				method : "GET",
+				url : url
+
+			};
+			return $http(req);
+		},
+		getClassesByCourse: function(){ // Need to add camusName (ngRoute) ~ sagi //TODO
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/ClassesByCourse/" + token;
+			req = {
+				method : "GET",
+				url : url
+
+			};
+			return $http(req);
+		},
+		getProjectsByCourse: function(){ // Need to add courseID (ngRoute) ~ sagi //TODO
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getProjectByCourse/" + token;
 			req = {
 				method : "GET",
 				url : url

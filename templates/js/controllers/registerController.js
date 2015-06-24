@@ -14,26 +14,26 @@ angular.module('SeHub')
 		var token = $rootScope.seToken;
 
 		apiService.getUserByToken(token).success(function(data) // Get user token
-			{
-				$scope.user = data;
+		{
+			$scope.user = data;
 
-				if (data.message == 'No User Found')
-					console.error("No User Found!");
-				console.log(data);
+			if (data.message == 'No User Found')
+				console.error("No User Found!");
+			console.log(data);
 
-				if ($scope.user.name === ";") {
-					$scope.user.name = "";
-					$scope.user.name = $scope.user.username;
-					$scope.userHasNoName = true;
-				}
+			if ($scope.user.name === ";") {
+				$scope.user.name = "";
+				$scope.user.name = $scope.user.username;
+				$scope.userHasNoName = true;
+			}
 
-				apiService.getAllCampuses(token).success(function(data) // Get all the campuses
-					{
-						$scope.campuses = data;
-					}).error(function() {
-					// TODO
-				});
+			apiService.getAllCampuses(token).success(function(data) // Get all the campuses
+				{
+					$scope.campuses = data;
+				}).error(function() {
+				// TODO
 			});
+		});
 
 		$scope.dropdownClicked = function() {
 			if ($scope.campus) {

@@ -2,54 +2,51 @@
 	<md-content layout-padding layout-margin>
 		<h1 layout-margin style="margin-left:15px"><i class="fa fa-graduation-cap"></i> My Classes</h1>
 	</md-content>
+	<md-card flex = "99" class="cardAllcourses">	
+		<div flex class = "allcoursesShow" ><!-- layout = "column"> -->
+			<div flex layout = "row" ng-repeat = "course in courses" value = "{{course}}" layout-padding>
+				<a href="http://localhost:8080/home#/projects" style="color:black; text-decoration:none;">
+					<md-card layout-padding flex class = "campusCard">
+						{{course}}
+					</md-card>
+				</a>
+			</div>
+		</div>
+	</md-card>
+
 	<div ng-if="user.isLecturer"> <!-- Lecturer Mode -->
 		<div layout="row">
 			<div layout-margin layout-padding>
 				<md-button ng-click="createCourseClicked()" ng class="md-raised md-primary">Create Class</md-button>
 			</div>
-			<div layout-margin layout-padding>
-				<md-button ng-click="showMyCourses()" ng class="md-raised md-primary">Show My Classes</md-button>
-			</div>
 		</div>
 		<div ng-if="isNewCourse">
 			<md-content>
-				<md-content layout-padding layout="row" layout-sm="column">
-					<md-input-container>
-						<label>User Name</label>
-						<input ng-model="user.name">
-					</md-input-container>
-					<md-input-container>
-						<label>Email</label>
-						<input ng-model="user.email" type="email">
-					</md-input-container>
-				</md-content>
 				<md-content layout-padding>
-					<form name="createNewCourseForm">
-						<div layout layout-sm="column">
-							<md-input-container style="width:80%">
-								<label>Class Name</label>
-								<input ng-model="user.createNewCourse" min-length="1" required>
-							</md-input-container>
-							<md-input-container flex>
-								<label>Course Finish Date</label>
-								<input type="date" ng-model="user.finalDate" required>
-							</md-input-container>
-						</div>
-						<div layout layout-sm="column">
-							<md-input-container flex>
-								<label>First name</label>
-								<input ng-model="user.firstName">
-							</md-input-container>
-							<md-input-container flex>
-								<label>Last Name</label>
-								<input ng-model="theMax">
-							</md-input-container>
-						</div>
-						<md-input-container flex>
-							<label>General Info (optional)</label>
-							<textarea ng-model="user.courseInfo" columns="1" md-maxlength="150"></textarea>
-						</md-input-container>
-					</form>
+					<md-card layout-padding>
+						<form name="createNewCourseForm">
+							<div layout layout-sm="column">
+								<md-input-container flex = "50">
+									<label>Campus name</label>
+									<input ng-model="course.campusName" required>
+								</md-input-container>
+							</div>
+							<div layout layout-sm="column">
+								<md-input-container style="width:80%">
+									<label flex = "50">Class Name</label>
+									<input ng-model="course.courseName" min-length="1" required>
+								</md-input-container>
+								<md-input-container flex = "20">
+									<label>Course Start Date</label>
+									<input type="date" ng-model="course.startDate" required>
+								</md-input-container>
+								<md-input-container flex = "20">
+									<label>Course Finish Date</label>
+									<input type="date" ng-model="course.endDate" required>
+								</md-input-container>
+							</div>
+						</form>
+					</md-card>
 				</md-content>
 				<div layout-padding layout-margin>
 					<md-button ng-click="submitNewClassClicked()" class="md-raised md-primary">Submit New Class</md-button>
@@ -61,91 +58,6 @@
 				<md-option ng-repeat="c in courses" value="{{c.course}}">{{c.course}}</md-option>
 			</md-select>	
 		</div>
-					<!-- <md-content>
-				<div layout="row">
-					<div flex="65">
-						<md-card>
-							<p class = "messagesFeed">Messages</p>
-						</md-card>
-					</div>
-					<div flex="34">
-						<md-card>
-							<p class = "tasksFeed">Tasks</p>
-						</md-card>
-					</div>
-				</div>
-				<div layout="row">
-					<div  flex="65">
-						<md-card>
-						<div class = "messagesContent"> 
-							<md-card ng-repeat = "msg in messages">
-								<div layout="column">
-									<div layout="row" layout-margin layout-padding>
-										<div flex="10" class="md-avatar">
-											<img ng-src="{{user.avatar_url}}" style="width:100%">
-										</div>
-										<div flex>	
-											<div layout = "column">
-												<div>
-													<b>{{user.name}}</b>
-												</div>
-												<div>
-													class_name
-												</div>
-											</div>
-										</div>
-									</div>
-									<div>
-										<div flex="69" class="msgSent" layout-margin layout-padding>
-											{{msg.text}}
-										</div>
-									</div>	
-								</div>
-							</md-card>
-						</div>
-						</md-card>
-					</div>
-					<div flex="34">
-						<md-card>
-							<p class = "tasksContent"> 
-								For Task 3 Press: <a href="http://localhost:8080/home#/tasks">Task #3</a>
-								<br></br>
-								For Task 4 Press: <a href="http://localhost:8080/home#/home">Task #4</a>
-								<br></br>
-								For Task 5 Press: <a href="http://localhost:8080/home#/home">Task #5</a>
-								<br></br>
-								For Task 6 Press: <a href="http://localhost:8080/home#/home">Task #6</a>
-								<br></br>
-								For Task 7 Press: <a href="http://localhost:8080/home#/home">Task #7</a>
-								<br></br>
-								For Task 8 Press: <a href="http://localhost:8080/home#/home">Task #8</a>
-							</p>
-						</md-card>
-					</div>
-				</div>
-				<div class ="addMessage" layout="row" layout-margin layout padding>
-					<div>
-						<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary"><i class="fa fa-comments"></i></md-button>
-					</div>
-					<div ng-if="addMsg">
-						<md-select placeholder="Choose Course" ng-model="course" ng-click="chooseCourseClicked()" class="courseDropDown">
-							<md-option ng-repeat="c in courses" value="{{c.course}}">{{c.course}}</md-option>
-						</md-select>
-					</div>
-				
-				</div>
-				<div ng-if="addMsg">
-					<div layout = "row" layout-margin layout padding layout-align = "left center">	
-						<md-button ng-click="postMessageClicked()" ng class="md-raised md-primary">Post</md-button>
-						<md-button ng-click="clearAllClicked()" ng class="md-raised md-primary">Clear All</md-button>
-					</div>
-					<div class="port_spacer"></div>
-					<md-input-container>
-					<label> Write Your Desired Message Here And Press Post</label>
-						<input type="text" minlength="1" ng-model="msg.msgToAdd" required>
-					</md-input-container>
-				</div>
-			</md-content> -->
 	</div>
 
 	<div ng-if="isStudent"> <!-- Student Mode -->
