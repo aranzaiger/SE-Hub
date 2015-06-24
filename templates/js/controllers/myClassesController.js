@@ -5,8 +5,11 @@ angular.module('SeHub')
 	$scope.isCourse = false;
 	$scope.isNewCourse = false;
 	$scope.newClassName = false;
-	$scope.user.createNewCourse = '';
+	// $scope.course.courseName = '';
+	$scope.course = {};
+	var token = $cookies['com.sehub.www'];
 	$scope.user.finalDate = '';
+	$scope.user.startDate = '';
 	$scope.showMyClass = false;
 	
 	if($scope.user.isLecturer)
@@ -42,13 +45,38 @@ angular.module('SeHub')
 
 	$scope.submitNewClassClicked = function()
 	{
-	   	if($scope.user.createNewCourse != '' && $scope.user.finalDate != '')
+	   	if($scope.course.courseName != '' && $scope.course.endDate != '' && $scope.course.startDate != '')
 	    {
-    		console.log("finalDate " + $scope.user.finalDate);
-	      	console.log($scope.user.createNewCourse);
+	    	var jsonNewCourse =
+	    	{
+	    		'courseName': $scope.course.courseName,
+	    		'campusName': $scope.course.campusName,
+	    		'startDate': {
+	    			'year' : $scope.course.startDate.getFullYear(),
+	    			'day' :  $scope.course.startDate.getDate(),
+	    			'month': ($scope.course.startDate.getMonth() + 1)
+	    		},
+	    		'endDate': {
+	    			'year' : $scope.course.endDate.getFullYear(),
+	    			'day' :  $scope.course.endDate.getDate(),
+	    			'month': ($scope.course.endDate.getMonth() + 1)
+	    		}
+	    	};
+
+	    	console.log("Json here:");
+    		console.log(jsonNewCourse);
+	      	
+	      	apiService.createCourse(token, jsonNewCourse).success(function(data)
+	      	{
+	      		console.log("createCourse API done");
+	      	}).error(function(err)
+	      	{
+	      		console.log(err);
+	      	});
 	      	$mdDialog.show($mdDialog.alert().title('Course Created').content('You have created course successfully.')
 		        .ariaLabel('Email verification alert dialog').ok('Lets Start!').targetEvent());
 			// $window.location.href = 'templates/views/newCourse.html'; // TODO TODO TODO
+
 	    }
 	    else
 	    {
