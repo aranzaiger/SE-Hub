@@ -37,7 +37,7 @@ service.factory('apiService', ['$http', function($http) {
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/updateUser/" + token;
 			
 			req = {
-				method: "POST",
+				method: "PUT",
 				url: url,
 				data: payLoad
 			};
