@@ -7,7 +7,7 @@ angular.module('SeHub')
 	{
 		var taskName = name;
 		console.log("task created! " + taskName);
-		$window.location.href = 'http://localhost:8080/home#/tasks/new'; // Reference to 'newTask' page
+		$location.path("/tasks/new"); // Reference to 'newTask' page
 
 	}
 
