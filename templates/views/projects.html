@@ -1,10 +1,9 @@
 <div class = "projects">
-	
 	<h1 style="margin-left:15px"><i class="fa fa-cube"></i> Projects</h1>
 	<md-card flex = "99" class="cardAllProjects">	
 		<div flex class = "allProjectsShow" layout = "column">
 			<div flex layout = "row" ng-repeat = "project in projects" value = "{{project}}" layout-padding>
-				<a href="http://localhost:8080/home#/home" style="color:black; text-decoration:none;">
+				<a href="http://localhost:8080/home#/thisProject" style="color:black; text-decoration:none;">
 					<md-card layout-padding flex class = "projectCard">
 						{{project}}
 					</md-card>
@@ -12,8 +11,6 @@
 			</div>
 		</div>
 	</md-card>
-
-	
 	<md-content layout-padding layout-margin>
 		<md-button ng-click="createProjectClicked()" ng class="md-raised md-primary">Create Project</md-button>
 	</md-content>

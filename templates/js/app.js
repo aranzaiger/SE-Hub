@@ -65,6 +65,10 @@ app.config(['$routeProvider', '$locationProvider',
 			.when('/campuses', {
 				templateUrl: 'templates/views/campuses.html',
 				controller: 'campusesController'
+			})
+			.when('/thisProject', {
+				templateUrl: 'templates/views/thisProject.html',
+				controller: 'thisProjectController'
 			});
 	}
 ]);

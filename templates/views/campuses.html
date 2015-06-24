@@ -2,11 +2,11 @@
 	<md-content layout-padding layout-margin>
 		<h1 layout-margin style="margin-left:15px"><i class="fa fa-university"></i> My Campuses</h1>
 	</md-content>
-	<md-card flex = "99" class="cardAllCampuses">	
-		<div flex class = "allCampusesShow" layout = "column">
-			<div flex layout = "row" ng-repeat = "campus in campuses" value = "{{campus}}" layout-padding>
+	<md-card class="cardAllCampuses">	
+		<div class = "allCampusesShow" layout = "column">
+			<div layout = "row" ng-repeat = "campus in campuses" value = "{{campus}}" layout-padding>
 				<a href="http://localhost:8080/home#/myClasses" style="color:black; text-decoration:none;">
-					<md-card layout-padding flex class = "campusCard">
+					<md-card layout-padding class = "campusCard">
 						{{campus}}
 					</md-card>
 				</a>

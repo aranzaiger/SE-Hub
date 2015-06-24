@@ -108,7 +108,6 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		},
 		getClassesByCourse: function(){ // Need to add camusName (ngRoute) ~ sagi //TODO
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/ClassesByCourse/" + token;
 			req = {
