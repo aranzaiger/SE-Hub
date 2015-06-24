@@ -99,6 +99,8 @@ def create_course(token):
         print e
         return bad_request(2)
 
+    #add user to course membersId list
+    course.membersId.append(str(user.key().id()))
     db.put(course)
 
     #add course to user course list
@@ -167,6 +169,56 @@ def createMessage(token):
     db.save
     return created()
 
+
+
+#----------------------------------------------------------
+#                     PUT
+#----------------------------------------------------------
+
+@course_routes.route('/api/courses/joinCourse/<string:token>/<string:courseId>', methods=["PUT"])
+@auto.doc()
+def joinCourse(token, courseId):
+    """
+    <span class="card-title">This call will add the user (by token) to a specific course</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'<br>
+        - courseId: 123456789
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - None <br>
+    <br>
+    <b>Response</b>
+    <br>
+    202 - Accepted
+    <br>
+    400 - Bad Request
+    <br>
+    403 - Invalid token or not a lecturer
+    """
+
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Wrong user Token")
+
+    course = Course.get_by_id(int(courseId))
+    if course is None:
+        return bad_request("No such course")
+
+    if user.key().id() in course.membersId:
+        return no_content("User is already member in Project")
+
+    course.membersId.append(str(user.key().id()))
+    user.courses_id_list.append(str(course.key().id()))
+
+    db.put(course)
+    db.put(user)
+    db.save
+
+    return Response(response=course.to_JSON(),
+                        status=202,
+                        mimetype="application/json")
 
 
 #----------------------------------------------------------

@@ -10,6 +10,7 @@ class Course(db.Model):
     # projects = db.StringListProperty(required=True,default=[])
     startDate = db.DateProperty(required=True)
     endDate = db.DateProperty(required=True)
+    membersId = db.StringListProperty(required=True)
 
     def to_JSON(self):
         data = {'courseName' : self.courseName,
@@ -26,6 +27,7 @@ class Course(db.Model):
                     'month': self.endDate.month,
                     'day': self.endDate.day,
                 },
+                'membersId' : self.membersId,
                 'id' : self.key().id()
         }
         return json.dumps(data)
