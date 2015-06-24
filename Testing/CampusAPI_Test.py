@@ -21,13 +21,13 @@ class UserTestPlan(unittest.TestCase):
         #url = "http://localhost:8080/api/courses/create/_QA_TOKEN_TEST_LECTURER"
         url=self.__class__.url_+'api/campuses/create/'+__CONFIG__['TOKENS']['LECTURER']
         data = {
-            'title': 'Campus name',
+            'title': 'QA Campus',
             'email_ending': '@campus.ac.com',
             'avatar_url': 'http://location.domain.com/image.jpg'
         }
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         r = requests.post(url, data=json.dumps(data), headers=headers)
-        self.assertEquals(r.status_code, 201)
+        self.assertEquals(r.status_code, 200)
 
     def test_campusCreate_student(self):
         #url = "http://localhost:8080/api/courses/create/_QA_TOKEN_TEST_LECTURER"
