@@ -210,15 +210,15 @@ def getCampusesByUser(token):
 #----------------------------------------------------------
 
 
-@campus_routes.route('/api/campuses/deleteCampus/<string:token>/<string:campusid>', methods=['DELETE'])
+@campus_routes.route('/api/campuses/deleteCampus/<string:token>/<string:campusId>', methods=['DELETE'])
 @auto.doc()
-def deleteCampus(token,campusid):
+def deleteCampus(token,campusId):
     """
     <span class="card-title">This Call will delete a specific campus</span>
     <br>
     <b>Route Parameters</b><br>
         - seToken: 'seToken'
-        - campusid: 'campusid'
+        - campusId: 1234567890
     <br>
     <br>
     <b>Payload</b><br>
@@ -244,7 +244,7 @@ def deleteCampus(token,campusid):
         return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
-    camp = Campus.get_by_id(int(campusid))
+    camp = Campus.get_by_id(int(campusId))
 
     if camp is None:
         return bad_request("no such campus")
