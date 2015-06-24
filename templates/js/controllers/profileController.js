@@ -1,5 +1,5 @@
 angular.module('SeHub')
-	.controller('settingsController', ['$scope', '$rootScope', 'dataService', 'apiService', '$cookies', '$location',
+	.controller('profileController', ['$scope', '$rootScope', 'dataService', 'apiService', '$cookies', '$location',
 		function($scope, $rootScope, dataService, apiService, $cookies, $location) {
 
 			var token = $cookies['com.sehub.www'];
@@ -7,7 +7,7 @@ angular.module('SeHub')
 			$scope.loadingData = true;
 			$scope.isInRegisterMode = false;
 
-			$scope.title = "Settings"
+			$scope.title = "Profile"
 
 			apiService.getUserByToken(token).success(function(data) {
 				if (data.message == 'No User Found') {

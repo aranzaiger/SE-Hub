@@ -27,6 +27,7 @@ class User(db.Model):
                 'campusName': self.campusName,
                 'campuses_id_list': self.campuses_id_list,
                 'courses_id_list': self.courses_id_list,
-                'projects_id_list': self.projects_id_list
+                'projects_id_list': self.projects_id_list,
+                'id' : self.key().id()
                 }
         return json.dumps(data)
