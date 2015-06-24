@@ -197,6 +197,18 @@ body.noscroll
   border-radius: 1px black solid;
   }*/
 
+  .allCampusesShow
+  {
+    overflow:hidden;
+    background-size: auto;
+    
+  }
+  .campusCard
+  {
+    /*height:80%;*/
+    /*width:80%;*/
+  }
+
   .gray-font
   {
     color: #7f7f7f;
@@ -395,6 +407,11 @@ body.noscroll
 {
   border: 10px;
   border-color: solid red;
+}
+
+.cardAllCampuses
+{
+  word-break: break-word;
 }
 
 .addMessage

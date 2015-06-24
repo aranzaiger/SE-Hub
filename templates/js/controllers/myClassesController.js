@@ -5,7 +5,6 @@ angular.module('SeHub')
 	$scope.isCourse = false;
 	$scope.isNewCourse = false;
 	$scope.newClassName = false;
-	// $scope.course.courseName = '';
 	$scope.course = {};
 	var token = $cookies['com.sehub.www'];
 	$scope.user.finalDate = '';
@@ -24,6 +23,17 @@ angular.module('SeHub')
 	}
 
 
+	$scope.courses = ['SE', 'PC', 'Math', 'Calculus', 'Ivrit', 'English', 'Drugs'];
+
+
+	// apiService.getClassesByUser(token).success(function(data) // Get all the campuses
+	// {
+	// 	$scope.courses = data;
+	// }).error(function() {
+	// // TODO
+	// });
+
+
 	$scope.chooseCourseClicked = function()
 	{
 		$scope.isCourse = true;
@@ -32,15 +42,7 @@ angular.module('SeHub')
 
 	$scope.createCourseClicked = function()
 	{
-		$scope.isNewCourse = true;
-		$scope.showMyClass = false;
-		console.log("create course Clicked!!");
-	}
-
-	$scope.showMyCourses = function()
-	{
-		$scope.showMyClass = true;
-		$scope.isNewCourse = false;
+		$scope.isNewCourse = !$scope.isNewCourse;
 	}
 
 	$scope.submitNewClassClicked = function()
@@ -74,8 +76,10 @@ angular.module('SeHub')
 	      		console.log(err);
 	      	});
 	      	$mdDialog.show($mdDialog.alert().title('Course Created').content('You have created course successfully.')
-		        .ariaLabel('Email verification alert dialog').ok('Lets Start!').targetEvent());
-			// $window.location.href = 'templates/views/newCourse.html'; // TODO TODO TODO
+		        .ariaLabel('Email verification alert dialog').ok('Lets Start!').targetEvent())
+			.then(function() {
+							$window.location.href = 'templates/views/newCourse.html'; // TODO TODO TODO
+						}); // Pop-up alert
 
 	    }
 	    else

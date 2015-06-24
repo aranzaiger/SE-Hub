@@ -35,13 +35,13 @@ angular.module('SeHub')
     console.log("Student Mode!");
   }
 
-  // apiService.getCourseByCampusName($scope.user.classes_id_list[0]).success(function(data)
+  // apiService.getCourseByCampusName(token).success(function(data)
   // {
-  //   console.log("Campus Name is ON! " + $scope.user.classes_id_list[0])
+  //   console.log("Campus Name is ON! " + token)
   //   $scope.course = data;
-  // }).error(function()
+  // }).error(function(err)
   // {
-  //   console.log("Error on ===> getCourseByCampusName")
+  //   console.log("Error ===> " + err + " ===> getCourseByCampusName")
   // });
 
 

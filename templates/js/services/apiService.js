@@ -98,6 +98,34 @@ service.factory('apiService', ['$http', function($http) {
 
 			};
 			return $http(req);
+		},
+		getCampusesByUser: function(){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCampusesByUser/" + token;
+			req = {
+				method : "GET",
+				url : url
+
+			};
+			return $http(req);
+		},
+		},
+		getClassesByCourse: function(){ // Need to add camusName (ngRoute) ~ sagi //TODO
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/ClassesByCourse/" + token;
+			req = {
+				method : "GET",
+				url : url
+
+			};
+			return $http(req);
+		},
+		getProjectsByCourse: function(){ // Need to add courseID (ngRoute) ~ sagi //TODO
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getProjectByCourse/" + token;
+			req = {
+				method : "GET",
+				url : url
+
+			};
+			return $http(req);
 		}
 	};
 }]);
