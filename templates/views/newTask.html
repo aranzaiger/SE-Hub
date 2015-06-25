@@ -46,16 +46,21 @@
 				</div>
 				<div>
 					Select Type:
-					<md-select placeholder="Component Type" ng-model="newComp.type">
+					<md-select placeholder="Component Type" ng-model="newComp.type" ng-change="ComponentType(newComp.type)">
 		        		<md-option ng-repeat="component in componentTypes" value="{{component.type}}">{{component.type}}</md-option>
 		      		</md-select> 
 				</div>
 				<div>
-					<md-input-container>
-						<label>Label</label>
-						<input ng-model="newComp.label" required>
+					<md-input-container ng-repeat="detail in compDetails">
+						<label>{{detail.detail}}</label>
+						<input ng-model="newComp.label[$index]" required>
 		    		</md-input-container>
 				</div>
+				<div ng-if="isRadioButton">
+					<md-button ng-click="addMoreOptions()" >
+		    			Add An Option
+		  			</md-button>
+		  		</div>
 				<div>
 					<md-switch ng-model="newComp.isMandatory" aria-label="Switch 1">
 		    			Mandatory?: {{ newComp.isMandatory}}
@@ -84,6 +89,9 @@
 			<p>{{ dueTimeFromNow }}</p>
 			<p>{{task.task.description}}</p>
 			<p>{{(task.isPersonal) ? "Personal" : "Project"}} Task</p>
+
+			<md-divider ng-if="!$last"></md-divider>
+
 			<div ng-repeat="component in task.components">
 				<!-- if text box -->
 				<div ng-if="component.type == 'textbox'">
@@ -105,6 +113,20 @@
 			          {{ component.label}}
 			        </md-checkbox>
 				</div>
+				<!-- if Link -->
+				<div ng-if="component.type == 'link'" layout="column" ng-init="initLinkComp(component)" style="width: 100%" layout-align="center">
+					<md-button ng-href="{{component.href}}" style="width: 100%" target="_blank">
+					<i class="fa fa-link"></i> {{component.title}}
+					</md-button>
+				</div>
+				<!-- if RadioButtons -->
+				<div ng-if="component.type == 'radiobuttons'" ng-init="initRadioButtonsComp(component)">
+					{{component.title}}
+					<md-radio-group ng-model="component.value" ng-change="RB(component)">
+				      <md-radio-button ng-repeat="option in component.values" value="{{option.text}}" class="md-primary">{{option.text}}</md-radio-button>
+    				</md-radio-group>
+				</div>
+				<md-divider ng-if="!$last"></md-divider>
 			</div>
 		</md-card>
 	</div>
