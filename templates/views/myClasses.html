@@ -2,17 +2,28 @@
 	<md-content layout-padding layout-margin>
 		<h1 layout-margin style="margin-left:15px"><i class="fa fa-graduation-cap"></i> My Classes</h1>
 	</md-content>
-	<md-card flex = "99" class="cardAllcourses">	
-		<div flex class = "allcoursesShow" ><!-- layout = "column"> -->
-			<div flex layout = "row" ng-repeat = "course in courses" value = "{{course}}" layout-padding>
+	<md-card class="cardAllcourses">	
+		<div flex = "99" class = "allcoursesShow" layout = "row" ng-repeat = "t in holdArrays" value = "{{t}}">
+			<div flex ="32" layout = "column" ng-repeat = "course in t" value = "{{course}}" layout-padding>
 				<a href="http://localhost:8080/home#/projects" style="color:black; text-decoration:none;">
-					<md-card layout-padding flex class = "campusCard">
+					<md-card layout-padding class = "campusCard">
 						{{course}}
 					</md-card>
 				</a>
 			</div>
 		</div>
 	</md-card>
+
+	<!-- 	<div class = "allCampusesShow" flex = "99" layout = "row" ng-repeat = "t in threeSizedArray" value = "{{t}}" layout-padding>
+			<div flex = "32" layout = "column" ng-repeat = "campus in t" value = "{{campus}}">
+				<a href="http://localhost:8080/home#/myClasses" style="color:black; text-decoration:none;">
+					<md-card layout-padding class = "campusCard">
+						{{campus}}
+					</md-card>
+				</a>
+			</div>
+		</div> -->
+
 
 	<div ng-if="user.isLecturer"> <!-- Lecturer Mode -->
 		<div layout="row">

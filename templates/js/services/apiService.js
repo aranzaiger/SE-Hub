@@ -44,29 +44,18 @@ service.factory('apiService', ['$http', function($http) {
 			return $http(req);
 		},
 		getCourseByCampusName: function(token){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getAll/" + token;
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCourseByCampusName/" + token;
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		},
-		getAllCourses: function(token){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getAll/" + token;
-			req = {
-				method : "GET",
-				url : url
-
-			};
-			return $http(req);
-		},
-		getAllMessages: function(token){
+		getAllMessages: function(){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getAllMessages/" + token;
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		},
@@ -76,7 +65,6 @@ service.factory('apiService', ['$http', function($http) {
 				method : "POST",
 				url : url,
 				data: payLoad
-
 			};
 			return $http(req);
 		},
@@ -85,7 +73,6 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		},
@@ -95,25 +82,22 @@ service.factory('apiService', ['$http', function($http) {
 				method : "POST",
 				url : url,
 				data: payLoad
-
 			};
 			return $http(req);
 		},
-		getCampusesByUser: function(){
+		getCampusesByUser: function(token){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCampusesByUser/" + token;
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		},
-		getClassesByCourse: function(){ // Need to add camusName (ngRoute) ~ sagi //TODO
+		getClassesByUser: function(){ // Need to add campusName (ngRoute) ~ sagi //TODO
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/ClassesByCourse/" + token;
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		},
@@ -122,7 +106,6 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		}

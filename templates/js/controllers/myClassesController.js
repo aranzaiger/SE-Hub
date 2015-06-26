@@ -6,6 +6,7 @@ angular.module('SeHub')
 	$scope.isNewCourse = false;
 	$scope.newClassName = false;
 	$scope.course = {};
+	// $scope.globalVar = '';
 	var token = $cookies['com.sehub.www'];
 	$scope.user.finalDate = '';
 	$scope.user.startDate = '';
@@ -24,14 +25,50 @@ angular.module('SeHub')
 
 
 	$scope.courses = ['SE', 'PC', 'Math', 'Calculus', 'Ivrit', 'English', 'Drugs'];
+	console.log($scope.courses);
 
-
-	// apiService.getClassesByUser(token).success(function(data) // Get all the campuses
+	// apiService.getClassesByUser().success(function(data) // Get all the courses
 	// {
 	// 	$scope.courses = data;
 	// }).error(function() {
 	// // TODO
 	// });
+
+	var init = function()
+	{
+		var i, j, counter = 0;
+		var newLength = 0;
+		
+		if(($scope.courses.length % 3) === 0)
+		{
+			newLength = ($scope.courses.length / 3);
+		}
+		else
+		{
+			newLength = (Math.ceil($scope.courses.length / 3)); // Rounds number up
+		}
+
+		$scope.holdArrays.length = newLength;
+
+		for(j = 0; j < newLength; j++)	
+		{
+			$scope.holdArrays[j] = [3]; // Creating array in size of 3 in each array cell
+		}
+
+		for(i = 0; i < newLength; i++)		
+		{		
+			for(j = 0; j < newLength; j++)
+			{
+				if($scope.courses[(3*i) + j] != null)
+				{	
+					$scope.holdArrays[i][j] = $scope.courses[(3*i) + j];
+				}
+			}	
+		}
+		console.log($scope.holdArrays);
+	}
+
+	init(); // Executing the function to initialize course display
 
 
 	$scope.chooseCourseClicked = function()
@@ -65,6 +102,8 @@ angular.module('SeHub')
 	    		}
 	    	};
 
+	    	// $scope.globalVar = jsonNewCourse;
+
 	    	console.log("Json here:");
     		console.log(jsonNewCourse);
 	      	
@@ -87,6 +126,41 @@ angular.module('SeHub')
 	    	$mdDialog.show($mdDialog.alert().title('Error - Creating Course').content('You have encountered and error in creating the course.')
 		        .ariaLabel('Email verification alert dialog').ok('Try Again!').targetEvent());
 	    }
+	}
+
+	var init = function()
+	{
+		var i, j, counter = 0;
+		var newLength = 0;
+		
+		if(($scope.courses.length % 3) === 0)
+		{
+			newLength = ($scope.courses.length / 3);
+		}
+		else
+		{
+			newLength = (Math.ceil($scope.courses.length / 3)); // Rounds number up
+		}
+		
+		console.log("length: " + newLength);
+		$scope.holdArrays.length = newLength;
+
+		for(j = 0; j < newLength; j++)	
+		{
+			$scope.holdArrays[j] = [3]; // Creating array in size of 3 in each array cell
+		}
+
+		for(i = 0; i < newLength; i++)		
+		{		
+			for(j = 0; j < newLength; j++)
+			{
+				if($scope.courses[(3*i) + j] != null)
+				{	
+					$scope.holdArrays[i][j] = $scope.courses[(3*i) + j];
+				}
+			}	
+		}
+		console.log($scope.holdArrays);
 	}
 
 

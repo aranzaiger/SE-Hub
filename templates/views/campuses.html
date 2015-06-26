@@ -3,10 +3,10 @@
 		<h1 layout-margin style="margin-left:15px"><i class="fa fa-university"></i> My Campuses</h1>
 	</md-content>
 	<md-card class="cardAllCampuses">	
-		<div class = "allCampusesShow" layout = "column">
-			<div layout = "row" ng-repeat = "campus in campuses" value = "{{campus}}" layout-padding>
+		<div class = "allCampusesShow" flex = "99" layout = "row" ng-repeat = "t in threeSizedArray" value = "{{t}}" layout-padding>
+			<div flex = "32" layout = "column" ng-repeat = "campus in t" value = "{{campus}}">
 				<a href="http://localhost:8080/home#/myClasses" style="color:black; text-decoration:none;">
-					<md-card layout-padding class = "campusCard">
+					<md-card flex="32" layout-padding class = "campusCard">
 						{{campus}}
 					</md-card>
 				</a>
