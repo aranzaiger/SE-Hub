@@ -91,9 +91,7 @@ angular.module('SeHub')
 				[28, 48, 40, 3]
 			];
 
-			$scope.isUser = function() {
-				return $scope.$parent.user.id.toString() /*The Actual User*/ === $routeParams.id /*The Profile User*/;
-			}
+			$scope.isUser = $scope.$parent.user.id.toString() /*The Actual User*/ === $routeParams.id /*The Profile User*/;
 
 		}
 	]);
