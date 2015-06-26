@@ -192,7 +192,7 @@ def getCampusesByUser(token):
         return bad_request("Bad user Token")
 
     arr = []
-    for i in user['campuses_id_list']:
+    for i in user.campuses_id_list:
         campus = Campus.get_by_id(int(i))
         arr.append(dict(json.loads(campus.to_JSON())))
 
