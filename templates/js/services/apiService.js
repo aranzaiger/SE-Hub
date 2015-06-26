@@ -108,8 +108,8 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		getClassesByUser: function(){ // Need to add campusName (ngRoute) ~ sagi //TODO
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/ClassesByCourse/" + token;
+		getCoursesByUser: function(token, campusId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCoursesByUser/" + token + "/" + campusId;
 			req = {
 				method : "GET",
 				url : url
@@ -117,8 +117,8 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		getProjectsByCourse: function(){ // Need to add courseID (ngRoute) ~ sagi //TODO
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getProjectByCourse/" + token;
+		getProjectsByCourse: function(token, classId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getProjectByCourse/" + token + "/" + classId;
 			req = {
 				method : "GET",
 				url : url

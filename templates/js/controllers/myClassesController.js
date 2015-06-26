@@ -1,16 +1,16 @@
 angular.module('SeHub')
-.controller('myClassesController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
+.controller('myClassesController', ['$scope', '$routeParams', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $routeParams, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
 	$scope.isStudent = false;
 	$scope.isCourse = false;
 	$scope.isNewCourse = false;
 	$scope.newClassName = false;
 	$scope.course = {};
-	// $scope.globalVar = '';
 	var token = $cookies['com.sehub.www'];
 	$scope.user.finalDate = '';
 	$scope.user.startDate = '';
 	$scope.showMyClass = false;
+	var campusId = $routeParams.campusId;
 	
 	if($scope.user.isLecturer)
 	{
@@ -23,58 +23,37 @@ angular.module('SeHub')
 		console.log("Student Mode!");
 	}
 
-
-	$scope.courses = ['SE', 'PC', 'Math', 'Calculus', 'Ivrit', 'English', 'Drugs'];
-	console.log($scope.courses);
-
-	// apiService.getClassesByUser().success(function(data) // Get all the courses
-	// {
-	// 	$scope.courses = data;
-	// }).error(function() {
-	// // TODO
-	// });
-
-	var init = function()
+	apiService.getCoursesByUser(token, campusId).success(function(data) // Get all the courses for display
 	{
-		var i, j, counter = 0;
-		var newLength = 0;
-		
-		if(($scope.courses.length % 3) === 0)
-		{
-			newLength = ($scope.courses.length / 3);
-		}
-		else
-		{
-			newLength = (Math.ceil($scope.courses.length / 3)); // Rounds number up
-		}
+		$scope.courses = data;
+		console.log("success " + $scope.courses);
+		init(); // Executing the function to initialize course display
+	}).error(function(err)
+	{
+		console.log("error: " + err);
+	});
 
-		$scope.holdArrays.length = newLength;
-
-		for(j = 0; j < newLength; j++)	
-		{
-			$scope.holdArrays[j] = [3]; // Creating array in size of 3 in each array cell
-		}
-
-		for(i = 0; i < newLength; i++)		
-		{		
-			for(j = 0; j < newLength; j++)
-			{
-				if($scope.courses[(3*i) + j] != null)
-				{	
-					$scope.holdArrays[i][j] = $scope.courses[(3*i) + j];
-				}
-			}	
-		}
-		console.log($scope.holdArrays);
+	$scope.goToClass = function(classId)
+	{
+		console.log("Done! " + $scope.courses);
+		$location.path('/projects/' + classId.toString()); // Will display all the projects in this course
 	}
-
-	init(); // Executing the function to initialize course display
-
 
 	$scope.chooseCourseClicked = function()
 	{
 		$scope.isCourse = true;
 		console.log("choose course Clicked!!");
+
+		apiService.getAllCampuses(token).success(function(data)
+		{
+			$scope.campuses = data;
+			console.log("Campuses: " + $scope.campuses.toString());
+		}).error(function(err)
+		{
+			console.log("Error: " + err);
+		});
+
+
 	}
 
 	$scope.createCourseClicked = function()

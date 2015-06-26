@@ -3,17 +3,16 @@ angular.module('SeHub')
 {
 	$scope.threeSizedArray =[];
 	var token = $cookies['com.sehub.www'];
-	
-	$scope.campuses = ['Bezalel', 'Ben Gurion', 'Sami Shamoon', 'Afeka', 'Ivrit', 'Kaka', 'Opium']; // TODO REMOVE
-	
 
-	// apiService.getCampusesByUser().success(function(data) // Get all the campuses
-	// {
-	// 	console.log("INSIDE");
-	// 	$scope.campuses = data;
-	// }).error(function() {
-	// // TODO
-	// });
+	apiService.getCampusesByUser(token).success(function(data) // Get all the campuses
+	{
+		$scope.campuses = data;
+		console.log("INSIDE " + $scope.campuses);
+		init(); // Executing the function to initialize campuses display
+		
+	}).error(function() {
+	// TODO
+	});
 	console.log($scope.campuses);
 
 
@@ -49,10 +48,13 @@ angular.module('SeHub')
 				}
 			}	
 		}
-		console.log($scope.threeSizedArray);
+		console.log($scope.threeSizedArray); // TODO REMOVE
 	}
 
-	init(); // Executing the function to initialize campuses show
+	$scope.goToCampus = function(campusId) // Will pass you to courses by specific campus
+	{
+		$location.path('/myClasses/' + campusId.toString());
+	}
 
 
 

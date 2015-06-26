@@ -5,25 +5,14 @@
 	<md-card class="cardAllcourses">	
 		<div flex = "99" class = "allcoursesShow" layout = "row" ng-repeat = "t in holdArrays" value = "{{t}}">
 			<div flex ="32" layout = "column" ng-repeat = "course in t" value = "{{course}}" layout-padding>
-				<a href="http://localhost:8080/home#/projects" style="color:black; text-decoration:none;">
-					<md-card layout-padding class = "campusCard">
-						{{course}}
+				<!-- <a href="http://localhost:8080/home#/projects" style="color:black; text-decoration:none;"> -->
+					<md-card ng-click = "goToClass(course.id)" style="width:32%; height:32%;" layout-padding class = "campusCard">
+						{{course.id}}
 					</md-card>
-				</a>
+				<!-- </a> -->
 			</div>
 		</div>
 	</md-card>
-
-	<!-- 	<div class = "allCampusesShow" flex = "99" layout = "row" ng-repeat = "t in threeSizedArray" value = "{{t}}" layout-padding>
-			<div flex = "32" layout = "column" ng-repeat = "campus in t" value = "{{campus}}">
-				<a href="http://localhost:8080/home#/myClasses" style="color:black; text-decoration:none;">
-					<md-card layout-padding class = "campusCard">
-						{{campus}}
-					</md-card>
-				</a>
-			</div>
-		</div> -->
-
 
 	<div ng-if="user.isLecturer"> <!-- Lecturer Mode -->
 		<div layout="row">
@@ -40,6 +29,11 @@
 								<md-input-container flex = "50">
 									<label>Campus name</label>
 									<input ng-model="course.campusName" required>
+									<!-- <md-select placeholder="Pick your Class" ng-model="chosenCampus" style="z-index: 400" ng-change="chooseCourseClicked()"> -->
+										<!-- <md-option ng-switch="user.isLecturer" ng-repeat="c in campuses" value="{{c.title}}"> -->
+											<!-- {{c.title}} -->
+										<!-- </md-option> -->
+									<!-- </md-select> -->
 								</md-input-container>
 							</div>
 							<div layout layout-sm="column">

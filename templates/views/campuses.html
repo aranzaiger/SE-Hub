@@ -1,15 +1,14 @@
 <div class = "myCampuses">
 	<md-content layout-padding layout-margin>
-		<h1 layout-margin style="margin-left:15px"><i class="fa fa-university"></i> My Campuses</h1>
+		<h1 layout-margin style="margin-left:15px"><i class="fa fa-university"></i> Pick A Campus</h1>
 	</md-content>
 	<md-card class="cardAllCampuses">	
 		<div class = "allCampusesShow" flex = "99" layout = "row" ng-repeat = "t in threeSizedArray" value = "{{t}}" layout-padding>
 			<div flex = "32" layout = "column" ng-repeat = "campus in t" value = "{{campus}}">
-				<a href="http://localhost:8080/home#/myClasses" style="color:black; text-decoration:none;">
-					<md-card flex="32" layout-padding class = "campusCard">
-						{{campus}}
-					</md-card>
-				</a>
+				<md-button ng-click = "goToCampus(campus.id)" style="width:32%; height:32%;" flex="32" layout-padding class = "md-raised">
+					<!-- <img src="{{campus.avatar_url}}" style = "width:14%; height:auto;"> -->
+					{{campus.title}}
+				</md-button>
 			</div>
 		</div>
 	</md-card>
