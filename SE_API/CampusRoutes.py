@@ -205,6 +205,64 @@ def getCampusesByUser(token):
                         status=200,
                         mimetype="application/json")
 
+@campus_routes.route('/api/campuses/getCampusesByUserID/', defaults={'token': None, 'id': None})
+@campus_routes.route('/api/campuses/getCampusesByUserID/<string:token>/<string:id>', methods=['GET'])
+@auto.doc()
+def getCampusesByUserID(token, id):
+    """
+    <span class="card-title">This Call will return an array of all Campuses of a certain User By ID</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - token: 'seToken' of requesting user
+        - The ID of <b>Wanted</b> User Campuses
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Array, Example:<br>
+    [<br>
+    {
+                'title': 'JCE',<br>
+                'email_ending': '@post.jce.ac.il',<br>
+                'master_user_id': 123453433341, (User that created the campus)<br>
+                'avatar_url': 'http://some.domain.com/imagefile.jpg',<br>
+                'id' : 1234567890<br>
+    },<br>
+    ....<br>
+    {<br>
+    ...<br>
+    }req<br>
+    ]<br>
+    <br>
+    403 - Invalid Token<br>
+    """
+
+    user = get_user_by_token(token)
+    if user is None:
+        return forbidden("Invalid Token")
+
+    user = get_user_by_id(int(id))
+    if user is None:
+        return no_content("No User")
+
+    arr = []
+    for i in user.campuses_id_list:
+        campus = Campus.get_by_id(int(i))
+        arr.append(dict(json.loads(campus.to_JSON())))
+
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
+    else:
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
+
 #----------------------------------------------------------
 #                     DELETE
 #----------------------------------------------------------
