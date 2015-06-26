@@ -48,14 +48,25 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
+
 			};
 			return $http(req);
 		},
-		getAllMessages: function(){
+		getAllCourses: function(token){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getAll/" + token;
+			req = {
+				method : "GET",
+				url : url
+
+			};
+			return $http(req);
+		},
+		getAllMessages: function(token){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getAllMessages/" + token;
 			req = {
 				method : "GET",
 				url : url
+
 			};
 			return $http(req);
 		},
@@ -65,6 +76,7 @@ service.factory('apiService', ['$http', function($http) {
 				method : "POST",
 				url : url,
 				data: payLoad
+
 			};
 			return $http(req);
 		},
@@ -73,6 +85,7 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
+
 			};
 			return $http(req);
 		},
@@ -82,14 +95,18 @@ service.factory('apiService', ['$http', function($http) {
 				method : "POST",
 				url : url,
 				data: payLoad
+
 			};
 			return $http(req);
 		},
 		getCampusesByUser: function(token){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCampusesByUser/" + token;
+		getCampusesByUser: function(token){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/campuses/getCampusesByUser/" + token;
 			req = {
 				method : "GET",
 				url : url
+
 			};
 			return $http(req);
 		},
@@ -98,6 +115,7 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
+
 			};
 			return $http(req);
 		},
@@ -106,6 +124,24 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
+
+			};
+			return $http(req);
+		},
+		getUserById: function(token, id){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/getUserById/" + token + "/" + id;
+			req = {
+				method : "GET",
+				url : url
+			};
+			return $http(req);
+		},
+		getCampusesByUserId: function(token, id){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/campuses/getCampusesByUserID/" + token + "/" + id;
+			req = {
+				method : "GET",
+				url : url
+
 			};
 			return $http(req);
 		}

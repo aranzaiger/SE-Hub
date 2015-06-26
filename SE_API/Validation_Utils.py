@@ -13,6 +13,10 @@ def get_user_by_token(token):
         return u
     return None
 
+def get_user_by_id(id):
+    u = User.get_by_id(id)
+    return u
+
 def get_campus_by_campusName(campusName):
     query = Campus.all()
     query.filter("title = ", campusName)

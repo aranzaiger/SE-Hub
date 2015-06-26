@@ -46,7 +46,7 @@ app.config(['$routeProvider', '$locationProvider',
 				templateUrl: 'templates/views/tasks.html',
 				controller: 'tasksController'
 			})
-			.when('/myClasses', {
+			.when('/myClasses/:campusId', {
 				templateUrl: 'templates/views/myClasses.html',
 				controller: 'myClassesController'
 			})
@@ -54,7 +54,7 @@ app.config(['$routeProvider', '$locationProvider',
 				templateUrl: 'templates/views/newTask.html',
 				controller: 'newTasksController'
 			})
-			.when('/projects', {
+			.when('/projects/:classId', {
 				templateUrl: 'templates/views/projects.html',
 				controller: 'projectsController'
 			})

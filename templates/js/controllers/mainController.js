@@ -22,21 +22,16 @@ angular.module('SeHub')
 					"icon": "fa fa-tachometer",
 					"style": "selected",
 					"route": "/home"
-				}, {
-					"title": "My Campuses",
-					"icon": "fa fa-university",
+				},  {
+					"title": "Courses",
+					"icon": "fa fa-graduation-cap",
 					"style": "",
 					"route": "/campuses"
 				}, {
-					"title": "My Classes",
-					"icon": "fa fa-graduation-cap",
-					"style": "",
-					"route": "/myClasses"
-				}, {
-					"title": "My Projects",
+					"title": "Projects",
 					"icon": "fa fa-cube",
 					"style": "",
-					"route": "/projects"
+					"route": "/myClasses"
 				}, {
 					"title": "Tasks",
 					"icon": "fa fa-clipboard",

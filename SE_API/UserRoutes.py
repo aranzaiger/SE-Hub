@@ -268,6 +268,66 @@ def getUserByToken(token):
                         status=200,
                         mimetype="application/json")  # Real response!
 
+    return no_content("No User Found")
+
+@user_routes.route('/api/users/getUserById/', defaults={'token': None, 'id': None})
+@user_routes.route('/api/users/getUserById/<string:token>/<string:id>', methods=["GET"])
+@auto.doc()
+def getUserById(token, id):
+    """
+    <span class="card-title">>This Call will return a user by a given UserId</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'username': 'DarkLord',<br>
+        'name': 'Darth Vader',<br>
+        'email': 'darkLord@death.planet,<br>
+        'isLecturer': 'True',<br>
+        'seToken': 'xxxxxx-xxxxx-xxxxx-xxxxxx',<br>
+        'avatar_url': 'http://location.git.com/somthing'<br>
+        'isFirstLogin': False,<br>
+        'campuses_id_list': [{<br>
+                            'master_user_id': 111,<br>
+                            'id': 5629499534213120,<br>
+                            'email_ending': "@post.jce.ac.il",<br>
+                            'avatar_url': "https://yt3.ggpht.com/--ZkWxybWGOM/AAAAAAAAAAI/AAAAAAAAAAA/_nAICC_kzzI/s88-c-k-no/photo.jpg",<br>
+                            'title': "JCE"
+            }],<br>
+        'courses_id_list': ['a','b','c'],<br>
+        'id': 234253523<br>
+        }<br>
+    </code>
+    <br>
+    403 - No User Found
+    """
+    if token is None or id is None:
+        return no_content("No Token/ID, No User Found")
+
+    if get_user_by_token(token) is None:
+        return forbidden('Invalid Token')
+
+    u = get_user_by_id(int(id))
+    if u is None:
+        return no_content('No user Found')
+
+    for index, c in enumerate(u.campuses_id_list):
+        c = json.loads(Campus.get_by_id(int(c)).to_JSON())
+        u.campuses_id_list[index] = c
+
+        return Response(response=u.to_JSON(),
+                        status=200,
+                        mimetype="application/json")  # Real response!
 
     return no_content("No User Found")
 
