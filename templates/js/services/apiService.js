@@ -125,6 +125,16 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
+		getProjectsByUser: function(token){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getProjectByCourse/" + token;
+			req = {
+				method : "GET",
+				url : url
+
+			};
+			return $http(req);
+		},
+
 		getUserById: function(token, id){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/getUserById/" + token + "/" + id;
 			req = {

@@ -24,6 +24,10 @@ angular.module('SeHub')
 		{
 			console.log("error: " + err);
 		});
+		if($scope.courses = null)
+		{
+			$scope.coursesEmpty = true;
+		}
 	}
 
 	$scope.goToClass = function(classId)
@@ -99,42 +103,35 @@ angular.module('SeHub')
 	{
 		var i, j, counter = 0;
 		var newLength = 0;
-		
-		if($scope.courses != null)
+	
+		if(($scope.courses.length % 3) === 0)
 		{
-			if(($scope.courses.length % 3) === 0)
-			{
-				newLength = ($scope.courses.length / 3);
-			}
-			else
-			{
-				newLength = (Math.ceil($scope.courses.length / 3)); // Rounds number up
-			}
-			
-			console.log("length: " + newLength);
-			$scope.holdArrays.length = newLength;
-
-			for(j = 0; j < newLength; j++)	
-			{
-				$scope.holdArrays[j] = [3]; // Creating array in size of 3 in each array cell
-			}
-
-			for(i = 0; i < newLength; i++)		
-			{		
-				for(j = 0; j < newLength; j++)
-				{
-					if($scope.courses[(3*i) + j] != null)
-					{	
-						$scope.holdArrays[i][j] = $scope.courses[(3*i) + j];
-					}
-				}	
-			}
+			newLength = ($scope.courses.length / 3);
 		}
 		else
 		{
-			$scope.coursesEmpty = true;
+			newLength = (Math.ceil($scope.courses.length / 3)); // Rounds number up
 		}
-			console.log($scope.holdArrays);
+		
+		console.log("length: " + newLength);
+		$scope.holdArrays.length = newLength;
+
+		for(j = 0; j < newLength; j++)	
+		{
+			$scope.holdArrays[j] = [3]; // Creating array in size of 3 in each array cell
+		}
+
+		for(i = 0; i < newLength; i++)		
+		{		
+			for(j = 0; j < newLength; j++)
+			{
+				if($scope.courses[(3*i) + j] != null)
+				{	
+					$scope.holdArrays[i][j] = $scope.courses[(3*i) + j];
+				}
+			}	
+		}
+		console.log($scope.holdArrays);
 	}
 
 

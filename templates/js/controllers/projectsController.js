@@ -23,8 +23,6 @@ angular.module('SeHub')
 		}
 	}
 
-
-
 	$scope.displayProjects(); // Displaying all projects related to user
 
 	$scope.createProjectClicked = function()

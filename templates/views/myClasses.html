@@ -6,7 +6,6 @@
 		<div flex = "99" class = "allcoursesShow" layout = "row" ng-repeat = "t in holdArrays" value = "{{t}}">
 			<div flex ="32" layout = "column" ng-repeat = "course in t" value = "{{course}}" layout-padding>
 				<div ng-of = "!scope.coursesEmpty">
-					aaa
 					<md-card ng-click = "goToClass(course.id)" style="width:32%; height:32%;" layout-padding class = "campusCard">
 						{{course.id}}
 					</md-card>
