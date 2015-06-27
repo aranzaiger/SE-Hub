@@ -7,36 +7,24 @@ angular.module('SeHub')
 
 	var init = function()
 	{
-		var i, j, counter = 0;
-		var newLength = 0;
-		
-		if(($scope.campuses.length % 3) === 0)
-		{
-			newLength = ($scope.campuses.length / 3);
-		}
-		else
-		{
-			newLength = (Math.ceil($scope.campuses.length / 3)); // Rounds number up
-		}
-		
-		console.log("length: " + newLength);
-		$scope.threeSizedArray.length = newLength;
-
-		for(j = 0; j < newLength; j++)	
-		{
-			$scope.threeSizedArray[j] = [3]; // Creating array in size of 3 in each array cell
-		}
-
-		for(i = 0; i < newLength; i++)		
-		{		
-			for(j = 0; j < newLength; j++)
-			{
-				if($scope.campuses[(3*i) + j] != null)
-				{	
-					$scope.threeSizedArray[i][j] = $scope.campuses[(3*i) + j];
+		$scope.threeSizedArray = [];
+		var tempArr = [];
+		var sizeOfSmallArrays = 3;
+		for (var i = 0 ; i < $scope.campuses.length ; i++) {
+			if(i % sizeOfSmallArrays !== 0){
+				tempArr.push($scope.campuses[i]);
+			}else{
+				if(i !== 0){
+					$scope.threeSizedArray.push(tempArr);
+					tempArr = [];
+					tempArr.push($scope.campuses[i]);
+				}else{
+					tempArr.push($scope.campuses[i]);
 				}
-			}	
-		}
+			}
+		};
+
+		$scope.threeSizedArray.push(tempArr);
 		console.log($scope.threeSizedArray); // TODO REMOVE
 	}
 
