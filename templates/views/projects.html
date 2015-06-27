@@ -3,11 +3,14 @@
 	<md-card class="cardAllProjects">	
 		<div flex ="99" class = "allProjectsShow" layout = "row" ng-repeat = "t in arrayHolder" value = "{{t}}">
 			<div flex = "32" layout = "column" ng-repeat = "project in t" value = "{{project}}" layout-padding>
-				<!-- <a href="http://localhost:8080/home#/thisProject" style="color:black; text-decoration:none;"> -->
+				<div ng-if = "!scope.projectEmpty">
 					<md-card layout-padding ng-click = "goToProject(project.id)" style="width:32%; height:32%;" class = "projectCard">
 						{{project.id}}
 					</md-card>
-				<!-- </a> -->
+				</div>
+			</div>
+			<div ng-if = "scope.projectEmpty">
+					You Are Not Related To Any Course, You May Join Any Course You Wish.
 			</div>
 		</div>
 	</md-card>

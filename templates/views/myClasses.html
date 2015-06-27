@@ -5,15 +5,19 @@
 	<md-card class="cardAllcourses">	
 		<div flex = "99" class = "allcoursesShow" layout = "row" ng-repeat = "t in holdArrays" value = "{{t}}">
 			<div flex ="32" layout = "column" ng-repeat = "course in t" value = "{{course}}" layout-padding>
-				<!-- <a href="http://localhost:8080/home#/projects" style="color:black; text-decoration:none;"> -->
+				<div ng-of = "!scope.coursesEmpty">
+					aaa
 					<md-card ng-click = "goToClass(course.id)" style="width:32%; height:32%;" layout-padding class = "campusCard">
 						{{course.id}}
 					</md-card>
-				<!-- </a> -->
+				</div>
+				<div ng-if = "scope.coursesEmpty">
+					You Are Not Related To Any Course, You May Join Any Course You Wish.
+				</div>
 			</div>
 		</div>
 	</md-card>
-
+	<!-- <md-button ng-click="joinCourseClicked()" ng class="md-raised md-primary">Join Class</md-button> -->
 	<div ng-if="user.isLecturer"> <!-- Lecturer Mode -->
 		<div layout="row">
 			<div layout-margin layout-padding>
@@ -21,38 +25,32 @@
 			</div>
 		</div>
 		<div ng-if="isNewCourse">
-			<md-content>
-				<md-content layout-padding>
-					<md-card layout-padding>
-						<form name="createNewCourseForm">
-							<div layout layout-sm="column">
-								<md-input-container flex = "50">
-									<label>Campus name</label>
-									<input ng-model="course.campusName" required>
-									<!-- <md-select placeholder="Pick your Class" ng-model="chosenCampus" style="z-index: 400" ng-change="chooseCourseClicked()"> -->
-										<!-- <md-option ng-switch="user.isLecturer" ng-repeat="c in campuses" value="{{c.title}}"> -->
-											<!-- {{c.title}} -->
-										<!-- </md-option> -->
-									<!-- </md-select> -->
-								</md-input-container>
-							</div>
-							<div layout layout-sm="column">
-								<md-input-container style="width:80%">
-									<label flex = "50">Class Name</label>
-									<input ng-model="course.courseName" min-length="1" required>
-								</md-input-container>
-								<md-input-container flex = "20">
-									<label>Course Start Date</label>
-									<input type="date" ng-model="course.startDate" required>
-								</md-input-container>
-								<md-input-container flex = "20">
-									<label>Course Finish Date</label>
-									<input type="date" ng-model="course.endDate" required>
-								</md-input-container>
-							</div>
-						</form>
-					</md-card>
-				</md-content>
+			<md-content layout-padding>
+				<md-card layout-padding>
+					<div layout layout-sm="column">
+						<!-- <input ng-model="course.campusName" required> -->
+						<md-select placeholder = "Campus name" ng-model="course.campusName" ng-click = "chooseCourseClicked()" required>
+							<md-option ng-repeat="c in campuses" value="{{c.title}}">
+								{{c.title}}
+							</md-option>
+						</md-select>
+					</div>
+					<div layout layout-sm="column">
+						<md-input-container style="width:80%">
+							<label flex = "50">Class Name</label>
+							<input ng-model="course.courseName" min-length="1" required>
+						</md-input-container>
+						<md-input-container flex = "20">
+							<label>Course Start Date</label>
+							<input type="date" ng-model="course.startDate" required>
+						</md-input-container>
+						<md-input-container flex = "20">
+							<label>Course Finish Date</label>
+							<input type="date" ng-model="course.endDate" required>
+						</md-input-container>
+					</div>
+				</md-card>
+				
 				<div layout-padding layout-margin>
 					<md-button ng-click="submitNewClassClicked()" class="md-raised md-primary">Submit New Class</md-button>
 				</div>

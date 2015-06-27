@@ -13,7 +13,8 @@
 								<md-button ng-click="editPressed()" class="md-raised md-primary">Edit</md-button>
 							</div>
 							<div ng-if="isEditPressed">
-								<md-button ng-click="removeProject()" class="md-raised md-primary"><i class = "fa fa-trash-o"></i></md-button>
+								<md-button ng-click="removeProject()" class="md-raised md-primary">Remove</md-button>
+								<!-- <i class = "fa fa-trash-o"></i> -->
 							</div>
 						</div>	
 					</div>
@@ -30,6 +31,38 @@
 						Here Will Be Graph (by columns) - Commits, Issues, Open Tasks
 					</md-card>
 				</div>
+			</div>
+			<div flex>
+				<md-card>
+					<md-content class="md-padding">
+						<md-tabs md-dynamic-height md-border-bottom>
+							<md-tab label="Commits">
+								<md-content class="md-padding">
+									<h1 class="md-display-2">Commits</h1>
+									<p>Commits...</p>
+								</md-content>
+							</md-tab>
+							<md-tab label="Issues">
+								<md-content class="md-padding">
+									<h1 class="md-display-2">Issues</h1>
+									<p>Issues...</p>
+								</md-content>
+							</md-tab>
+							<md-tab label="Bugs">
+								<md-content class="md-padding">
+									<h1 class="md-display-2">Bugs</h1>
+									<p> Bugs Bugs Bugs..</p>
+								</md-content>
+							</md-tab>
+							<md-tab label="WhatEver">
+								<md-content class="md-padding">
+									<h1 class="md-display-2">WhatEver</h1>
+									<p>Bla Bla Bla..</p>
+								</md-content>
+							</md-tab>
+						</md-tabs>
+					</md-content>
+				</md-card>
 			</div>
 		</div>
 	</md-content>

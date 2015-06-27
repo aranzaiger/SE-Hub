@@ -3,40 +3,50 @@
 		<h1 style="margin-left:15px"><i class="fa fa-file-text-o"></i> Tasks</h1>
 		<div ng-if="user.isLecturer">
 			<md-button ng-click="createTaskClicked(taskName)" ng class="md-raised md-primary">Create Task</md-button>
-		</div>
-	
-		<div>
-			<!-- <md-card> -->
-				<md-content class="md-padding">
-					<md-tabs md-dynamic-height md-border-bottom>
-						<md-tab label="Commits">
-							<md-content class="md-padding">
-								<h1 class="md-display-2">Commits</h1>
-								<p>Commits...</p>
-							</md-content>
-						</md-tab>
-						<md-tab label="Issues">
-							<md-content class="md-padding">
-								<h1 class="md-display-2">Issues</h1>
-								<p>Issues...</p>
-							</md-content>
-						</md-tab>
-						<md-tab label="Bugs">
-							<md-content class="md-padding">
-								<h1 class="md-display-2">Bugs</h1>
-								<p> Bugs Bugs Bugs..</p>
-							</md-content>
-						</md-tab>
-						<md-tab label="WhatEver">
-							<md-content class="md-padding">
-								<h1 class="md-display-2">WhatEver</h1>
-								<p>Bla Bla Bla..</p>
-							</md-content>
-						</md-tab>
-					</md-tabs>
-				</md-content>
-			<!-- </md-card> -->
-		</div>
+			
+			<div flex>
+				<md-card>
+					<md-content class="md-padding">
+						<md-tabs md-dynamic-height md-border-bottom>
+							<md-tab label="Submitted">
+								<md-content class="md-padding">
+									<h1 class="md-display-2">Submitted</h1>
+									<p>Submitted...</p>
+								</md-content>
+							</md-tab>
+							<md-tab label="Delayed">
+								<md-content class="md-padding">
+									<h1 class="md-display-2">Delayed</h1>
+									<p>Delayed...</p>
+								</md-content>
+							</md-tab>
+							<md-tab label="Not Submitted">
+								<md-content class="md-padding">
+									<h1 class="md-display-2">Not Submitted</h1>
+									<p> Not Submitted ..</p>
+								</md-content>
+							</md-tab>
+							<md-tab label="WhatEver">
+								<md-content class="md-padding">
+									<h1 class="md-display-2">WhatEver</h1>
+									<p>Bla Bla Bla..</p>
+								</md-content>
+							</md-tab>
+						</md-tabs>
+					</md-content>
+				</md-card>
+			</div>
 
+			<!-- Should Be In Table List -->
+			<div class = "allProjectsShow" flex = "99" layout = "row" ng-repeat = "t in threeSizedArray" value = "{{t}}" layout-padding>
+				<div flex = "32" layout = "column" ng-repeat = "project in t" value = "{{project}}">
+					<md-button ng-click = "goToProject(project.id)" style="width:32%; height:32%;" flex="32" layout-padding class = "md-raised">
+						<!-- <img src="{{campus.avatar_url}}" style = "width:14%; height:auto;"> -->
+						{{project.title}}
+					</md-button>
+				</div>
+			</div>
+			<!-- Should Be In Table List -->
+		</div>
 	</md-content>
 </div>

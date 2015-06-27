@@ -13,7 +13,6 @@ angular.module('SeHub')
 
   var imagePath = $scope.user.avatar_url;
   //var campusName = '';
-  $scope.course = '';
   // $scope.campusName = '';
 
   $scope.phones = [
@@ -51,8 +50,30 @@ angular.module('SeHub')
   }
   $scope.postMessageClicked = function() // Posting the message itself
   {  
+    
+
     if($scope.msg.msgToAdd != null)
     {
+      jsonNewMsg = {
+      'courseName': 'A', // TODO Should be ===> $scope.course.courseName
+      'message': $scope.msg.msgToAdd
+      };
+
+      // console.log("J: " + jsonNewMsg.toString() + "msg: " + $scope.msg.msgToAdd);
+
+      // apiService.createMessage(token, jsonNewMsg).success(function(data)
+      // {
+      //   console.log("create Msg!");
+      // }).error(function(err)
+      // {
+      //   console.log("Error: " + err);
+      // });
+
+      /*
+      'courseName': 'Advance Math',
+      'message': 'The lecture today is canceled'
+      */
+
       console.log($scope.msg.msgToAdd);
       $scope.messages.push({"text": $scope.msg.msgToAdd});
     }

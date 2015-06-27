@@ -95,7 +95,6 @@ service.factory('apiService', ['$http', function($http) {
 				method : "POST",
 				url : url,
 				data: payLoad
-
 			};
 			return $http(req);
 		},
@@ -140,6 +139,23 @@ service.factory('apiService', ['$http', function($http) {
 				method : "GET",
 				url : url
 
+			};
+			return $http(req);
+		},
+		joinCourse: function(token, courseId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/getUserById/" + token + "/" + courseId;
+			req = {
+				method : "PUT",
+				url : url
+			};
+			return $http(req);
+		},
+		createMessage: function(token, payLoad){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/create/" + token;
+			req = {
+				method : "POST",
+				url : url,
+				data: payLoad
 			};
 			return $http(req);
 		}

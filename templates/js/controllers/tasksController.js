@@ -8,7 +8,6 @@ angular.module('SeHub')
 		var taskName = name;
 		console.log("task created! " + taskName);
 		$location.path("/tasks/new"); // Reference to 'newTask' page
-
 	}
 
 
