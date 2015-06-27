@@ -66,7 +66,7 @@ app.config(['$routeProvider', '$locationProvider',
 				templateUrl: 'templates/views/campuses.html',
 				controller: 'campusesController'
 			})
-			.when('/thisProject', {
+			.when('/thisProject/:projectId', {
 				templateUrl: 'templates/views/thisProject.html',
 				controller: 'thisProjectController'
 			});
