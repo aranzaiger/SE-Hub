@@ -1,5 +1,6 @@
 angular.module('SeHub')
-.controller('myClassesController', ['$scope', '$location', '$routeParams', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $location, $routeParams, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
+.controller('myClassesController', ['$scope', '$location', '$routeParams', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope',
+	function ($scope, $location, $routeParams, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
 	$scope.isStudent = false;
 	$scope.isCourse = false;
@@ -85,7 +86,7 @@ angular.module('SeHub')
 	      		$mdDialog.show($mdDialog.alert().title('Course Created').content('You have created course successfully.')
 		        .ariaLabel('Email verification alert dialog').ok('Lets Start!').targetEvent())
 			.then(function() {
-							$window.location.href = 'templates/views/newCourse.html'; // TODO TODO TODO
+							$location.path('/newCourse'); // TODO TODO TODO
 						}); // Pop-up alert
 	      	}).error(function(err)
 	      	{
