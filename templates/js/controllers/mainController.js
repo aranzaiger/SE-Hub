@@ -23,8 +23,8 @@ angular.module('SeHub')
 					"style": "selected",
 					"route": "/home"
 				},  {
-					"title": "Courses",
-					"icon": "fa fa-graduation-cap",
+					"title": "Explore",
+					"icon": "fa fa-compass",
 					"style": "",
 					"route": "/campuses"
 				}, {
