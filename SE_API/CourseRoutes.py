@@ -317,7 +317,7 @@ def getCampusesByUser(token,campusId):
 
 
     arr = []
-    for i in user['courses_id_list']:
+    for i in user.courses_id_list:
         course = Course.get_by_id(int(i))
         if course.courseName == campus.title:
             arr.append(dict(json.loads(course.to_JSON())))
@@ -327,7 +327,7 @@ def getCampusesByUser(token,campusId):
                         status=200,
                         mimetype="application/json")
     else:
-        return Response(response=[],
+        return Response(response='[]',
                         status=200,
                         mimetype="application/json")
 
