@@ -31,7 +31,7 @@ angular.module('SeHub')
 					"title": "Projects",
 					"icon": "fa fa-cube",
 					"style": "",
-					"route": "/projects"
+					"route": "/projects/" + $scope.user.id.toString()
 				}, {
 					"title": "Tasks",
 					"icon": "fa fa-clipboard",
