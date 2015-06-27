@@ -1,13 +1,16 @@
 <div class = "projects">
 	<h1 style="margin-left:15px"><i class="fa fa-cube"></i> Projects</h1>
-	<md-card flex = "99" class="cardAllProjects">	
-		<div flex class = "allProjectsShow" layout = "column">
-			<div flex layout = "row" ng-repeat = "project in projects" value = "{{project}}" layout-padding>
-				<a href="http://localhost:8080/home#/thisProject" style="color:black; text-decoration:none;">
-					<md-card layout-padding flex class = "projectCard">
-						{{project}}
+	<md-card class="cardAllProjects">	
+		<div flex ="99" class = "allProjectsShow" layout = "row" ng-repeat = "t in arrayHolder" value = "{{t}}">
+			<div flex = "32" layout = "column" ng-repeat = "project in t" value = "{{project}}" layout-padding>
+				<div ng-if = "!scope.projectEmpty">
+					<md-card layout-padding ng-click = "goToProject(project.id)" style="width:32%; height:32%;" class = "projectCard">
+						{{project.id}}
 					</md-card>
-				</a>
+				</div>
+			</div>
+			<div ng-if = "scope.projectEmpty">
+					You Are Not Related To Any Course, You May Join Any Course You Wish.
 			</div>
 		</div>
 	</md-card>

@@ -1,16 +1,22 @@
 <div class = "myCampuses">
 	<md-content layout-padding layout-margin>
-		<h1 layout-margin style="margin-left:15px"><i class="fa fa-university"></i> My Campuses</h1>
+		<h1 layout-margin style="margin-left:15px"><i class="fa fa-university"></i> Pick A Campus</h1>
 	</md-content>
-	<md-card class="cardAllCampuses">	
-		<div class = "allCampusesShow" layout = "column">
-			<div layout = "row" ng-repeat = "campus in campuses" value = "{{campus}}" layout-padding>
-				<a href="http://localhost:8080/home#/myClasses" style="color:black; text-decoration:none;">
-					<md-card layout-padding class = "campusCard">
-						{{campus}}
-					</md-card>
-				</a>
+	<md-card class="cardAllCampuses">
+		<div ng-if = "!scope.campusesEmpty">
+			<div class = "allCampusesShow" flex = "99" layout = "row" ng-repeat = "t in threeSizedArray" value = "{{t}}" layout-padding>
+				<div flex = "32" layout = "column" ng-repeat = "campus in t" value = "{{campus}}">
+					<md-button ng-click = "goToCampus(campus.id)" style="width:32%; height:32%;" flex="32" layout-padding class = "md-raised">
+						<!-- <img src="{{campus.avatar_url}}" style = "width:14%; height:auto;"> -->
+						{{campus.title}}
+					</md-button>
+				</div>
 			</div>
+		</div>
+		<div ng-if = "scope.campusesEmpty">>
+			<md-card>
+				You Are Not Related To Any Course, You Can Join A Course By Press 'Join'.
+			</md-card>
 		</div>
 	</md-card>
 </div>
