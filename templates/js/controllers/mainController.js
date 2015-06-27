@@ -28,10 +28,10 @@ angular.module('SeHub')
 					"style": "",
 					"route": "/campuses"
 				}, {
-					"title": "Projects",
+					"title": "My Projects",
 					"icon": "fa fa-cube",
 					"style": "",
-					"route": "/myClasses"
+					"route": "/myProjects"
 				}, {
 					"title": "Tasks",
 					"icon": "fa fa-clipboard",

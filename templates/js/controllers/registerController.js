@@ -90,7 +90,7 @@ angular.module('SeHub')
 		};
 
 		$scope.createCampus = function(ev) {
-			$scope.createCampusClicked = true;
+			$scope.createCampusClicked = !$scope.createCampusClicked;
 
 			if (!$scope.isLecturer) // "!isLecturer" Means => I Am Lecturer; if i am a lecturer (when pressing -> getting last data value before pressing)
 			{

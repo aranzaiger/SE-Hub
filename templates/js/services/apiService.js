@@ -44,7 +44,7 @@ service.factory('apiService', ['$http', function($http) {
 			return $http(req);
 		},
 		getCourseByCampusName: function(token){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getAll/" + token;
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCourseByCampusName/" + token;
 			req = {
 				method : "GET",
 				url : url
@@ -95,7 +95,6 @@ service.factory('apiService', ['$http', function($http) {
 				method : "POST",
 				url : url,
 				data: payLoad
-
 			};
 			return $http(req);
 		},
@@ -108,8 +107,8 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		getClassesByCourse: function(){ // Need to add camusName (ngRoute) ~ sagi //TODO
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/ClassesByCourse/" + token;
+		getCoursesByUser: function(token, campusId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCoursesByUser/" + token + "/" + campusId;
 			req = {
 				method : "GET",
 				url : url
@@ -117,7 +116,16 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		getProjectsByCourse: function(){ // Need to add courseID (ngRoute) ~ sagi //TODO
+		getProjectsByCourse: function(token, classId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getProjectByCourse/" + token + "/" + classId;
+			req = {
+				method : "GET",
+				url : url
+
+			};
+			return $http(req);
+		},
+		getProjectsByUser: function(token){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getProjectByCourse/" + token;
 			req = {
 				method : "GET",
@@ -126,6 +134,7 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
+
 		getUserById: function(token, id){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/getUserById/" + token + "/" + id;
 			req = {
@@ -142,7 +151,23 @@ service.factory('apiService', ['$http', function($http) {
 
 			};
 			return $http(req);
+		},
+		joinCourse: function(token, courseId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/getUserById/" + token + "/" + courseId;
+			req = {
+				method : "PUT",
+				url : url
+			};
+			return $http(req);
+		},
+		createMessage: function(token, payLoad){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/create/" + token;
+			req = {
+				method : "POST",
+				url : url,
+				data: payLoad
+			};
+			return $http(req);
 		}
-		
 	};
 }]);
