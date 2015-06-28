@@ -271,6 +271,7 @@ def getUserByToken(token):
 
     return no_content("No User Found")
 
+
 @user_routes.route('/api/users/getUserById/', defaults={'token': None, 'id': None})
 @user_routes.route('/api/users/getUserById/<string:token>/<string:id>', methods=["GET"])
 @auto.doc()
@@ -333,6 +334,188 @@ def getUserById(token, id):
     return no_content("No User Found")
 
 
+
+@user_routes.route('/api/users/getUsersByCampus/<string:token>/<string:campusId>', methods=["GET"])
+@auto.doc()
+def getUsersByCampus(token, campusId):
+    """
+    <span class="card-title">>This Call will return all users in Campus</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'<br>
+        - campusId: 123456789
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'username': 'DarkLord',<br>
+        'name': 'Darth Vader',<br>
+        'email': 'darkLord@death.planet,<br>
+        'isLecturer': 'True',<br>
+        'seToken': 'xxxxxx-xxxxx-xxxxx-xxxxxx',<br>
+        'avatar_url': 'http://location.git.com/somthing'<br>
+        'isFirstLogin': False,<br>
+        'campuses_id_list': [75894378,5893482,894032],<br>
+        'courses_id_list': [4324,432432,4324324]<br>
+        }
+    </code>
+    <br>
+    403 - No User Found
+    """
+    if token is None:
+        return no_content("Token Is Empty, No User Found")
+
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad User Token")
+
+    campus = Campus.get_by_id(int(campusId))
+    if campus is None:
+        return bad_request("No such Campus")
+
+    arr = []
+
+    for u in enumerate(campus.membersId):
+        u = json.loads(User.get_by_id(int(u)).to_JSON())
+        arr.append(dict(u))
+
+    if len(arr) != 0:
+            return Response(response=json.dumps(arr),
+                            status=200,
+                            mimetype="application/json")
+    else:
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
+
+
+@user_routes.route('/api/users/getUsersByCourse/<string:token>/<string:courseId>', methods=["GET"])
+@auto.doc()
+def getUsersByCourse(token, courseId):
+    """
+    <span class="card-title">>This Call will return all users in Course</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'<br>
+        - courseId: 123456789
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'username': 'DarkLord',<br>
+        'name': 'Darth Vader',<br>
+        'email': 'darkLord@death.planet,<br>
+        'isLecturer': 'True',<br>
+        'seToken': 'xxxxxx-xxxxx-xxxxx-xxxxxx',<br>
+        'avatar_url': 'http://location.git.com/somthing'<br>
+        'isFirstLogin': False,<br>
+        'campuses_id_list': [1243567,7583584904],<br>
+        'courses_id_list': [543543,54353453,543543534]<br>
+        }
+    </code>
+    <br>
+    403 - No User Found
+    """
+    if token is None:
+        return no_content("Token Is Empty, No User Found")
+
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad User Token")
+
+    course = Course.get_by_id(int(courseId))
+    if course is None:
+        return bad_request("No such Course")
+
+    arr = []
+
+    for u in enumerate(course.membersId):
+        u = json.loads(User.get_by_id(int(u)).to_JSON())
+        arr.append(dict(u))
+
+    if len(arr) != 0:
+            return Response(response=json.dumps(arr),
+                            status=200,
+                            mimetype="application/json")
+    else:
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
+
+
+@user_routes.route('/api/users/getUsersByProject/<string:token>/<string:projectId>', methods=["GET"])
+@auto.doc()
+def getUsersByCampus(token, projectId):
+    """
+    <span class="card-title">>This Call will return all users in Project</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'<br>
+        - projectId: 123456789
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'username': 'DarkLord',<br>
+        'name': 'Darth Vader',<br>
+        'email': 'darkLord@death.planet,<br>
+        'isLecturer': 'True',<br>
+        'seToken': 'xxxxxx-xxxxx-xxxxx-xxxxxx',<br>
+        'avatar_url': 'http://location.git.com/somthing'<br>
+        'isFirstLogin': False,<br>
+        'campuses_id_list': [43243532532,5325325325,532532342],<br>
+        'courses_id_list': [53523,43432423,432432432432]<br>
+        }
+    </code>
+    <br>
+    403 - No User Found
+    """
+    if token is None:
+        return no_content("Token Is Empty, No User Found")
+
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad User Token")
+
+    project = Project.get_by_id(int(projectId))
+    if project is None:
+        return bad_request("No such Project")
+
+    arr = []
+
+    for u in enumerate(project.membersId):
+        u = json.loads(User.get_by_id(int(u)).to_JSON())
+        arr.append(dict(u))
+
+    if len(arr) != 0:
+            return Response(response=json.dumps(arr),
+                            status=200,
+                            mimetype="application/json")
+    else:
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
 
 #----------------------------------------------------------
 #                     DELETE
