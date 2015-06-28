@@ -49,7 +49,7 @@ def create_course(token):
      - JSON Object, Example: <br>
          {<br>
          'courseName': 'Advance Math',<br>
-         'campusName': 'JCE',<br>
+         'campusId': 1234567890,<br>
          'startDate': {'year': 2015, 'month' : 4, 'day' : 3},<br>
          'endDate': {'year': 2016, 'month' : 5, 'day' : 14}<br>
         }<br>
@@ -83,11 +83,12 @@ def create_course(token):
         if end_date <= start_date:
             return bad_request("end date cant be before (or same day) start date")
 
-        course = Course(courseName=payload['courseName'], campusName=payload['campusName'], master_id=user.key().id(),
+        course = Course(courseName=payload['courseName'], campusId=payload['campusId'], master_id=user.key().id(),
                         startDate=start_date, endDate=end_date)
         #check if name already exists
         try:
             query = Course.all()
+            query.filter('campusId = ', payload['campusId'])
             query.filter("courseName = ", payload['courseName'])
             for c in query.run(limit=1):
                 return forbidden("Course with same name already exists")
@@ -111,64 +112,6 @@ def create_course(token):
     return Response(response=course.to_JSON(),
                                 status=201,
                                 mimetype="application/json")
-
-
-
-
-@course_routes.route('/api/courses/createMessage/<string:token>', methods=['POST'])
-@auto.doc()
-def createMessage(token):
-    """
-    <span class="card-title">This call will create a new Message in the DB</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - seToken: 'seToken'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - JSON Object, Example: <br>
-     {<br>
-     'courseName': 'Advance Math',<br>
-     'message': 'The lecture today is canceled'<br>
-    }<br>
-    <br>
-    <br>
-    <b>Response</b>
-    <br>
-    201 - Created
-    <br>
-    400 - Bad Request
-    <br>
-    403 - Invalid token or not a lecturer
-    """
-    if not request.data:
-        return bad_request("no data")
-    if not is_lecturer(token):  #todo: change to lecturer id
-        return forbidden("Invalid token or not a lecturer!")
-
-    user = get_user_by_token(token)
-
-    #try to parse payload
-    try:
-        payload = json.loads(request.data)
-    except Exception as e:
-        return bad_request("here")
-
-    try:
-        msg = Message(groupId=payload['groupId'], message=payload['message'], msgDate=datetime.datetime.now(), master_id=user.key().id())
-    except Exception as e:
-        print e
-        return bad_request("there")
-
-    try:
-        msg['isProject'] = payload['isProject']
-    except Exception as e:
-        pass
-
-    db.save(msg)
-    db.save
-    return created()
-
 
 
 #----------------------------------------------------------
@@ -226,14 +169,14 @@ def joinCourse(token, courseId):
 #----------------------------------------------------------
 
 
-@course_routes.route('/api/courses/getCourseByCampusName/<string:name>', methods=["GET"])
+@course_routes.route('/api/courses/getCoursesByCampus/<string:campusId>', methods=["GET"])
 @auto.doc()
-def getCourseByCampusName(name):
+def getCourseByCampus(campusId):
     """
     <span class="card-title">>This Call will return an array of all courses in a given campus</span>
     <br>
     <b>Route Parameters</b><br>
-        - name: 'campus name'
+        - campusId: 1234567890
     <br>
     <br>
     <b>Payload</b><br>
@@ -246,7 +189,7 @@ def getCourseByCampusName(name):
     <code>
         {<br>
         'courseName': 'Advance Math',<br>
-        'campusName': 'JCE',<br>
+        'campusId': 1234567890,<br>
         'startDate': '2015-14-3'<br>
         'endDate': '2015-29-6'<br>
         'taskFlag': 'False'<br>
@@ -258,7 +201,7 @@ def getCourseByCampusName(name):
     """
     arr = []
     query = Course.all()
-    query.filter("campusName=", name)
+    query.filter("campusId = ", int(campusId))
 
     for c in query.run():
         arr.append(dict(json.loads(c.to_JSON())))
@@ -274,7 +217,7 @@ def getCourseByCampusName(name):
 
 @course_routes.route('/api/courses/getCoursesByUser/<string:token>/<string:campusId>', methods=['GET'])
 @auto.doc()
-def getCampusesByUser(token,campusId):
+def getCampusesByUser(token, campusId):
     """
     <span class="card-title">This Call will return an array of all Campuses of a certain User</span>
     <br>
@@ -319,7 +262,7 @@ def getCampusesByUser(token,campusId):
     arr = []
     for i in user.courses_id_list:
         course = Course.get_by_id(int(i))
-        if course.courseName == campus.title:
+        if course.campusId == campus.key().id():
             arr.append(dict(json.loads(course.to_JSON())))
 
     if len(arr) != 0:
@@ -331,61 +274,6 @@ def getCampusesByUser(token,campusId):
                         status=200,
                         mimetype="application/json")
 
-
-@course_routes.route('/api/courses/getMessagesByCourseName/<string:name>', methods=["GET"])
-@auto.doc()
-def getMessagesByCourseName(name):
-    """
-    <span class="card-title">>This Call will return an array of all courses in a given campus</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - name: 'campus name'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - NONE
-    <br>
-    <br>
-    <b>Response</b>
-    <br>
-    200 - JSON Example:<br>
-    <code>
-        {<br>
-        'courseName': 'Advance Math',<br>
-        'campusName': 'JCE',<br>
-        'startDate': '2015-14-3'<br>
-        'endDate': '2015-29-6'<br>
-        'taskFlag': false,<br>
-        'id' : 1234567890<br>
-
-        }
-    </code>
-    <br>
-    """
-    arr = []
-    query = Message.all()
-    query.filter("courseName = ", name)
-
-    for m in query.run():
-        msgDic = dict(json.loads(m.to_JSON()))
-        #add a key 'forSortDate' for sorting dates
-        msgTime = datetime.datetime(msgDic['date']['year'], msgDic['date']['month'], msgDic['date']['day'], msgDic['date']['hour'], msgDic['date']['minute'])
-        msgDic['forSortDate'] = msgTime
-        arr.append(msgDic)
-
-    arr = sorted(arr, key=itemgetter('forSortDate'), reverse=False)
-    for i in arr:
-        del i['forSortDate']
-    print arr
-
-    if len(arr) != 0:
-        return Response(response=json.dumps(arr),
-                        status=200,
-                        mimetype="application/json")
-    else:
-        return Response(response=[],
-                        status=200,
-                        mimetype="application/json")
 
 #----------------------------------------------------------
 #                     PUT
@@ -402,7 +290,7 @@ def getMessagesByCourseName(name):
 
 @course_routes.route('/api/courses/deleteCourse/<string:token>/<string:courseid>', methods=['DELETE'])
 @auto.doc()
-def deleteCourse(token,courseid):
+def deleteCourse(token, courseid):
     """
     <span class="card-title">This Call will delete a specific Course</span>
     <br>
@@ -448,64 +336,64 @@ def deleteCourse(token,courseid):
     return forbidden("lecturer is not owner of course")
 
 
-@course_routes.route('/api/courses/deleteCoursesByCampus/<string:token>/<string:campusName>', methods=['DELETE'])
-@auto.doc()
-def deleteCoursesByCampus(token,campusName):
-    """
-    <span class="card-title">This Call will delete a specific campus's courses</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - seToken: 'seToken'
-        - title: 'campusName'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - NONE <br>
-    <br>
-    <br>
-    <b>Response</b>
-    <br>
-    202 - Deleted campus
-    <br>
-    204 - No Matching Campus Found
-    <br>
-    ....<br>
-    {<br>
-    ...<br>
-    }req<br>
-
-    ]<br>
-    400 - Bad Request
-    <br>
-    403 - Invalid token or not a lecturer!<br>
-    """
-
-    if not is_lecturer(token):  #todo: change to lecturer id
-        return forbidden("Invalid token or not a lecturer!")
-
-
-    user = get_user_by_token(token)
-    campus = get_campus_by_campusName(campusName)
-    if campus is None:
-        return bad_request("Not a campus!")
-
-    #check user is owner of campus
-    if campus.master_user_id != user.key().id():
-        return forbidden("lecturer is not owner of campus!")
-
-    query = Course.all()
-
-    try:
-        query.filter('campusName =', campusName)
-    except Exception as e:
-        print e
-        return bad_request("invalid course title attribute")
-
-    for c in query.run():
-        db.delete(c)
-        db.save
-
-    return no_content()
+# @course_routes.route('/api/courses/deleteCoursesByCampus/<string:token>/<string:campusid>', methods=['DELETE'])
+# @auto.doc()
+# def deleteCoursesByCampus(token,campusName):
+#     """
+#     <span class="card-title">This Call will delete a specific campus's courses</span>
+#     <br>
+#     <b>Route Parameters</b><br>
+#         - seToken: 'seToken'
+#         - title: 'campusName'
+#     <br>
+#     <br>
+#     <b>Payload</b><br>
+#      - NONE <br>
+#     <br>
+#     <br>
+#     <b>Response</b>
+#     <br>
+#     202 - Deleted campus
+#     <br>
+#     204 - No Matching Campus Found
+#     <br>
+#     ....<br>
+#     {<br>
+#     ...<br>
+#     }req<br>
+#
+#     ]<br>
+#     400 - Bad Request
+#     <br>
+#     403 - Invalid token or not a lecturer!<br>
+#     """
+#
+#     if not is_lecturer(token):  #todo: change to lecturer id
+#         return forbidden("Invalid token or not a lecturer!")
+#
+#
+#     user = get_user_by_token(token)
+#     campus = get_campus_by_campusName(campusName)
+#     if campus is None:
+#         return bad_request("Not a campus!")
+#
+#     #check user is owner of campus
+#     if campus.master_user_id != user.key().id():
+#         return forbidden("lecturer is not owner of campus!")
+#
+#     query = Course.all()
+#
+#     try:
+#         query.filter('campusName =', campusName)
+#     except Exception as e:
+#         print e
+#         return bad_request("invalid course title attribute")
+#
+#     for c in query.run():
+#         db.delete(c)
+#         db.save
+#
+#     return no_content()
 
 
 

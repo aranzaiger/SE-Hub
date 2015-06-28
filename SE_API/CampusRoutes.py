@@ -76,9 +76,10 @@ def create_campus(token):
         print e
 
     user = get_user_by_token(token)
-
+    arr = []
+    arr.append(str(user.key().id()))
     try:
-        campus = Campus(title=payload['title'], email_ending=payload['email_ending'], master_user_id=user.key().id(), avatar_url=payload['avatar_url'])
+        campus = Campus(title=payload['title'], email_ending=payload['email_ending'], master_user_id=user.key().id(), avatar_url=payload['avatar_url'], membersId=arr)
     except Exception:
         return bad_request()
 
@@ -93,6 +94,53 @@ def create_campus(token):
 #----------------------------------------------------------
 #                     PUT
 #----------------------------------------------------------
+
+@campus_routes.route('/api/campuses/joinCampus/<string:token>/<string:campusId>', methods=["PUT"])
+@auto.doc()
+def joinCampus(token, campusId):
+    """
+    <span class="card-title">This call will add the user (by token) to a specific campus</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'<br>
+        - campusId: 123456789
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - None <br>
+    <br>
+    <b>Response</b>
+    <br>
+    202 - Accepted
+    <br>
+    400 - Bad Request
+    <br>
+    403 - Invalid token or not a lecturer
+    """
+
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Wrong user Token")
+
+    campus = Campus.get_by_id(int(campusId))
+    if campus is None:
+        return bad_request("No such course")
+
+    if user.key().id() in campus.membersId:
+        return no_content("User is already member in Project")
+
+    campus.membersId.append(str(user.key().id()))
+    user.courses_id_list.append(str(campus.key().id()))
+
+    db.put(campus)
+    db.put(user)
+    db.save
+
+    return Response(response=campus.to_JSON(),
+                        status=202,
+                        mimetype="application/json")
+
+
 
 #----------------------------------------------------------
 #                     GET

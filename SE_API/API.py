@@ -30,6 +30,7 @@ from SE_API.CampusRoutes import campus_routes
 from SE_API.CourseRoutes import course_routes
 from SE_API.ProjectRoutes import project_routes
 from SE_API.TaskRoutes import task_routes
+from SE_API.MessageRoutes import message_routes
 
 
 
@@ -51,6 +52,7 @@ app.register_blueprint(campus_routes)
 app.register_blueprint(course_routes)
 app.register_blueprint(project_routes)
 app.register_blueprint(task_routes)
+app.register_blueprint(message_routes)
 
 auto = Autodoc(app)
 

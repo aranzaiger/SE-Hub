@@ -9,12 +9,15 @@ class Campus(db.Model):
     avatar_url = db.StringProperty(required=True)
     email_ending = db.StringProperty(required=True)
     master_user_id = db.IntegerProperty(required=True)
+    membersId = db.StringListProperty(required=True, default=[])
+
 
     def to_JSON(self):
         data = {'title': self.title,
                 'email_ending': self.email_ending,
                 'master_user_id': self.master_user_id,
                 'avatar_url': self.avatar_url,
+                'membersId': self.membersId,
                 'id' : self.key().id()
                 }
         return json.dumps(data)

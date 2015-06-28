@@ -42,7 +42,7 @@ def create_project(token):
      - JSON Object, Example: <br>
      {<br>
      'projectName': 'Advance Math',<br>
-     'courseName': 'JCE',<br>
+     'courseId': 1234567890,<br>
      'logo_url': 'http://location.domain.com/image.jpg',<br>
      'gitRepository': 'http://location.git.com/somthing'<br>
     }<br>
@@ -62,18 +62,14 @@ def create_project(token):
         payload = json.loads(request.data)
     except Exception as e:
         return bad_request("invalid JSON format")
-    #if not is_lecturer(token):  #todo: change to lecturer id
-     #   return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
     if user is None:
         return bad_request("Wrong user Token")
 
-    #todo: check legality
-
 
     try:
-        project = Project(projectName=payload['projectName'], courseName=payload['courseName'], master_id=user.key().id(), gitRepository=payload['gitRepository'], membersId=[token])
+        project = Project(projectName=payload['projectName'], courseId=payload['courseId'], master_id=user.key().id(), gitRepository=payload['gitRepository'], membersId=[token])
     except Exception as e:
         print e
         return bad_request()
@@ -142,14 +138,14 @@ def joinProject(token, projectId):
 #                     GET
 #----------------------------------------------------------
 
-@project_routes.route('/api/projects/getProjectsByCourseName/<string:name>', methods=["GET"])
+@project_routes.route('/api/projects/getProjectsByCourse/<string:courseId>', methods=["GET"])
 @auto.doc()
-def getProjectsByCourseName(name):
+def getProjectsByCourse(courseId):
     """
     <span class="card-title">>This Call will return an array of all projects in a given course</span>
     <br>
     <b>Route Parameters</b><br>
-        - name: 'course name'
+        - courseId: 1234567890
     <br>
     <br>
     <b>Payload</b><br>
@@ -162,7 +158,7 @@ def getProjectsByCourseName(name):
     <code>
         {<br>
         'projectName': 'Advance Math',<br>
-        'courseName': 'JCE',<br>
+        'courseId': 123456789,<br>
         'grade': 98,<br>
         'logo_url': 'http://location.domain.com/image.jpg',<br>
         'gitRepository': 'http://location.git.com/somthing',<br>
@@ -175,7 +171,7 @@ def getProjectsByCourseName(name):
 
     arr = []
     query = Project.all()
-    query.filter("courseName = ", name)
+    query.filter("courseId = ", int(courseId))
 
     for p in query.run():
         arr.append(dict(json.loads(p.to_JSON())))
