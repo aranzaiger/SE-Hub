@@ -139,12 +139,12 @@ def send_activation(token):
         return Response(status=200)
 
 @app.route('/api/help')
-def documentation():
+def documentation_index():
     return app.send_static_file('API_Doc/api_doc_index.html')
 
-# @app.route('/api/help/campuses')
-# def documentation():
-#     return auto.html()
+@app.route('/api/help/misc')
+def documentation_misc():
+    return auto.html()
 
 @app.route('/home')
 def returnHome():

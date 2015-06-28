@@ -13,7 +13,6 @@ angular.module('SeHub')
 
   var imagePath = $scope.user.avatar_url;
   //var campusName = '';
-  $scope.course = '';
   // $scope.campusName = '';
 
   $scope.phones = [
@@ -35,13 +34,13 @@ angular.module('SeHub')
     console.log("Student Mode!");
   }
 
-  // apiService.getCourseByCampusName($scope.user.classes_id_list[0]).success(function(data)
+  // apiService.getCourseByCampusName(token).success(function(data)
   // {
-  //   console.log("Campus Name is ON! " + $scope.user.classes_id_list[0])
+  //   console.log("Campus Name is ON! " + token)
   //   $scope.course = data;
-  // }).error(function()
+  // }).error(function(err)
   // {
-  //   console.log("Error on ===> getCourseByCampusName")
+  //   console.log("Error ===> " + err + " ===> getCourseByCampusName")
   // });
 
 
@@ -51,8 +50,30 @@ angular.module('SeHub')
   }
   $scope.postMessageClicked = function() // Posting the message itself
   {  
+    
+
     if($scope.msg.msgToAdd != null)
     {
+      jsonNewMsg = {
+      'courseName': 'A', // TODO Should be ===> $scope.course.courseName
+      'message': $scope.msg.msgToAdd
+      };
+
+      // console.log("J: " + jsonNewMsg.toString() + "msg: " + $scope.msg.msgToAdd);
+
+      // apiService.createMessage(token, jsonNewMsg).success(function(data)
+      // {
+      //   console.log("create Msg!");
+      // }).error(function(err)
+      // {
+      //   console.log("Error: " + err);
+      // });
+
+      /*
+      'courseName': 'Advance Math',
+      'message': 'The lecture today is canceled'
+      */
+
       console.log($scope.msg.msgToAdd);
       $scope.messages.push({"text": $scope.msg.msgToAdd});
     }

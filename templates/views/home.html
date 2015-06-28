@@ -99,71 +99,16 @@
 					<md-button ng-click="clearAllClicked()" ng class="md-raised md-primary">Clear All</md-button>
 				</div>
 				<div class="port_spacer"></div>
-				<md-input-container>
-				<label> Write Your Desired Message Here And Press Post</label>
-					<input type="text" minlength="1" ng-model="msg.msgToAdd" required>
-				</md-input-container>
-			</div>
-		</md-content>
-
-		<md-content layout-padding layout-margin>
-			<h1>
-				<em><i class="fa fa-folder-open"></i> Project Evaluation</em>
-			</h1>
-			<md-select placeholder="Choose Project" ng-model="project" ng-click="chooseProjectClicked()" style="z-index: 300" class="projectDropDown">
-			</md-select>
-			<div layout = "column" layout-margin layout-padding>
-				<div layout="row">
-					<a href="http://localhost:8080/home#/projects">
-						<md-card flex class = "projectExhibit" >
-							Press On Me
-						</md-card>
-					</a>
-					<a href="http://localhost:8080/home#/projects">
-						<md-card flex class = "projectExhibit">
-							Press On Me
-						</md-card>
-					</a>
-
-					<a href="http://localhost:8080/home#/projects">
-						<md-card flex class = "projectExhibit">
-							Press On Me
-						</md-card>
-					</a>
-				</div>
-				<div layout="row">
-					<a href="http://localhost:8080/home#/projects">
-						<md-card flex class = "projectExhibit">
-						Press On Me
-						</md-card>
-					</a>
-					<a href="http://localhost:8080/home#/projects">
-						<md-card flex class = "projectExhibit">
-							Press On Me
-						</md-card>
-					</a>
-					<a href="http://localhost:8080/home#/projects">
-						<md-card flex class = "projectExhibit">
-						Press On Me
-						</md-card>
-					</a>
-				</div>
-				<div layout="row">
-					<a href="http://localhost:8080/home#/projects">
-						<md-card flex class = "projectExhibit">
-							Press On Me
-						</md-card>
-					</a>
-					<a href="http://localhost:8080/home#/projects">
-						<md-card flex class = "projectExhibit">
-							Press On Me
-						</md-card>
-					</a>
-					<a href="http://localhost:8080/home#/projects">
-						<md-card flex class = "projectExhibit">
-							Press On Me
-						</md-card>
-					</a>
+				<div layout-padding layout = "row">
+					<div flex = "60">
+						<md-input-container>
+							<label> Write Your Desired Message Here And Press Post</label>
+							<input type="text" minlength="1" ng-model="msg.msgToAdd" required></input>	
+						</md-input-container>
+					</div>
+					<div flex = "30">
+						<md-select placeholder="Choose Course" ng-model="course" ng-click="chooseCourseClicked()" style="z-index: 300" class="courseDropDown"></md-select>
+					</div>
 				</div>
 			</div>
 		</md-content>

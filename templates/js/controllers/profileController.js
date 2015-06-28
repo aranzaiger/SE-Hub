@@ -1,29 +1,32 @@
 angular.module('SeHub')
-	.controller('settingsController', ['$scope', '$rootScope', 'dataService', 'apiService', '$cookies', '$location',
-		function($scope, $rootScope, dataService, apiService, $cookies, $location) {
+	.controller('profileController', ['$scope', '$rootScope', 'dataService', 'apiService',
+		'$cookies', '$location', '$routeParams',
+		function($scope, $rootScope, dataService, apiService, $cookies, $location, $routeParams) {
 
 			var token = $cookies['com.sehub.www'];
-
+			var id = $routeParams.id;
 			$scope.loadingData = true;
 			$scope.isInRegisterMode = false;
 
-			$scope.title = "Settings"
+			$scope.title = "Profile";
 
-			apiService.getUserByToken(token).success(function(data) {
+			apiService.getUserById(token, id).success(function(data) {
 				if (data.message == 'No User Found') {
 					console.error("No User Found!");
 				}
-				$scope.loadingData = false;
 				$scope.user = data;
-				console.log(data);
-				if ($scope.user.isFirstLogin) {
-					$scope.menuObj = {};
-					$scope.isInRegisterMode = true;
+				apiService.getCampusesByUserId(token, id).success(function(data) {
+					$scope.campuses = data;
+					console.log(data);
+
 					$scope.loadingData = false;
-					$location.path('/register')
-				}
+				}).error(function(err) {
+					console.error(err);
+				});
 
 			});
+
+
 
 			$scope.isEditMode = false;
 			$scope.profileMode = "Edit Profile";
@@ -67,17 +70,17 @@ angular.module('SeHub')
 				"campus_avatar": "https://yt3.ggpht.com/--ZkWxybWGOM/AAAAAAAAAAI/AAAAAAAAAAA/_nAICC_kzzI/s88-c-k-no/photo.jpg"
 			}];
 
-			$scope.campuses = [{
-				'title': 'JCE',
-				'email_ending': '@post.jce.ac.il',
-				'master_user_id': 123453433341,
-				'avatar_url': 'https://yt3.ggpht.com/--ZkWxybWGOM/AAAAAAAAAAI/AAAAAAAAAAA/_nAICC_kzzI/s88-c-k-no/photo.jpg'
-			}, {
-				'title': 'Stanford',
-				'email_ending': '@post.jce.ac.il',
-				'master_user_id': 123453433341,
-				'avatar_url': 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR9M4uQgaJP1zyiCGw-dK31hU8buWqeuOi9vTXBd4Y8hQcFTZqA'
-			}];
+			// $scope.campuses = [{
+			// 	'title': 'JCE',
+			// 	'email_ending': '@post.jce.ac.il',
+			// 	'master_user_id': 123453433341,
+			// 	'avatar_url': 'https://yt3.ggpht.com/--ZkWxybWGOM/AAAAAAAAAAI/AAAAAAAAAAA/_nAICC_kzzI/s88-c-k-no/photo.jpg'
+			// }, {
+			// 	'title': 'Stanford',
+			// 	'email_ending': '@post.jce.ac.il',
+			// 	'master_user_id': 123453433341,
+			// 	'avatar_url': 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR9M4uQgaJP1zyiCGw-dK31hU8buWqeuOi9vTXBd4Y8hQcFTZqA'
+			// }];
 
 
 			$scope.labels = ['Commits', 'Issues Assigned', 'Messages', 'Open Tasks'];
@@ -88,6 +91,7 @@ angular.module('SeHub')
 				[28, 48, 40, 3]
 			];
 
+			$scope.isUser = $scope.$parent.user.id.toString() /*The Actual User*/ === $routeParams.id /*The Profile User*/;
 
 		}
 	]);

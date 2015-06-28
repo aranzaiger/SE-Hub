@@ -1,6 +1,8 @@
 <div>
-	<div class="loader" ng-if="loadingData">
+	<div class="loader" ng-if="loadingData" layout="row" layout-align="center">
+	
 		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+
 	</div>
 	<md-content layout-padding>
 		<md-card layout-padding>
@@ -15,7 +17,7 @@
 								<img ng-src="{{user.avatar_url}}" alt="" style="width:20%">
 							</div>
 							<div flex="70%">
-								<md-button class="md-raised" ng-click="changeProfileMode()">
+								<md-button class="md-raised" ng-click="changeProfileMode()" ng-if="isUser">
 									<i ng-class="profileModeIcon"></i> {{profileMode}}
 								</md-button>
 							</div>
@@ -78,7 +80,7 @@
                             	</div>
 					    		<div class="spacer"></div>
 					    		<div>
-						    		<md-button class="">
+						    		<md-button class="" ng-if="isUser">
 						    		X
 						    		</md-button>
 					    		</div>
@@ -96,11 +98,11 @@
                             		<img alt="{{ person.name }}" ng-src="{{ campus.avatar_url }}" class="md-avatar" />
 	                        	</div>
                             	<div class="port_spacer">
-					    			{{ campus.title }} - 
+					    			<strong>{{ campus.title }}</strong> {{campus.email_ending}} 
                             	</div>
 					    		<div class="spacer"></div>
 					    		<div>
-						    		<md-button class="">
+						    		<md-button class="" ng-if="isUser">
 						    		X
 						    		</md-button>
 					    		</div>
