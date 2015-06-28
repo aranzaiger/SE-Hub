@@ -113,64 +113,6 @@ def create_course(token):
                                 mimetype="application/json")
 
 
-
-
-@course_routes.route('/api/courses/createMessage/<string:token>', methods=['POST'])
-@auto.doc()
-def createMessage(token):
-    """
-    <span class="card-title">This call will create a new Message in the DB</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - seToken: 'seToken'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - JSON Object, Example: <br>
-     {<br>
-     'courseName': 'Advance Math',<br>
-     'message': 'The lecture today is canceled'<br>
-    }<br>
-    <br>
-    <br>
-    <b>Response</b>
-    <br>
-    201 - Created
-    <br>
-    400 - Bad Request
-    <br>
-    403 - Invalid token or not a lecturer
-    """
-    if not request.data:
-        return bad_request("no data")
-    if not is_lecturer(token):  #todo: change to lecturer id
-        return forbidden("Invalid token or not a lecturer!")
-
-    user = get_user_by_token(token)
-
-    #try to parse payload
-    try:
-        payload = json.loads(request.data)
-    except Exception as e:
-        return bad_request("here")
-
-    try:
-        msg = Message(groupId=payload['groupId'], message=payload['message'], msgDate=datetime.datetime.now(), master_id=user.key().id())
-    except Exception as e:
-        print e
-        return bad_request("there")
-
-    try:
-        msg['isProject'] = payload['isProject']
-    except Exception as e:
-        pass
-
-    db.save(msg)
-    db.save
-    return created()
-
-
-
 #----------------------------------------------------------
 #                     PUT
 #----------------------------------------------------------
@@ -274,7 +216,7 @@ def getCourseByCampusName(name):
 
 @course_routes.route('/api/courses/getCoursesByUser/<string:token>/<string:campusId>', methods=['GET'])
 @auto.doc()
-def getCampusesByUser(token,campusId):
+def getCampusesByUser(token, campusId):
     """
     <span class="card-title">This Call will return an array of all Campuses of a certain User</span>
     <br>
@@ -331,61 +273,6 @@ def getCampusesByUser(token,campusId):
                         status=200,
                         mimetype="application/json")
 
-
-@course_routes.route('/api/courses/getMessagesByCourseName/<string:name>', methods=["GET"])
-@auto.doc()
-def getMessagesByCourseName(name):
-    """
-    <span class="card-title">>This Call will return an array of all courses in a given campus</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - name: 'campus name'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - NONE
-    <br>
-    <br>
-    <b>Response</b>
-    <br>
-    200 - JSON Example:<br>
-    <code>
-        {<br>
-        'courseName': 'Advance Math',<br>
-        'campusName': 'JCE',<br>
-        'startDate': '2015-14-3'<br>
-        'endDate': '2015-29-6'<br>
-        'taskFlag': false,<br>
-        'id' : 1234567890<br>
-
-        }
-    </code>
-    <br>
-    """
-    arr = []
-    query = Message.all()
-    query.filter("courseName = ", name)
-
-    for m in query.run():
-        msgDic = dict(json.loads(m.to_JSON()))
-        #add a key 'forSortDate' for sorting dates
-        msgTime = datetime.datetime(msgDic['date']['year'], msgDic['date']['month'], msgDic['date']['day'], msgDic['date']['hour'], msgDic['date']['minute'])
-        msgDic['forSortDate'] = msgTime
-        arr.append(msgDic)
-
-    arr = sorted(arr, key=itemgetter('forSortDate'), reverse=False)
-    for i in arr:
-        del i['forSortDate']
-    print arr
-
-    if len(arr) != 0:
-        return Response(response=json.dumps(arr),
-                        status=200,
-                        mimetype="application/json")
-    else:
-        return Response(response=[],
-                        status=200,
-                        mimetype="application/json")
 
 #----------------------------------------------------------
 #                     PUT
