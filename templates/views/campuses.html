@@ -4,28 +4,27 @@
 	</md-content>
 	<md-card class="cardAllCampuses">
 		<div ng-if = "!scope.campusesEmpty">
-			<div class = "allCampusesShow" flex = "99" layout = "row" ng-repeat = "t in threeSizedArray" value = "{{t}}" layout-padding>
+			<div flex = "99" layout = "row" ng-repeat = "t in threeSizedArray" value = "{{t}}" layout-padding>
 				<div flex = "32" layout = "column" ng-repeat = "campus in t" value = "{{campus}}" >
 					<div ng-if="t.length != 1"> 
 						<md-button ng-click = "goToCampus(campus.id)" style="width:100%; height:32%;" layout-padding class = "md-raised" >
 							<!-- <img src="{{campus.avatar_url}}" style = "width:14%; height:auto;"> -->
 							<md-card style="width:97%;height:97%">
-						      <img ng-src="{{campus.avatar_url}}" class="md-card-image" alt="Washed Out">
-						      <md-card-content>
-						        <h2 class="md-title">{{campus.title}}</h2>
-						      </md-card-content>
+								<img ng-src="{{campus.avatar_url}}" class="md-card-image" alt="Washed Out">
+								<md-card-content>
+									<h2 class="md-title">{{campus.title}}</h2>
+								</md-card-content>
 	    					</md-card>
 						</md-button>
 					</div>
-				
 					<div ng-if="t.length == 1">
 						<md-button ng-click = "goToCampus(campus.id)" style="width:32%; height:32%;" layout-padding class = "md-raised" >
 							<!-- <img src="{{campus.avatar_url}}" style = "width:14%; height:auto;"> -->
 							<md-card style="width:97%;height:97%">
-						      <img ng-src="{{campus.avatar_url}}" class="md-card-image" alt="Washed Out">
-						      <md-card-content>
-						        <h2 class="md-title">{{campus.title}}</h2>
-						      </md-card-content>
+				      			<img ng-src="{{campus.avatar_url}}" class="md-card-image" alt="Washed Out">
+				      			<md-card-content>
+						        	<h2 class="md-title">{{campus.title}}</h2>
+				      			</md-card-content>
 	    					</md-card>
 						</md-button>
 					</div>
@@ -33,9 +32,9 @@
 				</div>
 			</div>
 		</div>
-		<div ng-if = "scope.campusesEmpty">>
-			<md-card>
-				You Are Not Related To Any Course, You Can Join A Course By Press 'Join'.
+		<div ng-if = "scope.campusesEmpty">
+			<md-card layout-padding>
+				You Are Not Related To Any Campus, You May Join A Campus.
 			</md-card>
 		</div>
 	</md-card>

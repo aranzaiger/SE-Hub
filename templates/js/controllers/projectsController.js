@@ -41,37 +41,23 @@ angular.module('SeHub')
 
 	var init = function()
 	{
-		var i, j, counter = 0;
-		var newLength = 0;
-		
-		if(($scope.projects.length % 3) === 0)
-		{
-			newLength = ($scope.projects.length / 3);
-		}
-		else
-		{
-			newLength = (Math.ceil($scope.projects.length / 3)); // Rounds number up
-		}
-		
-		console.log("length: " + newLength);
-		$scope.arrayHolder.length = newLength;
-
-		for(j = 0; j < newLength; j++)	
-		{
-			$scope.arrayHolder[j] = [3]; // Creating array in size of 3 in each array cell
-		}
-
-		for(i = 0; i < newLength; i++)		
-		{		
-			for(j = 0; j < newLength; j++)
-			{
-				if($scope.projects[(3*i) + j] != null)
-				{	
-					$scope.arrayHolder[i][j] = $scope.projects[(3*i) + j];
+		$scope.arrayHolder = [];
+		var tempArr = [];
+		var sizeOfSmallArrays = 3;
+		for (var i = 0 ; i < $scope.courses.length ; i++) {
+			if(i % sizeOfSmallArrays !== 0){
+				tempArr.push($scope.courses[i]);
+			}else{
+				if(i !== 0){
+					$scope.arrayHolder.push(tempArr);
+					tempArr = [];
+					tempArr.push($scope.courses[i]);
+				}else{
+					tempArr.push($scope.courses[i]);
 				}
-			}	
-		}
-		console.log($scope.arrayHolder);
+			}
+		};
+		$scope.arrayHolder.push(tempArr);
 	}
 
 
