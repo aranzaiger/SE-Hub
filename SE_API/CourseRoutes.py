@@ -88,6 +88,7 @@ def create_course(token):
         #check if name already exists
         try:
             query = Course.all()
+            query.filter('campusId = ', payload['campusId'])
             query.filter("courseName = ", payload['courseName'])
             for c in query.run(limit=1):
                 return forbidden("Course with same name already exists")

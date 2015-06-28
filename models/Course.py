@@ -14,7 +14,7 @@ class Course(db.Model):
 
     def to_JSON(self):
         data = {'courseName' : self.courseName,
-                'campusId' : self.campusName,
+                'campusId' : self.campusId,
                 'master_id' : self.master_id,
                 # 'projects' : self.projects,
                 'startDate' : {
