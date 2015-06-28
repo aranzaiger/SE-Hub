@@ -459,7 +459,7 @@ def getUsersByCourse(token, courseId):
 
 @user_routes.route('/api/users/getUsersByProject/<string:token>/<string:projectId>', methods=["GET"])
 @auto.doc()
-def getUsersByCampus(token, projectId):
+def getUsersByProject(token, projectId):
     """
     <span class="card-title">>This Call will return all users in Project</span>
     <br>
