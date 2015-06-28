@@ -49,7 +49,7 @@ def create_course(token):
      - JSON Object, Example: <br>
          {<br>
          'courseName': 'Advance Math',<br>
-         'campusName': 'JCE',<br>
+         'campusId': 1234567890,<br>
          'startDate': {'year': 2015, 'month' : 4, 'day' : 3},<br>
          'endDate': {'year': 2016, 'month' : 5, 'day' : 14}<br>
         }<br>
@@ -83,7 +83,7 @@ def create_course(token):
         if end_date <= start_date:
             return bad_request("end date cant be before (or same day) start date")
 
-        course = Course(courseName=payload['courseName'], campusName=payload['campusName'], master_id=user.key().id(),
+        course = Course(courseName=payload['courseName'], campusId=payload['campusId'], master_id=user.key().id(),
                         startDate=start_date, endDate=end_date)
         #check if name already exists
         try:
@@ -168,14 +168,14 @@ def joinCourse(token, courseId):
 #----------------------------------------------------------
 
 
-@course_routes.route('/api/courses/getCourseByCampusName/<string:name>', methods=["GET"])
+@course_routes.route('/api/courses/getCoursesByCampus/<string:campusId>', methods=["GET"])
 @auto.doc()
-def getCourseByCampusName(name):
+def getCourseByCampus(campusId):
     """
     <span class="card-title">>This Call will return an array of all courses in a given campus</span>
     <br>
     <b>Route Parameters</b><br>
-        - name: 'campus name'
+        - campusId: 1234567890
     <br>
     <br>
     <b>Payload</b><br>
@@ -188,7 +188,7 @@ def getCourseByCampusName(name):
     <code>
         {<br>
         'courseName': 'Advance Math',<br>
-        'campusName': 'JCE',<br>
+        'campusId': 1234567890,<br>
         'startDate': '2015-14-3'<br>
         'endDate': '2015-29-6'<br>
         'taskFlag': 'False'<br>
@@ -200,7 +200,7 @@ def getCourseByCampusName(name):
     """
     arr = []
     query = Course.all()
-    query.filter("campusName=", name)
+    query.filter("campusId = ", int(campusId))
 
     for c in query.run():
         arr.append(dict(json.loads(c.to_JSON())))
@@ -261,7 +261,7 @@ def getCampusesByUser(token, campusId):
     arr = []
     for i in user['courses_id_list']:
         course = Course.get_by_id(int(i))
-        if course.courseName == campus.title:
+        if course.campusId == campus.key().id():
             arr.append(dict(json.loads(course.to_JSON())))
 
     if len(arr) != 0:
@@ -289,7 +289,7 @@ def getCampusesByUser(token, campusId):
 
 @course_routes.route('/api/courses/deleteCourse/<string:token>/<string:courseid>', methods=['DELETE'])
 @auto.doc()
-def deleteCourse(token,courseid):
+def deleteCourse(token, courseid):
     """
     <span class="card-title">This Call will delete a specific Course</span>
     <br>
@@ -335,64 +335,64 @@ def deleteCourse(token,courseid):
     return forbidden("lecturer is not owner of course")
 
 
-@course_routes.route('/api/courses/deleteCoursesByCampus/<string:token>/<string:campusName>', methods=['DELETE'])
-@auto.doc()
-def deleteCoursesByCampus(token,campusName):
-    """
-    <span class="card-title">This Call will delete a specific campus's courses</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - seToken: 'seToken'
-        - title: 'campusName'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - NONE <br>
-    <br>
-    <br>
-    <b>Response</b>
-    <br>
-    202 - Deleted campus
-    <br>
-    204 - No Matching Campus Found
-    <br>
-    ....<br>
-    {<br>
-    ...<br>
-    }req<br>
-
-    ]<br>
-    400 - Bad Request
-    <br>
-    403 - Invalid token or not a lecturer!<br>
-    """
-
-    if not is_lecturer(token):  #todo: change to lecturer id
-        return forbidden("Invalid token or not a lecturer!")
-
-
-    user = get_user_by_token(token)
-    campus = get_campus_by_campusName(campusName)
-    if campus is None:
-        return bad_request("Not a campus!")
-
-    #check user is owner of campus
-    if campus.master_user_id != user.key().id():
-        return forbidden("lecturer is not owner of campus!")
-
-    query = Course.all()
-
-    try:
-        query.filter('campusName =', campusName)
-    except Exception as e:
-        print e
-        return bad_request("invalid course title attribute")
-
-    for c in query.run():
-        db.delete(c)
-        db.save
-
-    return no_content()
+# @course_routes.route('/api/courses/deleteCoursesByCampus/<string:token>/<string:campusid>', methods=['DELETE'])
+# @auto.doc()
+# def deleteCoursesByCampus(token,campusName):
+#     """
+#     <span class="card-title">This Call will delete a specific campus's courses</span>
+#     <br>
+#     <b>Route Parameters</b><br>
+#         - seToken: 'seToken'
+#         - title: 'campusName'
+#     <br>
+#     <br>
+#     <b>Payload</b><br>
+#      - NONE <br>
+#     <br>
+#     <br>
+#     <b>Response</b>
+#     <br>
+#     202 - Deleted campus
+#     <br>
+#     204 - No Matching Campus Found
+#     <br>
+#     ....<br>
+#     {<br>
+#     ...<br>
+#     }req<br>
+#
+#     ]<br>
+#     400 - Bad Request
+#     <br>
+#     403 - Invalid token or not a lecturer!<br>
+#     """
+#
+#     if not is_lecturer(token):  #todo: change to lecturer id
+#         return forbidden("Invalid token or not a lecturer!")
+#
+#
+#     user = get_user_by_token(token)
+#     campus = get_campus_by_campusName(campusName)
+#     if campus is None:
+#         return bad_request("Not a campus!")
+#
+#     #check user is owner of campus
+#     if campus.master_user_id != user.key().id():
+#         return forbidden("lecturer is not owner of campus!")
+#
+#     query = Course.all()
+#
+#     try:
+#         query.filter('campusName =', campusName)
+#     except Exception as e:
+#         print e
+#         return bad_request("invalid course title attribute")
+#
+#     for c in query.run():
+#         db.delete(c)
+#         db.save
+#
+#     return no_content()
 
 
 
