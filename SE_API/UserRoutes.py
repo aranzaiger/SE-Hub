@@ -17,6 +17,7 @@ from flask.ext.autodoc import Autodoc
 # DB Models
 from models.User import User
 from models.Course import Course
+from models.Project import Project
 
 #Validation Utils Libs
 from SE_API.Validation_Utils import *
@@ -277,14 +278,15 @@ def getUserByToken(token):
 #                     DELETE
 #----------------------------------------------------------
 
-@user_routes.route('/api/users/removeUserFromCampus/<string:token>/<string:campusId>', methods=["PUT"])
+@user_routes.route('/api/users/removeUserFromCampus/<string:token>/<string:userId>/<string:campusId>', methods=["PUT"])
 @auto.doc()
-def removeUserFromCampus(token, campusId):
+def removeUserFromCampus(token, userId, campusId):
     """
-    <span class="card-title">>This Call will remove a Campus from a user Campus list</span>
+    <span class="card-title">>This Call will remove a user from a campus</span>
     <br>
     <b>Route Parameters</b><br>
-        - seToken: 'seToken'
+        - seToken: 'seToken'<br>
+        - userId: 0987654321,<br>
         - 'campusId': 1234567890<br>
     <br>
     <br>
@@ -300,18 +302,13 @@ def removeUserFromCampus(token, campusId):
     400 - Bad Request
     """
 
-    if not request.data:
-        return bad_request()
+    requestingUser = get_user_by_token(token)
+    if requestingUser is None:
+        return bad_request("Bad User Token")
 
-    try:
-        payload = json.loads(request.data)
-    except Exception as e:
-        return bad_request()
-
-    if not is_lecturer(token):  #todo: change to lecturer id
-        return forbidden("Invalid token or not a lecturer!")
-
-    user = get_user_by_token(token)
+    userToRemove = User.get_by_id(int(userId))
+    if userToRemove is None:
+        return bad_request("No such user to remove")
 
     #check Campus Exists
     campus = Campus.get_by_id(int(campusId))
@@ -319,18 +316,20 @@ def removeUserFromCampus(token, campusId):
         return bad_request("No such Campus!")
 
     #check if user is owner of Campus
-    if user.key().id() != campus.master_user_id:
-        return forbidden("Lecturer is not owner of course")
+    if requestingUser.key().id() != campus.master_user_id:
+        # check if user want to delete itself
+        if requestingUser.key().id() != userToRemove.key().id():
+            return forbidden("No permission to delete user")
 
     try:
-        user.campuses_id_list.remove(campusId)
+        userToRemove.campuses_id_list.remove(campusId)
     except Exception as e:
-        print e
         return bad_request("user is not listed to this campus")
 
-    db.put(user)
+
+    db.put(userToRemove)
     db.save
-    return Response(response=user.to_JSON(),
+    return Response(response=userToRemove.to_JSON(),
                             status=200,
                             mimetype="application/json")  # Real response!
 
@@ -338,64 +337,128 @@ def removeUserFromCampus(token, campusId):
 
 
 
-# @user_routes.route('/api/users/removeUserFromCourse/<string:token>/<string:courseId>', methods=["PUT"])
-# @auto.doc()
-# def removeUserFromCourse(token, courseId):
-#     """
-#     <span class="card-title">>This Call will remove a Course from a user Campus list</span>
-#     <br>
-#     <b>Route Parameters</b><br>
-#         - seToken: 'seToken'
-#         - 'courseId': 1234567890<br>
-#     <br>
-#     <br>
-#     <b>Payload</b><br>
-#      - NONE
-#      {<br>
-#     }<br>
-#     <br>
-#     <b>Response</b>
-#     <br>
-#     200 - User updated
-#     <br>
-#     400 - Bad Request
-#     """
-#
-#     if not request.data:
-#         return bad_request()
-#
-#     try:
-#         payload = json.loads(request.data)
-#     except Exception as e:
-#         return bad_request()
-#
-#     user = get_user_by_token(token)
-#     if user is None:
-#         return bad_request("No such user!")
-#
-#
-#     #check Course Exists
-#     course = Course.get_by_id(int(courseId))
-#     if course is None:
-#         return bad_request("No such Course!")
-#
-#     #check if user is owner of Campus
-#     if user.key().id() != course.master_id:
-#         return forbidden("Lecturer is not owner of course")
-#
-#     try:
-#         user.campuses_id_list.remove(campusId)
-#     except Exception as e:
-#         print e
-#         return bad_request("user is not listed to this campus")
-#
-#     db.put(user)
-#     db.save
-#     return Response(response=user.to_JSON(),
-#                             status=200,
-#                             mimetype="application/json")  # Real response!
-#
-#
+
+@user_routes.route('/api/users/removeUserFromCourse/<string:token>/<string:userId>/<string:courseId>', methods=["PUT"])
+@auto.doc()
+def removeUserFromCourse(token, userId, courseId):
+    """
+    <span class="card-title">>This Call will remove a user from a course</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'<br>
+        - userId: 0987654321,<br>
+        - 'courseId': 1234567890<br>
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+     {<br>
+    }<br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - User updated
+    <br>
+    400 - Bad Request
+    """
+
+    requestingUser = get_user_by_token(token)
+    if requestingUser is None:
+        return bad_request("Bad User Token")
+
+    userToRemove = User.get_by_id(int(userId))
+    if userToRemove is None:
+        return bad_request("No such user to remove")
+
+    #check Course Exists
+    course = Course.get_by_id(int(courseId))
+    if course is None:
+        return bad_request("No such Course!")
+
+    #check if user is owner of Course
+    if requestingUser.key().id() != course.master_id:
+        # check if user want to delete itself
+        if requestingUser.key().id() != userToRemove.key().id():
+            return forbidden("No permission to delete user")
+
+    try:
+        userToRemove.courses_id_list.remove(courseId)
+        course.membersId.remove(userToRemove.key().id())
+    except Exception as e:
+        return bad_request("user is not listed to this course")
+
+
+
+    db.put(userToRemove)
+    db.put(course)
+    db.save
+    return Response(response=userToRemove.to_JSON(),
+                            status=200,
+                            mimetype="application/json")  # Real response!
+
+
+
+
+
+@user_routes.route('/api/users/removeUserFromProject/<string:token>/<string:userId>/<string:projectId>', methods=["PUT"])
+@auto.doc()
+def removeUserFromCourse(token, userId, projectId):
+    """
+    <span class="card-title">>This Call will remove a user from a project</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'<br>
+        - userId: 0987654321,<br>
+        - 'projectId': 1234567890<br>
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+     {<br>
+    }<br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - User updated
+    <br>
+    400 - Bad Request
+    """
+
+    requestingUser = get_user_by_token(token)
+    if requestingUser is None:
+        return bad_request("Bad User Token")
+
+    userToRemove = User.get_by_id(int(userId))
+    if userToRemove is None:
+        return bad_request("No such user to remove")
+
+    #check project Exists
+    project = Project.get_by_id(int(projectId))
+    if project is None:
+        return bad_request("No such Project!")
+
+    #check if user is owner of project
+    if requestingUser.key().id() != project.master_id:
+        # check if user want to delete itself
+        if requestingUser.key().id() != userToRemove.key().id():
+            return forbidden("No permission to delete user")
+
+    try:
+        userToRemove.projects_id_list.remove(projectId)
+        project.membersId.remove(userToRemove.key().id())
+    except Exception as e:
+        return bad_request("user is not listed to this project")
+
+
+
+    db.put(userToRemove)
+    db.put(project)
+    db.save
+    return Response(response=userToRemove.to_JSON(),
+                            status=200,
+                            mimetype="application/json")  # Real response!
+
+
 
 
 
