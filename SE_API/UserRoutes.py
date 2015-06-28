@@ -462,7 +462,7 @@ def removeUserFromCourse(token, userId, courseId):
 
 @user_routes.route('/api/users/removeUserFromProject/<string:token>/<string:userId>/<string:projectId>', methods=["PUT"])
 @auto.doc()
-def removeUserFromCourse(token, userId, projectId):
+def removeUserFromProject(token, userId, projectId):
     """
     <span class="card-title">>This Call will remove a user from a project</span>
     <br>
