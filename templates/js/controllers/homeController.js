@@ -95,8 +95,6 @@ angular.module('SeHub')
     console.log("choose project Clicked!!");
   }
 
-
-
   // animation
   $scope.isEnterd = top.setIsEnterd;
 }]);

@@ -1,10 +1,9 @@
 angular.module('SeHub')
 .controller('campusesController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService, $rootScope)
 {
-	$scope.threeSizedArray =[];
 	$scope.campusesEmpty = false;
 	var token = $cookies['com.sehub.www'];
-
+	
 	var init = function()
 	{
 		$scope.threeSizedArray = [];
@@ -23,9 +22,7 @@ angular.module('SeHub')
 				}
 			}
 		};
-
 		$scope.threeSizedArray.push(tempArr);
-		console.log($scope.threeSizedArray); // TODO REMOVE
 	}
 
 	$scope.goToCampus = function(campusId) // Will pass you to courses by specific campus
@@ -45,7 +42,9 @@ angular.module('SeHub')
 		{
 			// TODO
 		});
-		if($scope.campuses != null)
+		// console.log($scope.campuses.length.toString());
+
+		if(!$scope.campuses) // If campuses is empty
 		{
 			$scope.campusesEmpty = true;
 		}
