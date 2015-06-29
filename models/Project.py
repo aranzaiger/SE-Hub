@@ -11,6 +11,7 @@ class Project(db.Model):
     logo_url = db.StringProperty(required=False)
     gitRepository = db.StringProperty(required=True)
     membersId = db.StringListProperty(required=True)
+    info = db.TextProperty(required=False, default="{}")
 
     def to_JSON(self):
         data = {'projectName' : self.projectName,
@@ -20,6 +21,7 @@ class Project(db.Model):
                 'logo_url' : self.logo_url,
                 'gitRepository' : self.gitRepository,
                 'membersId' : self.membersId,
+                'info': json.loads(self.info),
                 'id' : self.key().id()
                 }
         return json.dumps(data)

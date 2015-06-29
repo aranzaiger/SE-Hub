@@ -89,59 +89,59 @@ def updateUser(token):
     db.save
     return ok("User updated")
 
-@user_routes.route('/api/users/addUserToCourse/<string:token>', methods=["PUT"])
-@auto.doc()
-def addUserToCourse(token):
-    """
-    <span class="card-title">>This Call will add a course to user course list</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - seToken: 'seToken'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - JSON Object, Example: <br>
-     {<br>
-         'courseId': 1234567890<br>
-    }<br>
-    <br>
-    <b>Response</b>
-    <br>
-    200 - User updated
-    <br>
-    400 - Bad Request
-    """
-
-    if not request.data:
-        return bad_request()
-
-    try:
-        payload = json.loads(request.data)
-    except Exception as e:
-        return bad_request()
-
-    #check user exists
-    user = get_user_by_token(token)
-    if user is None:
-        return bad_request("Not a user!")
-
-    #check course Exists
-    course = Course.get_by_id(payload['coursesId'])
-    if course is None:
-        return bad_request("No such Course!")
-
-    try:
-        user.courses_id_list.append(payload['coursesId'])
-    except Exception as e:
-        print e
-        return bad_request()
-
-    db.put(user)
-    db.save
-    return Response(response=user.to_JSON(),
-                        status=200,
-                        mimetype="application/json")  # Real response!
-
+# @user_routes.route('/api/users/addUserToCourse/<string:token>', methods=["PUT"])
+# @auto.doc()
+# def addUserToCourse(token):
+#     """
+#     <span class="card-title">>This Call will add a course to user course list</span>
+#     <br>
+#     <b>Route Parameters</b><br>
+#         - seToken: 'seToken'
+#     <br>
+#     <br>
+#     <b>Payload</b><br>
+#      - JSON Object, Example: <br>
+#      {<br>
+#          'courseId': 1234567890<br>
+#     }<br>
+#     <br>
+#     <b>Response</b>
+#     <br>
+#     200 - User updated
+#     <br>
+#     400 - Bad Request
+#     """
+#
+#     if not request.data:
+#         return bad_request()
+#
+#     try:
+#         payload = json.loads(request.data)
+#     except Exception as e:
+#         return bad_request()
+#
+#     #check user exists
+#     user = get_user_by_token(token)
+#     if user is None:
+#         return bad_request("Not a user!")
+#
+#     #check course Exists
+#     course = Course.get_by_id(payload['coursesId'])
+#     if course is None:
+#         return bad_request("No such Course!")
+#
+#     try:
+#         user.courses_id_list.append(payload['coursesId'])
+#     except Exception as e:
+#         print e
+#         return bad_request()
+#
+#     db.put(user)
+#     db.save
+#     return Response(response=user.to_JSON(),
+#                         status=200,
+#                         mimetype="application/json")  # Real response!
+#
 
 
 
