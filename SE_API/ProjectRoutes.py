@@ -75,7 +75,7 @@ def create_project(token):
 
 
     try:
-        project = Project(projectName=payload['projectName'], courseId=payload['courseId'], master_id=user.key().id(), gitRepository=payload['gitRepository'], membersId=[user.key().id()])
+        project = Project(projectName=payload['projectName'], courseId=payload['courseId'], master_id=user.key().id(), gitRepository=payload['gitRepository'], membersId=[str(user.key().id())])
     except Exception as e:
         print e
         return bad_request()
