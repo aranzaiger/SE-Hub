@@ -231,7 +231,7 @@ def getProjectsByUser(token):
 
 
     arr = []
-    for p in user['projects_id_list']:
+    for p in user.projects_id_list:
         project = Project.get_by_id(int(p))
         arr.append(dict(json.loads(project.to_JSON())))
 

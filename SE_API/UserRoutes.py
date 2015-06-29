@@ -53,7 +53,6 @@ def updateUser(token):
      {<br>
          'name': 'new name',<br>
          'isLecturer': true,<br>
-         'campusName': 'JCE'<br>
     }<br>
     <br>
     <b>Response</b>
@@ -80,10 +79,6 @@ def updateUser(token):
     except Exception:
         pass
 
-    try:
-        user.campusName = payload['campusName']
-    except Exception:
-        pass
 
     try:
         user.isLecturer = payload['isLecturer']
