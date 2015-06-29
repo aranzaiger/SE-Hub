@@ -173,8 +173,7 @@ service.factory('apiService', ['$http', function($http) {
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCoursesByUser/" + token + "/" + userId;
 			req = {
 				method : "GET",
-				url : url,
-				data: payLoad
+				url : url
 			};
 			return $http(req);
 		}
