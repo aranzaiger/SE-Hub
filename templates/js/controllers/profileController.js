@@ -18,6 +18,11 @@ angular.module('SeHub')
 				apiService.getCampusesByUserId(token, id).success(function(data) {
 					$scope.campuses = data;
 					console.log(data);
+					apiService.getCoursesByUserID(token, id).success(function(data){
+						$scope.courses = data;
+					}).error(function(err){
+						console.error('In apiService.getCoursesByUserID', err);
+					})
 
 					$scope.loadingData = false;
 				}).error(function(err) {
@@ -53,22 +58,22 @@ angular.module('SeHub')
 			/**
 			 * DEBUG DATA
 			 */
-			$scope.courses = [{
-				"courseName": "Advance Math",
-				"campusName": "JCE",
-				"startDate": {
-					"year": 2015,
-					"month": 4,
-					"day": 3
-				},
-				"endDate": {
-					"year": 2016,
-					"month": 5,
-					"day": 14
-				},
-				"taskFlag": false,
-				"campus_avatar": "https://yt3.ggpht.com/--ZkWxybWGOM/AAAAAAAAAAI/AAAAAAAAAAA/_nAICC_kzzI/s88-c-k-no/photo.jpg"
-			}];
+			// $scope.courses = [{
+			// 	"courseName": "Advance Math",
+			// 	"campusName": "JCE",
+			// 	"startDate": {
+			// 		"year": 2015,
+			// 		"month": 4,
+			// 		"day": 3
+			// 	},
+			// 	"endDate": {
+			// 		"year": 2016,
+			// 		"month": 5,
+			// 		"day": 14
+			// 	},
+			// 	"taskFlag": false,
+			// 	"campus_avatar": "https://yt3.ggpht.com/--ZkWxybWGOM/AAAAAAAAAAI/AAAAAAAAAAA/_nAICC_kzzI/s88-c-k-no/photo.jpg"
+			// }];
 
 			// $scope.campuses = [{
 			// 	'title': 'JCE',
