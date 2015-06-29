@@ -4,6 +4,8 @@ angular.module('SeHub')
 	var token = $cookies['com.sehub.www'];
 	var classId = $routeParams.classId;
 	$scope.projectEmpty = false;
+	$scope.isCreateProjectClicked = false;
+	$scope.submitNewCourseClicked = false;
 
 	$scope.displayProjects = function()
 	{
@@ -44,9 +46,40 @@ angular.module('SeHub')
 
 	$scope.createProjectClicked = function()
 	{
-		console.log("project created! not rly!! " + classId);
-		
-		// $window.location.href = 'http://localhost:8080/home#/tasks/new'; // Reference to 'newTask' page
+		console.log("project created! is it ?!???! " + classId);
+		$scope.isCreateProjectClicked = !$scope.isCreateProjectClicked;
+
+    	var jsonNewProj =
+    	{
+    		'projectName': $scope.project.name,
+    		'courseId': $scope.project.repoOwner,
+    		'gitRepository': $scope.project.gitRepoOwner + '/' + $scope.project.gitRepoName
+    	};
+
+    	if($scope.project.logoUrl)
+    		jsonNewProj.logo_url = $scope.project.logoUrl;
+
+    	if($scope.submitNewCourseClicked)
+	    {
+	    	apiService.create(token, jsonNewProj).success(function(data)
+	    	{
+	      		$mdDialog.show($mdDialog.alert().title('Project Created').content('You have successfully created project.')
+		        .ariaLabel('Project created alert dialog').ok('Great!').targetEvent());
+				// .then(function() {
+				// 				$location.path('/projects/' + classId); // TODO TODO TODO
+				// 			}); // Pop-up alert
+
+	    	}).error(function(err)
+	    	{
+	      		$mdDialog.show($mdDialog.alert().title('Error Creating Project').content('You have failed Creating the project.')
+		        .ariaLabel('Create project alert dialog').ok('Try Again!').targetEvent()); // Pop-up alert
+	    	});
+	    }
+	}
+
+	$scope.submitNewProject = function()
+	{
+		$scope.submitNewCourseClicked = true;
 	}
 
 	// $scope.projects = ['AMI', 'LULU', 'XIN Zhau', 'LUMI lu', 'Shimi', 'Azligi zligi', 'Drugs'];
@@ -89,16 +122,8 @@ angular.module('SeHub')
 	    	{
 	    		'projectName': $scope.course.courseName,
 	    		'courseId': classId,
-	    		'startDate': {
-	    			'year' : $scope.course.startDate.getFullYear(),
-	    			'day' : $scope.course.startDate.getDate(),
-	    			'month': $scope.course.startDate.getMonth() + 1
-	    		},
-	    		'endDate': {
-	    			'year' : $scope.course.endDate.getFullYear(),
-	    			'day' : $scope.course.endDate.getDate(),
-	    			'month': $scope.course.endDate.getMonth() + 1
-	    		}
+	    		'logo_url':
+	    		'gitRepository': 
 	    	};*/
 
 	    		/*

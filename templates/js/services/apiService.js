@@ -169,7 +169,7 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		createProject: function(token, payLoad){
+		create: function(token, payLoad){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/projects/create/" + token;
 			req = {
 				method : "POST",
