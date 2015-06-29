@@ -1,5 +1,5 @@
-<div class = "projects">
-	<h1 style="margin-left:15px"><i class="fa fa-graduation-cap"></i> Class {{project.title}}</h1>
+<div class = "class">
+	<h1 style="margin-left:15px"><i class="fa fa-graduation-cap"></i> Class {{project.courseName}}</h1>
 	<div layout-paddig layout-margin class="loader" ng-if="loadingData">
 		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 	</div>
@@ -21,7 +21,7 @@
 		</div>
 	</div>
 	<div ng-if="!isInCourse" layout-padding layout-margin>
-		<md-button ng-click = "joinCourse()" ng class = "md-raised md-primary"> Join Course</md-button>
+		<md-button ng-click = "joinCourse()" ng class = "md-raised md-primary"> Join Class</md-button>
 	</div>
 	<md-content layout-padding layout-margin>
 		<md-button ng-click="createProjectClicked()" ng class="md-raised md-primary">Create Project</md-button>
@@ -67,6 +67,9 @@
 				</div>
 				<div layout-padding layout-margin>
 					<md-button ng-click="submitNewProject()" ng class="md-raised md-primary">Submit Project</md-button>
+					<div layout-paddig layout-margin class="loader" ng-if="loadingData">
+						<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+					</div>
 				</div>
 			</div>
 		</md-card>
