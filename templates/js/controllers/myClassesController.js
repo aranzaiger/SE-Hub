@@ -18,7 +18,7 @@ angular.module('SeHub')
 	$scope.goToClass = function(classId)
 	{
 		console.log("Done! " + $scope.courses);
-		$location.path('/projects/' + classId.toString()); // Will display all the projects in this course
+		$location.path('/class/' + classId.toString()); // Will display all the projects in this course
 	}
 
 	$scope.chooseCampusClicked = function()
