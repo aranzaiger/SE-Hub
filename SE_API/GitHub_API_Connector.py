@@ -36,15 +36,22 @@ def make_macro(stats, info):
 
     return macro
 
-# def make_micro(stats, info):
-#     micro = {'labels': [], 'data': [[]], 'series': []}
-#     micro['labels'].append('Commits')
-#     micro['labels'].append('Open Issues')
-#     for stat in stats:
-#         micro['data'][0][0] += stat['total']
-#     micro['data'].append(info['open_issues'])
-#
-#     return micro
+def make_micro(stats, issues):
+    micro = {'labels': [], 'data': [], 'series': []}
+    micro['labels'].append('Commits')
+    micro['labels'].append('Open Issues')
+    for stat in stats:
+        micro['series'].append(stat['author']['login'])
+        micro['data'].append([stat['total'], get_issue_num(issues, stat['author']['login'])])
+
+    return micro
+
+def get_issue_num(issues, user):
+    numOfIssues = 0
+    for issue in issues:
+        if issue['user']['login'] == user:
+            numOfIssues += 1
+    return numOfIssues
 
 def get_github_data(repo_url):
     project_info = {'stats': {}}
@@ -54,7 +61,7 @@ def get_github_data(repo_url):
     weekly_commits  = get_repo_weekly_commits(repo_url)
     github_stats =  get_repo_stats(repo_url) #Second Call
     project_info['stats']['macro'] = make_macro(github_stats, project_info['info'])
-
+    project_info['stats']['micro'] = make_micro(github_stats, issues)
     project_info['stats']['weekly_commits'] = weekly_commits
     project_info['issues'] = issues
 
