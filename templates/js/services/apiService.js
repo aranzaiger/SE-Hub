@@ -117,7 +117,7 @@ service.factory('apiService', ['$http', function($http) {
 			return $http(req);
 		},
 		getProjectsByCourse: function(token, classId){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getProjectsByCourse/" + token + "/" + classId;
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/projects/getProjectsByCourse/" + token + "/" + classId;
 			req = {
 				method : "GET",
 				url : url
@@ -169,7 +169,7 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		createProject: function(token, payLoad){
+		create: function(token, payLoad){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/projects/create/" + token;
 			req = {
 				method : "POST",

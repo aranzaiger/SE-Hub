@@ -3,30 +3,37 @@ angular.module('SeHub')
 {
 	var token = $cookies['com.sehub.www'];
 	var classId = $routeParams.classId;
-	$scope.projectEmpty = false;
+	$scope.projectsEmpty = true;
+	$scope.isCreateProjectClicked = false;
+	$scope.submitNewCourseClicked = false;
+	$scope.project = {};
+	$scope.loadingData = true;
+	$scope.isInCourse = false;
 
 	$scope.displayProjects = function()
 	{
 		console.log("in displayProjecs!!! ");
 		apiService.getProjectsByCourse(token, classId).success(function(data) // Get all the campuses
 		{
+			$scope.loadingData = false;
 			$scope.projects = data;
+			if($scope.projects != null && $scope.projects.length > 0)
+			{
+				$scope.projectsEmpty = false;
+			}
 			init(); // Executing the function to initialize projects display
 			console.log("project created! not rly!! " + classId);
 		}).error(function(err)
 		{
 			console.log("Error: " + err);
 		});
-		if($scope.projects = null)
-		{
-			$scope.projectEmpty = true;
-		}
+
 	}
 	$scope.joinCourse = function()
 	{
 		apiService.joinCourse(token, classId).success(function(data)
 		{
-			console.log("Success!!");
+			$scope.isInCourse = true;
       		$mdDialog.show($mdDialog.alert().title('Joined Course').content('You have successfully joined course.')
 	        .ariaLabel('Join course alert dialog').ok('Lets Start!').targetEvent())
 			.then(function() {
@@ -34,7 +41,7 @@ angular.module('SeHub')
 						}); // Pop-up alert
 		}).error(function(err)
 		{
-      		$mdDialog.show($mdDialog.alert().title('Error Joining Course').content('You have failed joined the course.')
+      		$mdDialog.show($mdDialog.alert().title('Error Joining Course').content(err.message + '.')
 	        .ariaLabel('Join course alert dialog').ok('Try Again!').targetEvent()); // Pop-up alert
 			// .then(function() {
 			// 				// $location.path('/newCourse'); // TODO TODO TODO
@@ -44,12 +51,43 @@ angular.module('SeHub')
 
 	$scope.createProjectClicked = function()
 	{
-		console.log("project created! not rly!! " + classId);
-		
-		// $window.location.href = 'http://localhost:8080/home#/tasks/new'; // Reference to 'newTask' page
+		// console.log("project created! is it ?!???! " + classId);
+		$scope.isCreateProjectClicked = !$scope.isCreateProjectClicked;
 	}
 
-	// $scope.projects = ['AMI', 'LULU', 'XIN Zhau', 'LUMI lu', 'Shimi', 'Azligi zligi', 'Drugs'];
+	$scope.submitNewProject = function()
+	{
+		// debugger;
+		var intClassId = parseInt(classId);
+		// console.log($scope);
+    	var jsonNewProj =
+		{
+			'projectName': $scope.project.projectName,
+			'courseId': intClassId,
+			'gitRepository': $scope.project.repoOwner + '/' + $scope.project.gitRepoName
+		};
+		console.log(jsonNewProj);
+
+		if($scope.project.logoUrl)
+    		jsonNewProj.logo_url = $scope.project.logoUrl;
+
+
+    	apiService.create(token, jsonNewProj).success(function(data)
+    	{
+      		$mdDialog.show($mdDialog.alert().title('Project Created').content('You have successfully created project.')
+	        .ariaLabel('Project created alert dialog').ok('Great!').targetEvent());
+			// .then(function() {
+			// 				$location.path('/projects/' + classId); // TODO TODO TODO
+			// 			}); // Pop-up alert
+
+    	}).error(function(err)
+    	{
+    		console.log("Error: " + err.message);
+      		$mdDialog.show($mdDialog.alert().title('Error Creating Project').content('You have failed Creating the project.')
+	        .ariaLabel('Create project alert dialog').ok('Try Again!').targetEvent()); // Pop-up alert
+    	});
+    
+	}
 
 	$scope.goToProject = function()
 	{
@@ -62,16 +100,16 @@ angular.module('SeHub')
 		$scope.arrayHolder = [];
 		var tempArr = [];
 		var sizeOfSmallArrays = 3;
-		for (var i = 0 ; i < $scope.courses.length ; i++) {
+		for (var i = 0 ; i < $scope.projects.length ; i++) {
 			if(i % sizeOfSmallArrays !== 0){
-				tempArr.push($scope.courses[i]);
+				tempArr.push($scope.projects[i]);
 			}else{
 				if(i !== 0){
 					$scope.arrayHolder.push(tempArr);
 					tempArr = [];
-					tempArr.push($scope.courses[i]);
+					tempArr.push($scope.projects[i]);
 				}else{
-					tempArr.push($scope.courses[i]);
+					tempArr.push($scope.projects[i]);
 				}
 			}
 		};
@@ -81,41 +119,6 @@ angular.module('SeHub')
 
 	// Running...
 	$scope.displayProjects(); // Displaying all projects related to user
-
-
-	    	
-	    	/*
-	    	var jsonNewCourse =
-	    	{
-	    		'projectName': $scope.course.courseName,
-	    		'courseId': classId,
-	    		'startDate': {
-	    			'year' : $scope.course.startDate.getFullYear(),
-	    			'day' : $scope.course.startDate.getDate(),
-	    			'month': $scope.course.startDate.getMonth() + 1
-	    		},
-	    		'endDate': {
-	    			'year' : $scope.course.endDate.getFullYear(),
-	    			'day' : $scope.course.endDate.getDate(),
-	    			'month': $scope.course.endDate.getMonth() + 1
-	    		}
-	    	};*/
-
-	    		/*
-			{
-		'projectName': 'Advance Math',
-		'courseName': 'JCE',
-		'grade': 98,
-		'logo_url': 'http://location.domain.com/image.jpg',
-		'gitRepository': 'http://location.git.com/somthing',
-		'membersId': ['bob', 'dylan', 'quentin', 'terentino'],
-		'id' : 1234567890
-		} 
-	*/
-
-
-
-
 
 
 }]);
