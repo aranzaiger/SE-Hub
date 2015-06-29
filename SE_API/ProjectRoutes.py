@@ -216,6 +216,55 @@ def getProjectsByCourse(token, courseId):
                         mimetype="application/json")
 
 
+@project_routes.route('/api/projects/getProjectsById/<string:token>/<string:projectId>', methods=["GET"])
+@auto.doc()
+def getProjectsById(token, projectId):
+    """
+    <span class="card-title">>This Call will return an array of all projects in a given course</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: token<br>
+        - projectId: 1234567890
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'projectName': 'Advance Math',<br>
+        'courseId': 123456789,<br>
+        'grade': 98,<br>
+        'logo_url': 'http://location.domain.com/image.jpg',<br>
+        'gitRepository': 'repoOwner/repoName',<br>
+        'membersId': ['bob', 'dylan', 'quentin', 'terentino'],<br>
+        'id' : 1234567890<br>
+        }
+    </code>
+    <br>
+    """
+
+    if get_user_by_token(token) is None:
+        return bad_request("Bad User Token")
+
+    try:
+        project = Project.get_by_id(int(projectId))
+    except Exception as e:
+        print e
+        return bad_request("Bad Id Format")
+
+    if project is None:
+        return  bad_request("No such Project")
+
+    return Response(response=project.to_JSON(),
+                        status=200,
+                        mimetype="application/json")
+
+
 
 @project_routes.route('/api/projects/getProjectsByUser/<string:token>', methods=["GET"])
 @auto.doc()
