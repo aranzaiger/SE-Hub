@@ -32,7 +32,7 @@ def make_macro(stats, info):
     macro['labels'].append('Open Issues')
     for stat in stats:
         macro['data'][0][0] += stat['total']
-    macro['data'].append(info['open_issues'])
+    macro['data'][0].append(info['open_issues'])
 
     return macro
 
