@@ -27,7 +27,7 @@ def get_repo_weekly_commits(repo_url):
     return req.json()['all']
 
 def make_macro(stats, info):
-    macro = {'labels': [], 'data': [0]}
+    macro = {'labels': [], 'data': [[0]]}
     macro['labels'].append('Commits')
     macro['labels'].append('Open Issues')
     for stat in stats:
@@ -37,11 +37,11 @@ def make_macro(stats, info):
     return macro
 
 def make_micro(stats, info):
-    micro = {'labels': [], 'data': [0], 'series': []}
+    micro = {'labels': [], 'data': [[]], 'series': []}
     micro['labels'].append('Commits')
     micro['labels'].append('Open Issues')
     for stat in stats:
-        micro['data'][0] += stat['total']
+        micro['data'][0][0] += stat['total']
     micro['data'].append(info['open_issues'])
 
     return micro
