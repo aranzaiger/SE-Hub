@@ -169,9 +169,9 @@ def joinCourse(token, courseId):
 #----------------------------------------------------------
 
 
-@course_routes.route('/api/courses/getCoursesByCampus/<string:campusId>', methods=["GET"])
+@course_routes.route('/api/courses/getAllCoursesByCampus/<string:token>/<string:campusId>', methods=["GET"])
 @auto.doc()
-def getCourseByCampus(campusId):
+def getAllCoursesByCampus(token, campusId):
     """
     <span class="card-title">>This Call will return an array of all courses in a given campus</span>
     <br>
@@ -199,6 +199,10 @@ def getCourseByCampus(campusId):
     </code>
     <br>
     """
+
+    if get_user_by_token(token) is None:
+        return bad_request("Bad User Token")
+
     arr = []
     query = Course.all()
     query.filter("campusId = ", int(campusId))
@@ -215,11 +219,11 @@ def getCourseByCampus(campusId):
                         status=200,
                         mimetype="application/json")
 
-@course_routes.route('/api/courses/getCoursesByUser/<string:token>/<string:campusId>', methods=['GET'])
+@course_routes.route('/api/courses/getUserCoursesByCampus/<string:token>/<string:campusId>', methods=['GET'])
 @auto.doc()
-def getCampusesByUser(token, campusId):
+def getUserCoursesByCampus(token, campusId):
     """
-    <span class="card-title">This Call will return an array of all Campuses of a certain User</span>
+    <span class="card-title">This Call will return an array of all Courses of a certain User in a specific Campus</span>
     <br>
     <b>Route Parameters</b><br>
         - seToken: 'seToken'<br>
@@ -275,6 +279,63 @@ def getCampusesByUser(token, campusId):
                         mimetype="application/json")
 
 
+@course_routes.route('/api/courses/getCoursesByUser/<string:token>/<string:userId>', methods=['GET'])
+@auto.doc()
+def getCoursesByUser(token, userId):
+    """
+    <span class="card-title">This Call will return an array of all Courses of a certain User</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'<br>
+        - userId: 1234354543<br>
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Array, Example:<br>
+    [<br>
+    {
+                'title': 'JCE',<br>
+                'email_ending': '@post.jce.ac.il',<br>
+                'master_user_id': 123453433341, (User that created the campus)<br>
+                'avatar_url': 'http://some.domain.com/imagefile.jpg',<br>
+                'id' : 1234567890<br>
+    },<br>
+    ....<br>
+    {<br>
+    ...<br>
+    }req<br>
+    ]<br>
+    <br>
+    403 - Invalid Token<br>
+    """
+
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad user Token")
+
+    otherUser = User.get_by_id(int(userId))
+    if otherUser is None:
+        return bad_request("Bad user Id")
+
+    arr = []
+    for i in otherUser.courses_id_list:
+        print i
+        course = Course.get_by_id(int(i))
+        arr.append(dict(json.loads(course.to_JSON())))
+
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
+    else:
+        return Response(response='[]',
+                        status=200,
+                        mimetype="application/json")
 #----------------------------------------------------------
 #                     PUT
 #----------------------------------------------------------

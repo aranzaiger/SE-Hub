@@ -28,9 +28,9 @@ angular.module('SeHub')
 			}
 
 			apiService.getAllCampuses(token).success(function(data) // Get all the campuses
-				{
-					$scope.campuses = data;
-				}).error(function() {
+			{
+				$scope.campuses = data;
+			}).error(function() {
 				// TODO
 			});
 		});
