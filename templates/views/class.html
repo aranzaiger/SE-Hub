@@ -10,11 +10,22 @@
 			<md-card class="cardAllProjects">						
 				<div flex ="99" class = "allProjectsShow" layout = "row" ng-repeat = "t in arrayHolder" value = "{{t}}">
 					<div flex = "32" layout = "column" ng-repeat = "project in t" value = "{{project}}" layout-padding>
-						<md-card layout-padding ng-click = "goToProject(project.id)" style="width:32%; height:32%;" class = "projectCard">
-							{{project.projectName}}
-							<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data"
-							labels="project.info.stats.macro.labels"></canvas> 
-						</md-card>
+						<div ng-if="t.length != 1"> 
+							<md-button ng-click = "goToProject(project.id)" style="width:100%; height:32%;" layout-padding class = "md-raised">
+								{{project.projectName}}
+								<div layout-align="center center" style=" width:70%;">
+									<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data" labels="project.info.stats.macro.labels"></canvas> 
+								</div>
+							</md-card>
+						</div>
+						<div ng-if="t.length == 1"> 
+							<md-button ng-click = "goToProject(project.id)" style="width:32%; height:32%;" layout-padding class = "md-raised">
+								{{project.projectName}}
+								<!-- <div style="height:100%; width:32%;"> -->
+									<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data" labels="project.info.stats.macro.labels"></canvas> 
+								<!-- </div> -->
+							</md-card>
+						</div>
 					</div>
 				</div>
 			</md-card>

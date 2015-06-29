@@ -6,34 +6,34 @@
 	<div ng-if = "myProjectsEmpty && !loadingData" layout-padding layout-margin>
 		You Are Not Related To Any Project.
 	</div>
-	<div ng-if="!myProjects">
+	<div ng-if="!myProjectsEmpty">
 		<md-card class="cardAllProjects">	
-			<div flex = "99" layout = "row" ng-repeat = "t in holdArrays" value = "{{t}}" layout-padding>
+			<div flex = "99" layout = "row" ng-repeat = "t in arrayHolder" value = "{{t}}" layout-padding>
 				<div flex = "32" layout = "column" ng-repeat = "project in t" value = "{{project}}" >
-					<div ng-if = "!scope.myProjectsEmpty">
-						<div ng-if="t.length != 1"> 
-							<md-button ng-click="goToProject(project.id)" style="width:100%; height:32%;" layout-padding class = "md-raised">
-								<md-card style="width:97%;height:97%">
-									<md-card-content>
-										<h2 class="md-title">{{project.id}}</h2>
-									</md-card-content>
-		    					</md-card>
-							</md-button>
-						</div>
-						<div ng-if="t.length == 1">
-							<md-button ng-click = "goToProject(project.id)" style="width:32%; height:32%;" layout-padding class = "md-raised">
-								<md-card style="width:97%;height:97%">
-					      			<md-card-content>
-							        	<h2 class="md-title">{{project.id}}</h2>
-					      			</md-card-content>
-		    					</md-card>
-							</md-button>
-						</div>
+					<div ng-if="t.length != 1"> 
+						<md-button ng-click="goToProject(project.id)" style="width:100%; height:32%;" layout-padding class = "md-raised">
+							<md-card style="width:97%;height:97%">
+								<md-card-content>
+									<h2 class="md-title">{{project.projectName}}</h2>
+									<div layout-align="center center" style=" width:70%;">
+										<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data" labels="project.info.stats.macro.labels"></canvas> 
+									</div>
+								</md-card-content>
+	    					</md-card>
+						</md-button>
+					</div>
+					<div ng-if="t.length == 1">
+						<md-button ng-click = "goToProject(project.id)" style="width:32%; height:32%;" layout-padding class = "md-raised">
+							<md-card style="width:97%;height:97%">
+				      			<md-card-content>
+						        	<h2 class="md-title">{{project.projectName}}</h2>
+						        	<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data"
+							labels="project.info.stats.macro.labels"></canvas> 
+				      			</md-card-content>
+	    					</md-card>
+						</md-button>
 					</div>
 					<div class="spacer"></div>
-					<div ng-if = "scope.myProjectsEmpty">
-						You Do Not Have Any Project, You May Create One.
-					</div>
 				</div>
 			</div>
 		</md-card>
