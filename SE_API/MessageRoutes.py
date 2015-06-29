@@ -153,7 +153,11 @@ def getMessagesByGroup(token, groupId):
 
     arr = []
     query = Message.all()
-    query.filter("groupId = ", int(groupId))
+
+    try:
+        query.filter("groupId = ", int(groupId))
+    except Exception as e:
+        return bad_request("Bad id format")
 
     for m in query.run():
         msgDic = dict(json.loads(m.to_JSON()))
@@ -222,7 +226,12 @@ def deleteMessage(token, msgId):
     if user is None:
         return bad_request("No such User")
 
-    msg = Message.get_by_id(int(msgId))
+    try:
+        msg = Message.get_by_id(int(msgId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
+
     if msg is None:
         return bad_request("No such Message")
 
