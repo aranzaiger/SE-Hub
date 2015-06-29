@@ -15,10 +15,10 @@ angular.module('SeHub')
 	$scope.campusId;
 	var campusId = $routeParams.campusId;
 	
-	$scope.goToClass = function(classId)
+	$scope.goToClass = function(classId, className)
 	{
-		console.log("Done! " + $scope.courses);
-		$location.path('/class/' + classId.toString()); // Will display all the projects in this course
+		console.log("Done! " + className);
+		$location.path('/class/' + classId.toString() + '/' + className); // Will display all the projects in this course
 	}
 
 	$scope.chooseCampusClicked = function()
@@ -82,7 +82,8 @@ angular.module('SeHub')
 	      		$mdDialog.show($mdDialog.alert().title('Course Created').content('You have created course successfully.')
 		        .ariaLabel('Email verification alert dialog').ok('Lets Start!').targetEvent())
 			.then(function() {
-							$location.path('/newCourse'); // TODO TODO TODO
+							// $location.path('/newCourse'); // TODO TODO TODO
+							$location.path('/class/' + data.id + '/' + data.courseName); // Will display all the projects in this course
 						}); // Pop-up alert
 	      	}).error(function(err)
 	      	{

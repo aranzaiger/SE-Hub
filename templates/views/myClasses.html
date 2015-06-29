@@ -7,21 +7,21 @@
 				<div flex = "32" layout = "column" ng-repeat = "course in t" value = "{{course}}" >
 					<div ng-if = "!scope.coursesEmpty">
 						<div ng-if="t.length != 1"> 
-							<md-button ng-click = "goToClass(course.id)" style="width:100%; height:32%;" layout-padding class = "md-raised" >
-								<md-card style="width:97%;height:97%">
+							<md-button ng-click = "goToClass(course.id, course.courseName)" style="width:100%; height:32%;" layout-padding class = "md-raised" >
+								<div style="width:97%;height:97%">
 									<md-card-content>
 										<h2 class="md-title">{{course.courseName}}</h2> <!-- Should Be "course.title" -->
 									</md-card-content>
-		    					</md-card>
+		    					</div>
 							</md-button>
 						</div>
 						<div ng-if="t.length == 1">
-							<md-button ng-click = "goToClass(course.id)" style="width:32%; height:32%;" layout-padding class = "md-raised" >
-								<md-card style="width:97%;height:97%">
+							<md-button ng-click = "goToClass(course.id, course.courseName)" style="width:32%; height:32%;" layout-padding class = "md-raised" >
+								<div style="width:97%;height:97%">
 					      			<md-card-content>
 							        	<h2 class="md-title">{{course.courseName}}</h2> <!-- Should Be "course.title" -->
 					      			</md-card-content>
-		    					</md-card>
+		    					</div>
 							</md-button>
 						</div>
 					</div>

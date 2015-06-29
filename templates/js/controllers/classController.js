@@ -2,19 +2,18 @@ angular.module('SeHub')
 .controller('classController', ['$scope', '$routeParams', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $routeParams, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
 	var token = $cookies['com.sehub.www'];
-	var classId = $routeParams.projectId;
-	// var projectId = "";
+	var classId = $routeParams.classId;
+	$scope.project = {};
+	$scope.project.courseName = $routeParams.className;
 	$scope.projectsEmpty = true;
 	$scope.isCreateProjectClicked = false;
 	$scope.submitNewCourseClicked = false;
-	$scope.project = {};
 	$scope.loadingData = true;
 	$scope.isInCourse = false;
-	$scope.project.courseName = classId;
+	
 
 	$scope.displayProjects = function()
 	{
-		console.log("in displayProjecs!!! ");
 		apiService.getProjectsByCourse(token, classId).success(function(data) // Get all the campuses
 		{
 			$scope.loadingData = false;

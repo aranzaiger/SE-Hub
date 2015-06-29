@@ -13,7 +13,7 @@
 					<div ng-if="t.length != 1"> 
 						<md-button ng-click="goToProject(project.id)" style="width:100%; height:32%;" layout-padding class = "md-raised">
 							<md-card-content>
-								<h2 class="md-title">{{project.projectName}}</h2>
+								{{project.projectName}}
 								<div layout-align="center center" style=" width:70%;">
 									<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data" labels="project.info.stats.macro.labels"></canvas> 
 								</div>
@@ -24,7 +24,7 @@
 						<md-button ng-click = "goToProject(project.id)" style="width:32%; height:32%;" layout-padding class = "md-raised">
 							<md-card style="width:97%;height:97%">
 				      			<md-card-content>
-						        	<h2 class="md-title">{{project.projectName}}</h2>
+						        	{{project.projectName}}
 						        	<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data"
 							labels="project.info.stats.macro.labels"></canvas> 
 				      			</md-card-content>
