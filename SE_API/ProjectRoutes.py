@@ -138,13 +138,14 @@ def joinProject(token, projectId):
 #                     GET
 #----------------------------------------------------------
 
-@project_routes.route('/api/projects/getProjectsByCourse/<string:courseId>', methods=["GET"])
+@project_routes.route('/api/projects/getProjectsByCourse/<string:token>/<string:courseId>', methods=["GET"])
 @auto.doc()
-def getProjectsByCourse(courseId):
+def getProjectsByCourse(token, courseId):
     """
     <span class="card-title">>This Call will return an array of all projects in a given course</span>
     <br>
     <b>Route Parameters</b><br>
+        - seToken: token<br>
         - courseId: 1234567890
     <br>
     <br>
@@ -169,6 +170,8 @@ def getProjectsByCourse(courseId):
     <br>
     """
 
+    if get_user_by_token(token) is None:
+        return bad_request("Bad User Token")
     arr = []
     query = Project.all()
     query.filter("courseId = ", int(courseId))
