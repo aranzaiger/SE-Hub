@@ -1,13 +1,44 @@
-<div class = "myClasses">
+<div class = "project">
 	<md-content layout-padding layout-margin>
 		<h1 layout-margin style="margin-left:15px"><i class="fa fa-cube"></i> Project</h1>
-		Yipi Kayea Mother Fraker
-		<div>
-			
+		<!-- Yipi Kayea Mother Fraker -->
+		<div flex = "99" layout = "row" layout-padding>
+			<div flex = "25">
+				Project Logo
+				<!-- <img ng-src="{{project.logo_url}} class = "md-avatar"> -->
+			</div>
+			<div flex = "20">
+				{{project.projectName}}
+			</div>
+			<div layout = "row" flex = "45">
+				<div flex>
+					<md-button ng-click="editProject()" style = "size:180%; width:50%;" ng class="md-raised md-primary">
+						<i class="fa fa-pencil-square-o"></i>
+					</md-button>
+				</div>
+				<div flex>
+					<md-button ng-click="removeProject()" style = "size:180%; width:40%;" ng class="md-raised md-primary">
+						<i class="fa fa-times"></i>
+					</md-button>
+				</div>
+			</div>
 		</div>
-
-
-
+		<div flex = "99" layout = "row">
+			<div flex = "45">
+				<!-- Graph -->
+				<div ng-if="loadingData" layout-paddig layout-margin class="loader">
+					<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+				</div>
+				<md-card>
+					<canvas layout-padding layout-margin ng-if = "!loadingData" id="line" class="chart chart-line" data="project.info.stats.weekly_commits" labels="project.weekly_labels" legend="true" ></canvas> 
+				</md-card>
+			</div>
+			<div flex = "45">
+				<md-card>
+					<canvas layout-padding layout-margin ng-if = "!loadingData" id="project.projectName" class="chart chart-bar" data="project.info.stats.micro.data" labels="project.info.stats.micro.labels" series="project.info.stats.micro.series"></canvas> 
+				</md-card>
+			</div>
+		</div>
 
 
 
