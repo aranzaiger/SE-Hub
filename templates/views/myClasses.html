@@ -31,21 +31,11 @@
 					</div>
 				</div>
 			</div>
-
-		<!-- <div flex = "99" class = "allcoursesShow" layout = "row" ng-repeat = "t in holdArrays" value = "{{t}}">
-			<div flex ="32" layout = "column" ng-repeat = "course in t" value = "{{course}}" layout-padding>
-				<div ng-if = "!scope.coursesEmpty">
-					<md-card ng-click = "goToClass(course.id)" style="width:32%; height:32%;" layout-padding class = "campusCard">
-						{{course.id}}
-					</md-card>
-				</div>
-				<div ng-if = "scope.coursesEmpty">
-					You Are Not Related To Any Course, You May Join Any Course You Wish.
-				</div>
-			</div>
-		</div> -->
 	</md-card>
-	<div ng-if="user.isLecturer"> <!-- Lecturer Mode -->
+
+
+	<!-- Lecturer Mode -->
+	<div ng-if="user.isLecturer"> 
 		<div layout="row">
 			<div layout-margin layout-padding>
 				<md-button ng-click="createCourseClicked()" ng class="md-raised md-primary">Create Class</md-button>
@@ -83,14 +73,16 @@
 				</div>
 			</md-content>
 		</div>
+	</div>
 <!-- 		<div layout-margin layout-padding ng-if="showMyClass">
 			<md-select placeholder="Choose Existing Course" ng-model="course" ng-click="chooseCourseClicked()" class="courseDropDown">
 				<md-option ng-repeat="c in courses" value="{{c.course}}">{{c.course}}</md-option>
 			</md-select>	
 		</div> -->
-	</div>
-
-	<div ng-if="isStudent"> <!-- Student Mode -->
+	
+	 
+	 <!-- Student Mode -->
+<!-- 	<div ng-if="isStudent">
 		<md-content layout-padding>
 			<div layout="row" layout-margin layout-padding>
 				<div>
@@ -124,5 +116,5 @@
 			</div>
 			<md-select placeholder="Choose Course" ng-model="course" ng-click="chooseCourseClicked()" style="z-index: 300"></md-select>
 		</md-content>
-	</div>
+	</div> -->
 </div>
