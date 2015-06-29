@@ -3,31 +3,30 @@
 		<h1 layout-margin style="margin-left:15px"><i class="fa fa-graduation-cap"></i> My Classes</h1>
 	</md-content>
 	<md-card class="cardAllcourses">
-
 		<div flex = "99" layout = "row" ng-repeat = "t in holdArrays" value = "{{t}}" layout-padding>
 				<div flex = "32" layout = "column" ng-repeat = "course in t" value = "{{course}}" >
-					<div ng-if = "scope.coursesEmpty">
+					<div ng-if = "!scope.coursesEmpty">
 						<div ng-if="t.length != 1"> 
 							<md-button ng-click = "goToClass(course.id)" style="width:100%; height:32%;" layout-padding class = "md-raised" >
 								<md-card style="width:97%;height:97%">
 									<md-card-content>
-										<h2 class="md-title">{{course.title}}</h2> <!-- Should Be "course.title" -->
+										<h2 class="md-title">{{course.courseName}}</h2> <!-- Should Be "course.title" -->
 									</md-card-content>
-		    					</md-2card>
+		    					</md-card>
 							</md-button>
 						</div>
 						<div ng-if="t.length == 1">
 							<md-button ng-click = "goToClass(course.id)" style="width:32%; height:32%;" layout-padding class = "md-raised" >
 								<md-card style="width:97%;height:97%">
 					      			<md-card-content>
-							        	<h2 class="md-title">{{course.title}}</h2> <!-- Should Be "course.title" -->
+							        	<h2 class="md-title">{{course.courseName}}</h2> <!-- Should Be "course.title" -->
 					      			</md-card-content>
 		    					</md-card>
 							</md-button>
 						</div>
 					</div>
 					<div class="spacer"></div>
-					<div ng-if = "!scope.coursesEmpty">
+					<div ng-if = "scope.coursesEmpty">
 						You Are Not Related To Any Course, You May Join Any Course You Wish.
 					</div>
 				</div>
@@ -57,7 +56,7 @@
 				<md-card layout-padding>
 					<div layout layout-sm="column">
 						<!-- <input ng-model="course.campusName" required> -->
-						<md-select placeholder = "Campus name" ng-model="course.campusName" ng-click = "chooseCourseClicked()" required>
+						<md-select placeholder = "Campus name" ng-model="course.campusName" ng-click = "chooseCampusClicked()" required>
 							<md-option ng-repeat="c in campuses" value="{{c.title}}">
 								{{c.title}}
 							</md-option>

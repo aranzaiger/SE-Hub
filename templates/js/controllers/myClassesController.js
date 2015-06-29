@@ -12,6 +12,7 @@ angular.module('SeHub')
 	$scope.user.startDate = '';
 	$scope.showMyClass = false;
 	$scope.coursesEmpty = false;
+	$scope.campusId;
 	var campusId = $routeParams.campusId;
 	
 	$scope.goToClass = function(classId)
@@ -20,15 +21,16 @@ angular.module('SeHub')
 		$location.path('/projects/' + classId.toString()); // Will display all the projects in this course
 	}
 
-	$scope.chooseCourseClicked = function()
+	$scope.chooseCampusClicked = function()
 	{
 		$scope.isCourse = true;
-		console.log("choose course Clicked!!");
+		console.log("Choose campus Clicked!!");
 
 		apiService.getAllCampuses(token).success(function(data)
 		{
 			$scope.campuses = data;
-			console.log("Campuses: " + $scope.campuses.toString());
+			console.log("Campuses: ");
+			console.log($scope.campuses);
 		}).error(function(err)
 		{
 			console.log("Error: " + err);
@@ -42,12 +44,23 @@ angular.module('SeHub')
 
 	$scope.submitNewClassClicked = function()
 	{
+		var i;
 	   	if($scope.course.courseName != null && $scope.course.endDate != null && $scope.course.startDate != null)
 	    {
+		 	for(i = 0; i < $scope.campuses.length; i++)   	
+			{		    	
+		    	if($scope.course.campusName === $scope.campuses[i].title)
+		    	{
+		    		$scope.campusId = $scope.campuses[i].id;
+		    	}
+		    }
+		    console.log("NOW: ");
+		    console.log($scope.campusId);
+
 	    	var jsonNewCourse =
 	    	{
 	    		'courseName': $scope.course.courseName,
-	    		'campusName': $scope.course.campusName,
+	    		'campusId': $scope.campusId,
 	    		'startDate': {
 	    			'year' : $scope.course.startDate.getFullYear(),
 	    			'day' : $scope.course.startDate.getDate(),
@@ -108,7 +121,7 @@ angular.module('SeHub')
 
 	var displayCourses = function()
 	{
-		apiService.getCourseByCampusName(token).success(function(data) // Shows all classes from this campus
+		apiService.getCoursesByCampus(campusId).success(function(data) // Shows all classes from this campus
 		{
 			$scope.courses = data;
 			console.log("success " + $scope.courses);
