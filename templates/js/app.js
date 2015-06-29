@@ -54,7 +54,7 @@ app.config(['$routeProvider', '$locationProvider',
 				templateUrl: 'templates/views/newTask.html',
 				controller: 'newTasksController'
 			})
-			.when('/class/:projectId', {
+			.when('/class/:classId/:className', {
 				templateUrl: 'templates/views/class.html',
 				controller: 'classController'
 			})
