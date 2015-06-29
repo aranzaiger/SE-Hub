@@ -89,11 +89,11 @@ angular.module('SeHub')
 
 
 			$scope.labels = ['Commits', 'Issues Assigned', 'Messages', 'Open Tasks'];
-			$scope.series = ['Project A', 'Project B'];
+			//$scope.series = ['Project A', 'Project B'];
 
 			$scope.data = [
-				[54, 3, 15, 3],
-				[28, 48, 40, 3]
+				[54, 3, 15, 3]//,
+				//[28, 48, 40, 3]
 			];
 
 			$scope.isUser = $scope.$parent.user.id.toString() /*The Actual User*/ === $routeParams.id /*The Profile User*/;
