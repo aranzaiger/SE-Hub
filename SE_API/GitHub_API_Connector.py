@@ -1,6 +1,8 @@
 __author__ = 'sagi'
 import requests
 from GithubAPI.GithubAPI import GitHubAPI_Keys
+from models.Task import Task
+from google.appengine.ext import db
 
 githubKeys = GitHubAPI_Keys()
 
@@ -29,13 +31,15 @@ def get_repo_weekly_commits(repo_url):
     except:
         return []
 
-def make_macro(stats, info):
+def make_macro(stats, info, project_id):
     macro = {'labels': [], 'data': [[0]]}
     macro['labels'].append('Commits')
     macro['labels'].append('Open Issues')
+    macro['labels'].append('Unfinished Tasks')
     for stat in stats:
         macro['data'][0][0] += stat['total']
     macro['data'][0].append(info['open_issues'])
+    macro['data'][0].append(get_unfinished_tasks_number(project_id))
 
     return macro
 
@@ -56,16 +60,21 @@ def get_issue_num(issues, user):
             numOfIssues += 1
     return numOfIssues
 
-def get_github_data(repo_url):
+def get_github_data(repo_url, project_id):
     project_info = {'stats': {}}
     github_stats =  get_repo_stats(repo_url) #first Call
     project_info['info'] = get_repo_general_info(repo_url)
     issues = get_repo_issues(repo_url)
-    weekly_commits  = get_repo_weekly_commits(repo_url)
+    weekly_commits  = [get_repo_weekly_commits(repo_url)]
     github_stats =  get_repo_stats(repo_url) #Second Call
-    project_info['stats']['macro'] = make_macro(github_stats, project_info['info'])
+    project_info['stats']['macro'] = make_macro(github_stats, project_info['info'], project_id)
     project_info['stats']['micro'] = make_micro(github_stats, issues)
     project_info['stats']['weekly_commits'] = weekly_commits
     project_info['issues'] = issues
 
     return project_info
+
+
+def get_unfinished_tasks_number(project_id):
+    # query = Task.all().filter("isPersonal =", False, "")
+    return 7
