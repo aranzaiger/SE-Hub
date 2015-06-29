@@ -168,6 +168,15 @@ service.factory('apiService', ['$http', function($http) {
 				data: payLoad
 			};
 			return $http(req);
+		},
+		getCoursesByUserID: function(token, userId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCoursesByUser/" + token + "/" + userId;
+			req = {
+				method : "GET",
+				url : url,
+				data: payLoad
+			};
+			return $http(req);
 		}
 	};
 }]);
