@@ -2,6 +2,7 @@ import json
 
 __author__ = 'Aran'
 from google.appengine.ext import db
+from models.User import User
 
 class Project(db.Model):
     projectName = db.StringProperty(required=True)
@@ -14,14 +15,17 @@ class Project(db.Model):
     info = db.TextProperty(required=False, default="{}")
 
     def to_JSON(self):
+        members = []
+        for id in self.membersId:
+            members.append(dict(json.loads(User.get_by_id(int(id)).to_JSON())))
         data = {'projectName' : self.projectName,
                 'courseId' : self.courseId,
                 'master_id' : self.master_id,
                 'grade' : self.grade,
                 'logo_url' : self.logo_url,
                 'gitRepository' : self.gitRepository,
-                'membersId' : self.membersId,
+                'members': members,
                 'info': json.loads(self.info),
-                'id' : self.key().id()
+                'id': self.key().id()
                 }
         return json.dumps(data)
