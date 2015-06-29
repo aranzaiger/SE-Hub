@@ -1,0 +1,78 @@
+<div class = "class">
+	<h1 style="margin-left:15px"><i class="fa fa-graduation-cap"></i> Class {{project.courseName}}</h1>
+	<div layout-paddig layout-margin class="loader" ng-if="loadingData">
+		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+	</div>
+	<div ng-if = "projectsEmpty && !loadingData" layout-padding layout-margin>
+		You Are Not Related To Any Project.
+	</div>
+	<div ng-if = "!projectsEmpty">
+			<md-card class="cardAllProjects">						
+				<div flex ="99" class = "allProjectsShow" layout = "row" ng-repeat = "t in arrayHolder" value = "{{t}}">
+					<div flex = "32" layout = "column" ng-repeat = "project in t" value = "{{project}}" layout-padding>
+						<md-card layout-padding ng-click = "goToProject(project.id)" style="width:32%; height:32%;" class = "projectCard">
+							{{project.projectName}}
+							<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data"
+							labels="project.info.stats.macro.labels"></canvas> 
+						</md-card>
+					</div>
+				</div>
+			</md-card>
+		</div>
+	</div>
+	<div ng-if="!isInCourse" layout-padding layout-margin>
+		<md-button ng-click = "joinCourse()" ng class = "md-raised md-primary"> Join Class</md-button>
+	</div>
+	<md-content layout-padding layout-margin>
+		<md-button ng-click="createProjectClicked()" ng class="md-raised md-primary">Create Project</md-button>
+	</md-content>
+	<div ng-if = "isCreateProjectClicked">
+		<md-card layout-padding style="width:60%">
+			<div layout="column">
+				<div>
+					<md-input-container>
+						<label flex>Project Name</label>
+						<input  type = "text" ng-model="project.projectName" required>
+					</md-input-container>
+				</div>
+				<div layout = "row">
+					<div>
+						<md-input-container flex>
+						<label>GitHub Repository Owner</label>
+						<input type="text" ng-model="project.repoOwner" required>
+						</md-input-container>
+					</div>
+					<!-- <div>
+						<p>/</p>
+					</div> -->
+					<div>
+						<md-input-container flex>
+						<label>GitHub Repository Name</label>
+						<input type="text" ng-model="project.gitRepoName" required>
+						</md-input-container>
+					</div>
+				</div>
+				<div>
+					
+					<b>Example</b>: http://www.github.com/userName/repoName
+					<br/>userName will be GitHub Repository Owner
+					<br/>repoName wil be GitHub Repository Name
+				
+				</div>
+				<div>
+					<md-input-container flex>
+					<label>Logo Url (optional)</label>
+					<input type="text" ng-model="project.logoUrl">
+					</md-input-container>
+				</div>
+				<div layout-padding layout-margin>
+					<md-button ng-click="submitNewProject()" ng class="md-raised md-primary">Submit Project</md-button>
+					<div layout-paddig layout-margin class="loader" ng-if="loadingData">
+						<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+					</div>
+				</div>
+			</div>
+		</md-card>
+	</div>
+	
+</div>
