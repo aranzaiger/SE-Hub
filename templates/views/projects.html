@@ -1,5 +1,8 @@
 <div class = "projects">
-	<h1 style="margin-left:15px"><i class="fa fa-cube"></i> Projects</h1>
+	<h1 style="margin-left:15px"><i class="fa fa-graduation-cap"></i> Class {{course.courseName}}</h1>
+	<div layout-padding layout-margin>
+		<md-button ng-click = "joinCourse()" ng class = "md-raised"> Join Course</md-button>
+	</div>
 	<md-card class="cardAllProjects">	
 		<div flex ="99" class = "allProjectsShow" layout = "row" ng-repeat = "t in arrayHolder" value = "{{t}}">
 			<div flex = "32" layout = "column" ng-repeat = "project in t" value = "{{project}}" layout-padding>

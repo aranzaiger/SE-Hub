@@ -1,8 +1,38 @@
 <div class = "myProjects">
 	<md-content layout-padding layout-margin>
-		<h1 layout-margin style="margin-left:15px"><i class="fa fa-graduation-cap"></i> {{user.name}}'s projects</h1>
+		<h1 layout-margin style="margin-left:15px"><i class="fa fa-cube"></i> {{user.name}}'s projects</h1>
 		<md-card class="cardAllProjects">	
-			<div flex ="99" class = "allProjectsShow" layout = "row" ng-repeat = "t in arrayHolder" value = "{{t}}">
+			<div flex = "99" layout = "row" ng-repeat = "t in holdArrays" value = "{{t}}" layout-padding>
+				<div flex = "32" layout = "column" ng-repeat = "project in t" value = "{{project}}" >
+					<div ng-if = "!scope.myProjectsEmpty">
+						<div ng-if="t.length != 1"> 
+							<md-button ng-click = "goToMyProjects(project.id)" style="width:100%; height:32%;" layout-padding class = "md-raised" >
+								<md-card style="width:97%;height:97%">
+									<md-card-content>
+										<h2 class="md-title">{{project.id}}</h2>
+									</md-card-content>
+		    					</md-card>
+							</md-button>
+						</div>
+						<div ng-if="t.length == 1">
+							<md-button ng-click = "goToMyProjects(project.id)" style="width:32%; height:32%;" layout-padding class = "md-raised" >
+								<md-card style="width:97%;height:97%">
+					      			<md-card-content>
+							        	<h2 class="md-title">{{project.id}}</h2>
+					      			</md-card-content>
+		    					</md-card>
+							</md-button>
+						</div>
+					</div>
+					<div class="spacer"></div>
+					<div ng-if = "scope.myProjectsEmpty">
+						You Do Not Have Any Project, You May Create One.
+					</div>
+				</div>
+			</div>
+
+
+<!-- 			<div flex ="99" class = "allProjectsShow" layout = "row" ng-repeat = "t in arrayHolder" value = "{{t}}">
 				<div flex = "32" layout = "column" ng-repeat = "project in t" value = "{{project}}" layout-padding>
 					<div ng-if = "!scope.myProjectsEmpty">
 						<md-card layout-padding ng-click = "goToMyProject(project.id)" style="width:32%; height:32%;" class = "projectCard">
@@ -13,7 +43,9 @@
 				<div ng-if = "scope.myProjectsEmpty">
 						You Do Not Have Any Project, You May Create One.
 				</div>
-			</div>
+			</div> -->
+
+
 		</md-card>
 	</md-content>
 </div>
