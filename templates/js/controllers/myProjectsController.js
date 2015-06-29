@@ -25,19 +25,11 @@ angular.module('SeHub')
 		{
 			console.log("Error: " + err.message);
 		});
-		
 	}
 
 	$scope.goToProject = function(projectId)
 	{
-		for (var i = 0; i < $scope.myProjects; i++)
-		{
-			if($scope.myProjects.id === projectId)
-			{
-				console.log("project ID: "  + projectId)
-				$location.path('/project/' + projectId);
-			}
-		};
+		$location.path('/project/' + projectId);
 	}
 
 	var init = function()
