@@ -21,6 +21,8 @@ from models.Project import Project
 from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
 
+from GitHub_API_Connector import get_github_data
+
 project_routes = Blueprint("project_routes", __name__)
 auto = Autodoc()
 
@@ -161,7 +163,7 @@ def getProjectsByCourse(courseId):
         'courseId': 123456789,<br>
         'grade': 98,<br>
         'logo_url': 'http://location.domain.com/image.jpg',<br>
-        'gitRepository': 'http://location.git.com/somthing',<br>
+        'gitRepository': 'repoOwner/repoName',<br>
         'membersId': ['bob', 'dylan', 'quentin', 'terentino'],<br>
         'id' : 1234567890<br>
         }
@@ -174,7 +176,9 @@ def getProjectsByCourse(courseId):
     query.filter("courseId = ", int(courseId))
 
     for p in query.run():
-        arr.append(dict(json.loads(p.to_JSON())))
+        proj = dict(json.loads(p.to_JSON()))
+        proj['info'] = get_github_data(p.gitRepository)
+        arr.append(proj)
     print arr
     if len(arr) != 0:
         return Response(response=json.dumps(arr),
