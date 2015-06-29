@@ -31,20 +31,20 @@ def make_macro(stats, info):
     macro['labels'].append('Commits')
     macro['labels'].append('Open Issues')
     for stat in stats:
-        macro['data'][0] += stat['total']
+        macro['data'][0][0] += stat['total']
     macro['data'].append(info['open_issues'])
 
     return macro
 
-def make_micro(stats, info):
-    micro = {'labels': [], 'data': [[]], 'series': []}
-    micro['labels'].append('Commits')
-    micro['labels'].append('Open Issues')
-    for stat in stats:
-        micro['data'][0][0] += stat['total']
-    micro['data'].append(info['open_issues'])
-
-    return micro
+# def make_micro(stats, info):
+#     micro = {'labels': [], 'data': [[]], 'series': []}
+#     micro['labels'].append('Commits')
+#     micro['labels'].append('Open Issues')
+#     for stat in stats:
+#         micro['data'][0][0] += stat['total']
+#     micro['data'].append(info['open_issues'])
+#
+#     return micro
 
 def get_github_data(repo_url):
     project_info = {'stats': {}}
