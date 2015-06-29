@@ -43,8 +43,8 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		getCoursesByCampus: function(campusId){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCoursesByCampus/" + campusId;
+		getAllCoursesByCampus: function(token, campusId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getAllCoursesByCampus/" + token + '/' + campusId;
 			req = {
 				method : "GET",
 				url : url
