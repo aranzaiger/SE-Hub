@@ -7,8 +7,11 @@ from GithubAPI.GithubAPI import GitHubAPI_Keys
 from google.appengine.ext import db
 import requests
 import datetime
+import thread
+import threading
 
-from flask import Flask, request, render_template, redirect, abort, Response
+
+from flask import Flask, request, render_template, redirect, abort, Response, g
 
 from flask.ext.github import GitHub
 from flask.ext.cors import CORS, cross_origin
@@ -58,6 +61,7 @@ def create_project(token):
     <br>
     403 - Invalid token or not a lecturer
     """
+
     if not request.data:
         return bad_request()
     try:
@@ -76,16 +80,39 @@ def create_project(token):
         print e
         return bad_request()
 
-    db.put(project)
+    try:
+        project.logo_url = payload['logo_url']
+    except Exception as e:
+        print e
+        pass
 
+
+
+    # def updateProjectInfo(response):
+    #
+    #     projectDic = dict(json.loads(response.data))
+    #     project = Project.get_by_id(int(projectDic['id']))
+    #     project.info = json.dumps(get_github_data(project.gitRepository))
+    #     db.put(project)
+    #     db.save
+    #     return response
+
+    db.put(project)
     #update user projects list
     user.projects_id_list.append(str(project.key().id()))
 
+    print "finish project"
     db.put(user)
     db.save
+    t1 = threading.Thread(target=updateProjectInfo,args=(project.key().id(),))
+    t1.start()
+    # thread.start_new_thread(updateProjectInfo, (project.key().id(),))
+
     return Response(response=project.to_JSON(),
                                 status=200,
                                 mimetype="application/json")
+
+
 
 #----------------------------------------------------------
 #                     PUT
@@ -313,3 +340,27 @@ def deleteProject(token,projectId):
 @project_routes.route('/api/projects/help')
 def documentation():
     return auto.html()
+
+
+# def after_this_request(func):
+#     if not hasattr(g, 'call_after_request'):
+#         g.call_after_request = []
+#     g.call_after_request.append(func)
+#     return func
+#
+#
+# @project_routes.after_request
+# def per_request_callbacks(response):
+#     for func in getattr(g, 'call_after_request', ()):
+#         response = func(response)
+#     return response
+#
+
+def updateProjectInfo(projectId):
+    print "in updateProjectInfo"
+    import time
+    project = Project.get_by_id(int(projectId))
+    project.info = json.dumps(get_github_data(project.gitRepository))
+    db.put(project)
+    db.save
+    return
