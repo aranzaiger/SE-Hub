@@ -29,7 +29,6 @@ angular.module('SeHub')
 		{
 			console.log("Error: " + err);
 		});
-
 	}
 	$scope.joinCourse = function()
 	{
