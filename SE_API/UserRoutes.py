@@ -145,63 +145,63 @@ def updateUser(token):
 
 
 
-@user_routes.route('/api/users/addUserToCampus/<string:token>', methods=["PUT"])
-@auto.doc()
-def addUserToCampus(token):
-    """
-    <span class="card-title">>This Call will add a Campus to user Campus list</span>
-    <br>
-    <b>Route Parameters</b><br>
-        - seToken: 'seToken'
-    <br>
-    <br>
-    <b>Payload</b><br>
-     - JSON Object, Example: <br>
-     {<br>
-         'campusId': 1234567890<br>
-    }<br>
-    <br>
-    <b>Response</b>
-    <br>
-    200 - User updated
-    <br>
-    400 - Bad Request
-    """
-
-    if not request.data:
-        return bad_request()
-
-    try:
-        payload = json.loads(request.data)
-    except Exception as e:
-        print e
-        return bad_request()
-
-    if not is_lecturer(token):  #todo: change to lecturer id
-        return forbidden("Invalid token or not a lecturer!")
-
-    user = get_user_by_token(token)
-
-    #check Campus Exists
-    campus = Campus.get_by_id(payload['campusId'])
-    if campus is None:
-        return bad_request("No such Campus!")
-
-    try:
-        if str(payload['campusId']) in  user.campuses_id_list:
-            return accepted("Already a member of that campus")
-
-        user.campuses_id_list.append(str(payload['campusId']))
-    except Exception as e:
-        print e
-        return bad_request()
-
-
-    db.put(user)
-    db.save
-    return Response(response=user.to_JSON(),
-                            status=200,
-                            mimetype="application/json")  # Real response!
+# @user_routes.route('/api/users/addUserToCampus/<string:token>', methods=["PUT"])
+# @auto.doc()
+# def addUserToCampus(token):
+#     """
+#     <span class="card-title">>This Call will add a Campus to user Campus list</span>
+#     <br>
+#     <b>Route Parameters</b><br>
+#         - seToken: 'seToken'
+#     <br>
+#     <br>
+#     <b>Payload</b><br>
+#      - JSON Object, Example: <br>
+#      {<br>
+#          'campusId': 1234567890<br>
+#     }<br>
+#     <br>
+#     <b>Response</b>
+#     <br>
+#     200 - User updated
+#     <br>
+#     400 - Bad Request
+#     """
+#
+#     if not request.data:
+#         return bad_request()
+#
+#     try:
+#         payload = json.loads(request.data)
+#     except Exception as e:
+#         print e
+#         return bad_request()
+#
+#     if not is_lecturer(token):  #todo: change to lecturer id
+#         return forbidden("Invalid token or not a lecturer!")
+#
+#     user = get_user_by_token(token)
+#
+#     #check Campus Exists
+#     campus = Campus.get_by_id(payload['campusId'])
+#     if campus is None:
+#         return bad_request("No such Campus!")
+#
+#     try:
+#         if str(payload['campusId']) in  user.campuses_id_list:
+#             return accepted("Already a member of that campus")
+#
+#         user.campuses_id_list.append(str(payload['campusId']))
+#     except Exception as e:
+#         print e
+#         return bad_request()
+#
+#
+#     db.put(user)
+#     db.save
+#     return Response(response=user.to_JSON(),
+#                             status=200,
+#                             mimetype="application/json")  # Real response!
 
 
 #----------------------------------------------------------
@@ -314,7 +314,11 @@ def getUserById(token, id):
     if get_user_by_token(token) is None:
         return forbidden('Invalid Token')
 
-    u = get_user_by_id(int(id))
+    try:
+        u = get_user_by_id(int(id))
+    except Exception as e:
+        return bad_request("Bad id format")
+
     if u is None:
         return no_content('No user Found')
 
@@ -371,7 +375,11 @@ def getUsersByCampus(token, campusId):
     if user is None:
         return bad_request("Bad User Token")
 
-    campus = Campus.get_by_id(int(campusId))
+    try:
+        campus = Campus.get_by_id(int(campusId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
     if campus is None:
         return bad_request("No such Campus")
 
@@ -432,7 +440,11 @@ def getUsersByCourse(token, courseId):
     if user is None:
         return bad_request("Bad User Token")
 
-    course = Course.get_by_id(int(courseId))
+    try:
+        course = Course.get_by_id(int(courseId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
     if course is None:
         return bad_request("No such Course")
 
@@ -493,7 +505,11 @@ def getUsersByProject(token, projectId):
     if user is None:
         return bad_request("Bad User Token")
 
-    project = Project.get_by_id(int(projectId))
+    try:
+        project = Project.get_by_id(int(projectId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
     if project is None:
         return bad_request("No such Project")
 
@@ -544,7 +560,11 @@ def removeUserFromCampus(token, userId, campusId):
     if requestingUser is None:
         return bad_request("Bad User Token")
 
-    userToRemove = User.get_by_id(int(userId))
+    try:
+        userToRemove = User.get_by_id(int(userId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
     if userToRemove is None:
         return bad_request("No such user to remove")
 
@@ -570,9 +590,6 @@ def removeUserFromCampus(token, userId, campusId):
     return Response(response=userToRemove.to_JSON(),
                             status=200,
                             mimetype="application/json")  # Real response!
-
-
-
 
 
 
@@ -604,7 +621,11 @@ def removeUserFromCourse(token, userId, courseId):
     if requestingUser is None:
         return bad_request("Bad User Token")
 
-    userToRemove = User.get_by_id(int(userId))
+    try:
+        userToRemove = User.get_by_id(int(userId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
     if userToRemove is None:
         return bad_request("No such user to remove")
 
@@ -635,9 +656,6 @@ def removeUserFromCourse(token, userId, courseId):
                             mimetype="application/json")  # Real response!
 
 
-
-
-
 @user_routes.route('/api/users/removeUserFromProject/<string:token>/<string:userId>/<string:projectId>', methods=["PUT"])
 @auto.doc()
 def removeUserFromProject(token, userId, projectId):
@@ -666,7 +684,12 @@ def removeUserFromProject(token, userId, projectId):
     if requestingUser is None:
         return bad_request("Bad User Token")
 
-    userToRemove = User.get_by_id(int(userId))
+    try:
+        userToRemove = User.get_by_id(int(userId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
+
     if userToRemove is None:
         return bad_request("No such user to remove")
 
@@ -695,8 +718,6 @@ def removeUserFromProject(token, userId, projectId):
     return Response(response=userToRemove.to_JSON(),
                             status=200,
                             mimetype="application/json")  # Real response!
-
-
 
 
 

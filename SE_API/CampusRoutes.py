@@ -123,7 +123,12 @@ def joinCampus(token, campusId):
 
     user = get_user_by_token(token)
 
-    campus = Campus.get_by_id(int(campusId))
+    try:
+        campus = Campus.get_by_id(int(campusId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
+
     if campus is None:
         return bad_request("No such course")
 
@@ -294,7 +299,12 @@ def getCampusesByUserID(token, id):
     if user is None:
         return forbidden("Invalid Token")
 
-    user = get_user_by_id(int(id))
+
+    try:
+        user = get_user_by_id(int(id))
+    except Exception as e:
+        return bad_request("Bad id format")
+
     if user is None:
         return no_content("No User")
 
@@ -351,7 +361,11 @@ def deleteCampus(token,campusId):
         return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
-    camp = Campus.get_by_id(int(campusId))
+
+    try:
+        camp = Campus.get_by_id(int(campusId))
+    except Exception as e:
+        return bad_request("Bad id format")
 
     if camp is None:
         return bad_request("no such campus")

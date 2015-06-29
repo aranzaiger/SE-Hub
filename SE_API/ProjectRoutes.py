@@ -134,7 +134,12 @@ def joinProject(token, projectId):
     if user is None:
         return bad_request("Wrong user Token")
 
-    project = Project.get_by_id(int(projectId))
+    try:
+        project = Project.get_by_id(int(projectId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
+
     if project is None:
         return bad_request("No such Project")
 
@@ -193,7 +198,11 @@ def getProjectsByCourse(token, courseId):
 
     arr = []
     query = Project.all()
-    query.filter("courseId = ", int(courseId))
+
+    try:
+        query.filter("courseId = ", int(courseId))
+    except Exception as e:
+        return bad_request("Bad id format")
 
     for p in query.run():
         proj = dict(json.loads(p.to_JSON()))
@@ -305,7 +314,11 @@ def deleteProject(token,projectId):
     user = get_user_by_token(token)
     if user is None:
         return bad_request("Bad user Token")
-    p = Project.get_by_id(int(projectId))
+
+    try:
+        p = Project.get_by_id(int(projectId))
+    except Exception as e:
+        return bad_request("Bad id format")
 
     if p is None:
         return bad_request("no such Project")

@@ -192,7 +192,11 @@ def getAllTasksByCourse(token, courseId):
 
     arr = []
     query = Task.all()
-    query.filter("courseId = ", courseId)
+
+    try:
+        query.filter("courseId = ", int(courseId))
+    except Exception as e:
+        return bad_request("Bad id format")
 
     for t in query.run():
         taskDic =dict(json.loads(t.to_JSON()))
@@ -254,7 +258,11 @@ def getAllFutureTasks(token, courseId):
 
     arr = []
     query = Task.all()
-    query.filter("courseId = ", courseId)
+
+    try:
+        query.filter("courseId = ", int(courseId))
+    except Exception as e:
+        return bad_request("Bad id format")
 
     for t in query.run():
         taskDic =dict(json.loads(t.to_JSON()))
@@ -324,7 +332,11 @@ def getTaskComponents(token, taskId):
 
     arr = []
     query = TaskComponent.all()
-    query.filter("taskId = ", taskId)
+
+    try:
+        query.filter("taskId = ", int(taskId))
+    except Exception as e:
+        return bad_request("Bad id format")
 
     for tc in query.run():
         arr.append(dict(json.loads(tc.to_JSON())))
@@ -384,7 +396,11 @@ def deleteTask(token, taskId):
     #return forbidden("lecturer is not owner of course")
 
     user = get_user_by_token(token)
-    c = Task.get_by_id(int(taskId))
+
+    try:
+        c = Task.get_by_id(int(taskId))
+    except Exception as e:
+        return bad_request("Bad id format")
 
     if c is None:
         return bad_request("no such Task")
@@ -432,7 +448,12 @@ def deleteTaskComponents(token,taskId):
     #return forbidden("lecturer is not owner of course")
 
     user = get_user_by_token(token)
-    t = Task.get_by_id(int(taskId))
+
+
+    try:
+        t = Task.get_by_id(int(taskId))
+    except Exception as e:
+        return bad_request("Bad id format")
 
     if t is None:
         return bad_request("no such Task")

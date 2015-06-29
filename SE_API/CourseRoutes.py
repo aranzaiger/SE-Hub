@@ -145,7 +145,11 @@ def joinCourse(token, courseId):
     if user is None:
         return bad_request("Wrong user Token")
 
-    course = Course.get_by_id(int(courseId))
+    try:
+        course = Course.get_by_id(int(courseId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
     if course is None:
         return bad_request("No such course")
 
@@ -205,7 +209,12 @@ def getAllCoursesByCampus(token, campusId):
 
     arr = []
     query = Course.all()
-    query.filter("campusId = ", int(campusId))
+
+    try:
+        query.filter("campusId = ", int(campusId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
 
     for c in query.run():
         arr.append(dict(json.loads(c.to_JSON())))
@@ -258,7 +267,11 @@ def getUserCoursesByCampus(token, campusId):
     if user is None:
         return bad_request("Bad user Token")
 
-    campus = Campus.get_by_id(int(campusId))
+    try:
+        campus = Campus.get_by_id(int(campusId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
     if campus is None:
         return bad_request("No such Campus")
 
@@ -318,6 +331,11 @@ def getCoursesByUser(token, userId):
     if user is None:
         return bad_request("Bad user Token")
 
+    try:
+        otherUser = User.get_by_id(int(userId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
     otherUser = User.get_by_id(int(userId))
     if otherUser is None:
         return bad_request("Bad user Id")
@@ -349,9 +367,9 @@ def getCoursesByUser(token, userId):
 
 
 
-@course_routes.route('/api/courses/deleteCourse/<string:token>/<string:courseid>', methods=['DELETE'])
+@course_routes.route('/api/courses/deleteCourse/<string:token>/<string:courseId>', methods=['DELETE'])
 @auto.doc()
-def deleteCourse(token, courseid):
+def deleteCourse(token, courseId):
     """
     <span class="card-title">This Call will delete a specific Course</span>
     <br>
@@ -383,7 +401,11 @@ def deleteCourse(token, courseid):
         return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
-    c = Course.get_by_id(int(courseid))
+
+    try:
+        c = Course.get_by_id(int(courseId))
+    except Exception as e:
+        return bad_request("Bad id format")
 
     if c is None:
         return bad_request("no such course")
