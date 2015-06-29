@@ -24,7 +24,10 @@ def get_repo_issues(repo_url):
 def get_repo_weekly_commits(repo_url):
     url = 'https://api.github.com/repos/' + repo_url + '/stats/participation' + '?client_id=' + githubKeys.getId() + '&client_secret=' + githubKeys.getSecret()
     req = requests.get(url)
-    return req.json()['all']
+    try:
+        return req.json()['all']
+    except:
+        return []
 
 def make_macro(stats, info):
     macro = {'labels': [], 'data': [[0]]}
