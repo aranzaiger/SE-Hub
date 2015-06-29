@@ -174,6 +174,7 @@ def getProjectsByCourse(token, courseId):
 
     if get_user_by_token(token) is None:
         return bad_request("Bad User Token")
+
     arr = []
     query = Project.all()
     query.filter("courseId = ", int(courseId))
@@ -233,7 +234,9 @@ def getProjectsByUser(token):
     arr = []
     for p in user.projects_id_list:
         project = Project.get_by_id(int(p))
-        arr.append(dict(json.loads(project.to_JSON())))
+        projDict = dict(json.loads(project.to_JSON()))
+        projDict['info'] = get_github_data(project.gitRepository)
+        arr.append(projDict)
 
     if len(arr) != 0:
         return Response(response=json.dumps(arr),
