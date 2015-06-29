@@ -5,7 +5,7 @@ from google.appengine.ext import db
 
 class Project(db.Model):
     projectName = db.StringProperty(required=True)
-    courseName = db.StringProperty(required=True)
+    courseId = db.IntegerProperty(required=True)
     master_id = db.IntegerProperty(required=True)
     grade = db.IntegerProperty(required=True, default=0)
     logo_url = db.StringProperty(required=False)
@@ -14,7 +14,7 @@ class Project(db.Model):
 
     def to_JSON(self):
         data = {'projectName' : self.projectName,
-                'courseName' : self.courseName,
+                'courseId' : self.courseId,
                 'master_id' : self.master_id,
                 'grade' : self.grade,
                 'logo_url' : self.logo_url,

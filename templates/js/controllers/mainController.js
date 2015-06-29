@@ -1,5 +1,7 @@
 angular.module('SeHub')
-	.controller('mainController', ['$scope', '$rootScope', 'dataService','apiService', '$cookies', '$cookieStore', '$location', '$window',
+	.controller('mainController', 
+		['$scope', '$rootScope', 'dataService', 'apiService', '$cookies', 
+			'$cookieStore', '$location', '$window',
 
 		function($scope, $rootScope, dataService, apiService, $cookies, $cookieStore, $location, $window) {
 			top.setIsEnterd = true;
@@ -14,6 +16,39 @@ angular.module('SeHub')
 				}
 				$scope.loadingData = false;
 				$scope.user = data;
+
+				$scope.menuItems = [{
+					"title": "Dash Board",
+					"icon": "fa fa-tachometer",
+					"style": "selected",
+					"route": "/home"
+				},  {
+					"title": "Explore",
+					"icon": "fa fa-compass",
+					"style": "",
+					"route": "/campuses"
+				}, {
+					"title": "My Projects",
+					"icon": "fa fa-cube",
+					"style": "",
+					"route": "/myProjects"
+				}, {
+					"title": "Tasks",
+					"icon": "fa fa-clipboard",
+					"style": "",
+					"route": "/tasks"
+				}, {
+					"title": "Profile",
+					"icon": "fa fa-cogs",
+					"style": "",
+					"route": "/profile/" + $scope.user.id.toString()
+				}, {
+					"title": "Log Out",
+					"icon": "fa fa-power-off",
+					"style": "",
+					"route": "/logout"
+				}];
+
 				dataService.initService($scope); //Start Data Sync Service (For User)
 				console.log(data);
 				if ($scope.user.isFirstLogin) {
@@ -27,44 +62,7 @@ angular.module('SeHub')
 
 			});
 
-			
 
-			$scope.menuItems = [{
-				"title": "Dash Board",
-				"icon": "fa fa-tachometer",
-				"style": "selected",
-				"route": "/home"
-			}, {
-				"title": "My Campuses",
-				"icon": "fa fa-university",
-				"style": "",
-				"route": "/campuses"
-			}, {
-				"title": "My Classes",
-				"icon": "fa fa-graduation-cap",
-				"style": "",
-				"route": "/myClasses"
-			}, {
-				"title": "My Projects",
-				"icon": "fa fa-cube",
-				"style": "",
-				"route": "/projects"
-			}, {
-				"title": "Tasks",
-				"icon": "fa fa-clipboard",
-				"style": "",
-				"route": "/tasks"
-			}, {
-				"title": "Settings",
-				"icon": "fa fa-cogs",
-				"style": "",
-				"route": "/Settings"
-			}, {
-				"title": "Log Out",
-				"icon": "fa fa-power-off",
-				"style": "",
-				"route": "/logout"
-			}];
 
 			$scope.menuClicked = function(item) {
 				var route = ""

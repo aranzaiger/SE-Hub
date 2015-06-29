@@ -1,14 +1,142 @@
 angular.module('SeHub')
-.controller('myClassesController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
+.controller('myClassesController', ['$scope', '$location', '$routeParams', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope',
+	function ($scope, $location, $routeParams, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
 	$scope.isStudent = false;
 	$scope.isCourse = false;
 	$scope.isNewCourse = false;
 	$scope.newClassName = false;
-	$scope.user.createNewCourse = '';
+	$scope.course = {};
+	var token = $cookies['com.sehub.www'];
 	$scope.user.finalDate = '';
+	$scope.user.startDate = '';
 	$scope.showMyClass = false;
+	$scope.coursesEmpty = false;
+	$scope.campusId;
+	var campusId = $routeParams.campusId;
 	
+	$scope.goToClass = function(classId)
+	{
+		console.log("Done! " + $scope.courses);
+		$location.path('/projects/' + classId.toString()); // Will display all the projects in this course
+	}
+
+	$scope.chooseCampusClicked = function()
+	{
+		$scope.isCourse = true;
+		console.log("Choose campus Clicked!!");
+
+		apiService.getAllCampuses(token).success(function(data)
+		{
+			$scope.campuses = data;
+			console.log("Campuses: ");
+			console.log($scope.campuses);
+		}).error(function(err)
+		{
+			console.log("Error: " + err);
+		});
+	}
+
+	$scope.createCourseClicked = function()
+	{
+		$scope.isNewCourse = !$scope.isNewCourse;
+	}
+
+	$scope.submitNewClassClicked = function()
+	{
+		var i;
+	   	if($scope.course.courseName != null && $scope.course.endDate != null && $scope.course.startDate != null)
+	    {
+		 	for(i = 0; i < $scope.campuses.length; i++)   	
+			{		    	
+		    	if($scope.course.campusName === $scope.campuses[i].title)
+		    	{
+		    		$scope.campusId = $scope.campuses[i].id;
+		    	}
+		    }
+		    console.log("NOW: ");
+		    console.log($scope.campusId);
+
+	    	var jsonNewCourse =
+	    	{
+	    		'courseName': $scope.course.courseName,
+	    		'campusId': $scope.campusId,
+	    		'startDate': {
+	    			'year' : $scope.course.startDate.getFullYear(),
+	    			'day' : $scope.course.startDate.getDate(),
+	    			'month': $scope.course.startDate.getMonth() + 1
+	    		},
+	    		'endDate': {
+	    			'year' : $scope.course.endDate.getFullYear(),
+	    			'day' : $scope.course.endDate.getDate(),
+	    			'month': $scope.course.endDate.getMonth() + 1
+	    		}
+	    	};
+
+	    	console.log("Json here: " + $scope.chosenCampus);
+    		console.log(jsonNewCourse);
+	      	
+	      	apiService.createCourse(token, jsonNewCourse).success(function(data)
+	      	{
+	      		console.log("createCourse API done");
+	      		$mdDialog.show($mdDialog.alert().title('Course Created').content('You have created course successfully.')
+		        .ariaLabel('Email verification alert dialog').ok('Lets Start!').targetEvent())
+			.then(function() {
+							$location.path('/newCourse'); // TODO TODO TODO
+						}); // Pop-up alert
+	      	}).error(function(err)
+	      	{
+	      		console.log(err);
+	      	});
+	    }
+	    else
+	    {
+	    	$mdDialog.show($mdDialog.alert().title('Error - Creating Course').content('Some fields are missing.')
+		        .ariaLabel('Email verification alert dialog').ok('Try Again!').targetEvent());
+	    }
+	}
+
+	var init = function()
+	{
+		$scope.holdArrays = [];
+		var tempArr = [];
+		var sizeOfSmallArrays = 3;
+		for (var i = 0 ; i < $scope.courses.length ; i++) {
+			if(i % sizeOfSmallArrays !== 0){
+				tempArr.push($scope.courses[i]);
+			}else{
+				if(i !== 0){
+					$scope.holdArrays.push(tempArr);
+					tempArr = [];
+					tempArr.push($scope.courses[i]);
+				}else{
+					tempArr.push($scope.courses[i]);
+				}
+			}
+		};
+		$scope.holdArrays.push(tempArr);
+	}
+
+	//$scope.courses = ["lala", "aaa", "bbb", "ccc", "rrr"];
+
+	var displayCourses = function()
+	{
+		apiService.getAllCoursesByCampus(token, campusId).success(function(data) // Shows all classes from this campus
+		{
+			$scope.courses = data;
+			console.log("success " + $scope.courses);
+			init(); // Executing the function to initialize course display
+			if(!$scope.courses)
+			{
+				$scope.coursesEmpty = true;
+			}
+		}).error(function(err)
+		{
+			console.log("error: " + err);
+		});		
+	}
+
+
 	if($scope.user.isLecturer)
 	{
 		$scope.isStudent = false;
@@ -20,42 +148,7 @@ angular.module('SeHub')
 		console.log("Student Mode!");
 	}
 
-
-	$scope.chooseCourseClicked = function()
-	{
-		$scope.isCourse = true;
-		console.log("choose course Clicked!!");
-	}
-
-	$scope.createCourseClicked = function()
-	{
-		$scope.isNewCourse = true;
-		$scope.showMyClass = false;
-		console.log("create course Clicked!!");
-	}
-
-	$scope.showMyCourses = function()
-	{
-		$scope.showMyClass = true;
-		$scope.isNewCourse = false;
-	}
-
-	$scope.submitNewClassClicked = function()
-	{
-	   	if($scope.user.createNewCourse != '' && $scope.user.finalDate != '')
-	    {
-    		console.log("finalDate " + $scope.user.finalDate);
-	      	console.log($scope.user.createNewCourse);
-	      	$mdDialog.show($mdDialog.alert().title('Course Created').content('You have created course successfully.')
-		        .ariaLabel('Email verification alert dialog').ok('Lets Start!').targetEvent());
-			// $window.location.href = 'templates/views/newCourse.html'; // TODO TODO TODO
-	    }
-	    else
-	    {
-	    	$mdDialog.show($mdDialog.alert().title('Error - Creating Course').content('You have encountered and error in creating the course.')
-		        .ariaLabel('Email verification alert dialog').ok('Try Again!').targetEvent());
-	    }
-	}
+	displayCourses(); // Will display the courses that the user related to // TODO!!
 
 
 

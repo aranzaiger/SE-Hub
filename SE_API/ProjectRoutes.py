@@ -21,6 +21,8 @@ from models.Project import Project
 from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
 
+from GitHub_API_Connector import get_github_data
+
 project_routes = Blueprint("project_routes", __name__)
 auto = Autodoc()
 
@@ -42,7 +44,7 @@ def create_project(token):
      - JSON Object, Example: <br>
      {<br>
      'projectName': 'Advance Math',<br>
-     'courseName': 'JCE',<br>
+     'courseId': 1234567890,<br>
      'logo_url': 'http://location.domain.com/image.jpg',<br>
      'gitRepository': 'http://location.git.com/somthing'<br>
     }<br>
@@ -58,23 +60,28 @@ def create_project(token):
     """
     if not request.data:
         return bad_request()
-    payload = json.loads(request.data)
-    #if not is_lecturer(token):  #todo: change to lecturer id
-     #   return forbidden("Invalid token or not a lecturer!")
+    try:
+        payload = json.loads(request.data)
+    except Exception as e:
+        return bad_request("invalid JSON format")
 
     user = get_user_by_token(token)
     if user is None:
         return bad_request("Wrong user Token")
 
-    #todo: check legality
 
     try:
-        project = Project(projectName=payload['projectName'], courseName=payload['courseName'], master_id=user.key().id(), gitRepository=payload['gitRepository'], membersId=[token])
+        project = Project(projectName=payload['projectName'], courseId=payload['courseId'], master_id=user.key().id(), gitRepository=payload['gitRepository'], membersId=[token])
     except Exception as e:
         print e
         return bad_request()
 
     db.put(project)
+
+    #update user projects list
+    user.projects_id_list.append(str(project.key().id()))
+
+    db.put(user)
     db.save
     return Response(response=project.to_JSON(),
                                 status=200,
@@ -84,19 +91,118 @@ def create_project(token):
 #                     PUT
 #----------------------------------------------------------
 
+@project_routes.route('/api/projects/joinProject/<string:token>/<string:projectId>', methods=["PUT"])
+@auto.doc()
+def joinProject(token, projectId):
+    """
+    <span class="card-title">This call will add the user (by token) to a specific project</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'<br>
+        - projectId: 123456789
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - None <br>
+    <br>
+    <b>Response</b>
+    <br>
+    202 - Accepted
+    <br>
+    400 - Bad Request
+    <br>
+    403 - Invalid token or not a lecturer
+    """
+
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Wrong user Token")
+
+    project = Project.get_by_id(int(projectId))
+    if project is None:
+        return bad_request("No such Project")
+
+    if str(user.key().id()) in project.membersId:
+        return bad_request("User is already member in Project")
+
+    project.membersId.append(str(user.key().id()))
+
+    db.put(project)
+    db.save
+
+    return Response(response=project.to_JSON(),
+                        status=202,
+                        mimetype="application/json")
+
+
 
 #----------------------------------------------------------
 #                     GET
 #----------------------------------------------------------
 
-@project_routes.route('/api/projects/getProjectsByCourseName/<string:name>', methods=["GET"])
+@project_routes.route('/api/projects/getProjectsByCourse/<string:token>/<string:courseId>', methods=["GET"])
 @auto.doc()
-def getProjectsByCourseName(name):
+def getProjectsByCourse(token, courseId):
     """
     <span class="card-title">>This Call will return an array of all projects in a given course</span>
     <br>
     <b>Route Parameters</b><br>
-        - name: 'course name'
+        - seToken: token<br>
+        - courseId: 1234567890
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'projectName': 'Advance Math',<br>
+        'courseId': 123456789,<br>
+        'grade': 98,<br>
+        'logo_url': 'http://location.domain.com/image.jpg',<br>
+        'gitRepository': 'repoOwner/repoName',<br>
+        'membersId': ['bob', 'dylan', 'quentin', 'terentino'],<br>
+        'id' : 1234567890<br>
+        }
+    </code>
+    <br>
+    """
+
+    if get_user_by_token(token) is None:
+        return bad_request("Bad User Token")
+
+    arr = []
+    query = Project.all()
+    query.filter("courseId = ", int(courseId))
+
+    for p in query.run():
+        proj = dict(json.loads(p.to_JSON()))
+        proj['info'] = get_github_data(p.gitRepository)
+        arr.append(proj)
+    print arr
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
+    else:
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
+
+
+
+@project_routes.route('/api/projects/getProjectsByUser/<string:token>', methods=["GET"])
+@auto.doc()
+def getProjectsByUser(token):
+    """
+    <span class="card-title">>This Call will return an array of all projects in a given course</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - token: 'SEToken'
     <br>
     <br>
     <b>Payload</b><br>
@@ -120,13 +226,18 @@ def getProjectsByCourseName(name):
     <br>
     """
 
-    arr = []
-    query = Project.all()
-    query.filter("courseName = ", name)
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad Token")
 
-    for p in query.run():
-        arr.append(dict(json.loads(p.to_JSON())))
-    print arr
+
+    arr = []
+    for p in user.projects_id_list:
+        project = Project.get_by_id(int(p))
+        projDict = dict(json.loads(project.to_JSON()))
+        projDict['info'] = get_github_data(project.gitRepository)
+        arr.append(projDict)
+
     if len(arr) != 0:
         return Response(response=json.dumps(arr),
                         status=200,
@@ -144,15 +255,15 @@ def getProjectsByCourseName(name):
 
 
 
-@project_routes.route('/api/projects/deleteProject/<string:token>/<string:projectid>', methods=['DELETE'])
+@project_routes.route('/api/projects/deleteProject/<string:token>/<string:projectId>', methods=['DELETE'])
 @auto.doc()
-def deleteProject(token,projectid):
+def deleteProject(token,projectId):
     """
     <span class="card-title">This Call will delete a specific Project</span>
     <br>
     <b>Route Parameters</b><br>
         - seToken: 'seToken'
-        - courseid: 'projectid'
+        - projectId: 'projectid'
     <br>
     <br>
     <b>Payload</b><br>
@@ -178,7 +289,9 @@ def deleteProject(token,projectid):
     #     return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
-    p = Project.get_by_id(int(projectid))
+    if user is None:
+        return bad_request("Bad user Token")
+    p = Project.get_by_id(int(projectId))
 
     if p is None:
         return bad_request("no such Project")

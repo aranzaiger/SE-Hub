@@ -38,15 +38,15 @@ app.config(['$routeProvider', '$locationProvider',
 				templateUrl: 'templates/views/home.html',
 				controller: 'homeController'
 			})
-			.when('/Settings', {
-				templateUrl: 'templates/views/settings.html',
-				controller: 'settingsController'
+			.when('/profile/:id', {
+				templateUrl: 'templates/views/profile.html',
+				controller: 'profileController'
 			})
 			.when('/tasks', {
 				templateUrl: 'templates/views/tasks.html',
 				controller: 'tasksController'
 			})
-			.when('/myClasses', {
+			.when('/myClasses/:campusId', {
 				templateUrl: 'templates/views/myClasses.html',
 				controller: 'myClassesController'
 			})
@@ -54,13 +54,21 @@ app.config(['$routeProvider', '$locationProvider',
 				templateUrl: 'templates/views/newTask.html',
 				controller: 'newTasksController'
 			})
-			.when('/projects', {
+			.when('/projects/:classId', {
 				templateUrl: 'templates/views/projects.html',
 				controller: 'projectsController'
 			})
 			.when('/newCourse', {
 				templateUrl: 'templates/views/newCourse.html',
 				controller: 'newCourseController'
+			})
+			.when('/campuses', {
+				templateUrl: 'templates/views/campuses.html',
+				controller: 'campusesController'
+			})
+			.when('/myProjects', {
+				templateUrl: 'templates/views/myProjects.html',
+				controller: 'myProjectsController'
 			});
 	}
 ]);

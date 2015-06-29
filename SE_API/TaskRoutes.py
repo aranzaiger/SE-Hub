@@ -153,14 +153,15 @@ def create_task(token):
 #----------------------------------------------------------
 
 
-@task_routes.route('/api/tasks/getAllTasks/<string:courseName>', methods=["GET"])
+@task_routes.route('/api/tasks/getAllTasksByCourse/<string:token>/<string:courseId>', methods=["GET"])
 @auto.doc()
-def getAllTasks(courseName):
+def getAllTasksByCourse(token, courseId):
     """
-    <span class="card-title">>This Call will return an array of all Tasks in a course by date</span>
+    <span class="card-title">>This Call will return an array of all Tasks in a course ordered by date</span>
     <br>
     <b>Route Parameters</b><br>
-        - name: 'course name'
+        - SeToken: token<br>
+        - courseId: 1234567890
     <br>
     <br>
     <b>Payload</b><br>
@@ -173,7 +174,7 @@ def getAllTasks(courseName):
     <code>
         {<br>
         'title' : 'Task1',<br>
-        'courseName' : 'advance Math',<br>
+        'courseId' : 12345678,<br>
         'description' : 'prepare by sunday',<br>
         'dueDate' : {
                     'year' : 2015,
@@ -186,10 +187,12 @@ def getAllTasks(courseName):
     </code>
     <br>
     """
+    if get_user_by_token(token) is None:
+        return bad_request("Bad User Token")
 
     arr = []
     query = Task.all()
-    query.filter("courseName = ", courseName)
+    query.filter("courseId = ", courseId)
 
     for t in query.run():
         taskDic =dict(json.loads(t.to_JSON()))
@@ -211,14 +214,15 @@ def getAllTasks(courseName):
         return no_content()
 
 
-@task_routes.route('/api/tasks/getAllFutureTasks/<string:courseName>', methods=["GET"])
+@task_routes.route('/api/tasks/getAllFutureTasks/<string:token>/<string:courseId>', methods=["GET"])
 @auto.doc()
-def getAllFutureTasks(courseName):
+def getAllFutureTasks(token, courseId):
     """
     <span class="card-title">>This Call will return an array of all Future Tasks in a course, ordered by date</span>
     <br>
     <b>Route Parameters</b><br>
-        - name: 'course name'
+         - SeToken: token<br>
+        - courseId: 1234567890
     <br>
     <br>
     <b>Payload</b><br>
@@ -245,9 +249,12 @@ def getAllFutureTasks(courseName):
     <br>
     """
 
+    if get_user_by_token(token) is None:
+        return bad_request("Bad User Token")
+
     arr = []
     query = Task.all()
-    query.filter("courseName = ", courseName)
+    query.filter("courseId = ", courseId)
 
     for t in query.run():
         taskDic =dict(json.loads(t.to_JSON()))
@@ -271,14 +278,15 @@ def getAllFutureTasks(courseName):
 
 
 
-@task_routes.route('/api/tasks/getTaskComponents/<string:taskId>', methods=["GET"])
+@task_routes.route('/api/tasks/getTaskComponents/<string:token>/<string:taskId>', methods=["GET"])
 @auto.doc()
-def getTaskComponents(taskId):
+def getTaskComponents(token, taskId):
     """
     <span class="card-title">>This Call will return an array of all components for a given task</span>
     <br>
     <b>Route Parameters</b><br>
-        - taskId: integer
+         - SeToken: token<br>
+        - taskId: 1234567890
     <br>
     <br>
     <b>Payload</b><br>
@@ -311,6 +319,9 @@ def getTaskComponents(taskId):
     <br>
     """
 
+    if get_user_by_token(token) is None:
+        return bad_request("Bad User Token")
+
     arr = []
     query = TaskComponent.all()
     query.filter("taskId = ", taskId)
@@ -336,15 +347,15 @@ def getTaskComponents(taskId):
 
 
 
-@task_routes.route('/api/tasks/deleteTask/<string:token>/<string:taskid>', methods=['DELETE'])
+@task_routes.route('/api/tasks/deleteTask/<string:token>/<string:taskId>', methods=['DELETE'])
 @auto.doc()
-def deleteTask(token,taskid):
+def deleteTask(token, taskId):
     """
     <span class="card-title">This Call will delete a specific Task</span>
     <br>
     <b>Route Parameters</b><br>
         - seToken: 'seToken'
-        - taskid: 'taskid'
+        - taskId: 'taskid'
     <br>
     <br>
     <b>Payload</b><br>
@@ -373,7 +384,7 @@ def deleteTask(token,taskid):
     #return forbidden("lecturer is not owner of course")
 
     user = get_user_by_token(token)
-    c = Task.get_by_id(int(taskid))
+    c = Task.get_by_id(int(taskId))
 
     if c is None:
         return bad_request("no such Task")
@@ -384,15 +395,15 @@ def deleteTask(token,taskid):
     return accepted("Task deleted")
 
 
-@task_routes.route('/api/tasks/deleteTaskComponents/<string:token>/<string:taskid>', methods=['DELETE'])
+@task_routes.route('/api/tasks/deleteTaskComponents/<string:token>/<string:taskId>', methods=['DELETE'])
 @auto.doc()
-def deleteTaskComponents(token,taskid):
+def deleteTaskComponents(token,taskId):
     """
     <span class="card-title">This Call will delete a specific Task's components</span>
     <br>
     <b>Route Parameters</b><br>
         - seToken: 'seToken'
-        - taskid: 'taskid'
+        - taskId: 'taskid'
     <br>
     <br>
     <b>Payload</b><br>
@@ -421,7 +432,7 @@ def deleteTaskComponents(token,taskid):
     #return forbidden("lecturer is not owner of course")
 
     user = get_user_by_token(token)
-    t = Task.get_by_id(int(taskid))
+    t = Task.get_by_id(int(taskId))
 
     if t is None:
         return bad_request("no such Task")
