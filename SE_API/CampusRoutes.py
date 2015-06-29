@@ -118,9 +118,10 @@ def joinCampus(token, campusId):
     403 - Invalid token or not a lecturer
     """
 
+    if not is_lecturer(token):
+        return forbidden("Invalid token or not a lecturer!")
+
     user = get_user_by_token(token)
-    if user is None:
-        return bad_request("Wrong user Token")
 
     campus = Campus.get_by_id(int(campusId))
     if campus is None:
