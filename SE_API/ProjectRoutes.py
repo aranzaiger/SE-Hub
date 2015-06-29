@@ -86,8 +86,8 @@ def create_project(token):
         print e
         pass
 
-    project.info = json.dumps(get_github_data(project.gitRepository))
     db.put(project)
+    project.info = json.dumps(get_github_data(project.gitRepository,  project.key().id()))
 
     #update user projects list
     user.projects_id_list.append(str(project.key().id()))
@@ -395,7 +395,7 @@ def updateProjectsInfo():
     try:
         projects = Project.all()
         for project in projects.run():
-            project.info = json.dumps(get_github_data(project.gitRepository))
+            project.info = json.dumps(get_github_data(project.gitRepository, project.key().id()))
             db.put(project)
         db.save
         return accepted()
