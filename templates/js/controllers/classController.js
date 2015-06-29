@@ -1,14 +1,16 @@
 angular.module('SeHub')
-.controller('projectsController', ['$scope', '$routeParams', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $routeParams, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
+.controller('classController', ['$scope', '$routeParams', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $routeParams, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
 	var token = $cookies['com.sehub.www'];
-	var classId = $routeParams.classId;
+	var classId = $routeParams.projectId;
+	// var projectId = "";
 	$scope.projectsEmpty = true;
 	$scope.isCreateProjectClicked = false;
 	$scope.submitNewCourseClicked = false;
 	$scope.project = {};
 	$scope.loadingData = true;
 	$scope.isInCourse = false;
+	$scope.project.courseName = classId;
 
 	$scope.displayProjects = function()
 	{
@@ -27,7 +29,6 @@ angular.module('SeHub')
 		{
 			console.log("Error: " + err);
 		});
-
 	}
 	$scope.joinCourse = function()
 	{
@@ -37,7 +38,7 @@ angular.module('SeHub')
       		$mdDialog.show($mdDialog.alert().title('Joined Course').content('You have successfully joined course.')
 	        .ariaLabel('Join course alert dialog').ok('Lets Start!').targetEvent())
 			.then(function() {
-							$location.path('/projects/' + classId); // TODO TODO TODO
+							$location.path('/class/' + classId); // TODO TODO TODO
 						}); // Pop-up alert
 		}).error(function(err)
 		{
@@ -57,6 +58,7 @@ angular.module('SeHub')
 
 	$scope.submitNewProject = function()
 	{
+		loadingData = true;
 		// debugger;
 		var intClassId = parseInt(classId);
 		// console.log($scope);
@@ -74,11 +76,13 @@ angular.module('SeHub')
 
     	apiService.create(token, jsonNewProj).success(function(data)
     	{
+    		loadingData = false;
+    		projectId = data.id;
       		$mdDialog.show($mdDialog.alert().title('Project Created').content('You have successfully created project.')
-	        .ariaLabel('Project created alert dialog').ok('Great!').targetEvent());
-			// .then(function() {
-			// 				$location.path('/projects/' + classId); // TODO TODO TODO
-			// 			}); // Pop-up alert
+	        .ariaLabel('Project created alert dialog').ok('Great!').targetEvent())
+			.then(function() {
+							$location.path('/project/' + projectId); // TODO TODO TODO
+						}); // Pop-up alert
 
     	}).error(function(err)
     	{
@@ -89,10 +93,10 @@ angular.module('SeHub')
     
 	}
 
-	$scope.goToProject = function()
+	$scope.goToProject = function(projectId)
 	{
-		console.log("projects only from classID: "  + classId)
-		$location.path('/thisProject' + classId);
+		console.log("projects only from classID: "  + projectId)
+		$location.path('/project/' + projectId);
 	}
 
 	var init = function()

@@ -2,31 +2,42 @@ angular.module('SeHub')
 .controller('myProjectsController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
 	$scope.isEditPressed = false;
-	$scope.myProjectsEmpty = false;
-	var token = $cookies['com.sehub.www'];
-
+	$scope.loadingData = true;
+	$scope.myProjectsEmpty = true;
 	$scope.user = $scope.$parent.user;
+	var token = $cookies['com.sehub.www'];
+	console.log(token);
 
 	$scope.displayMyProjects = function()
 	{
 		apiService.getProjectsByUser(token).success(function(data)
 		{
-			console.log("Success " + data);
+			$scope.loadingData = false;
 			$scope.myProjects = data;
+			if($scope.myProjects != null && $scope.myProjects.length > 0)
+			{
+				$scope.myProjectsEmpty = false;
+			}
+			init();  // Executing the function to initialize my projects display
+			console.log(data);
+			console.log("Success");
 		}).error(function(err)
 		{
-			console.log("Error: " + err);
+			console.log("Error: " + err.message);
 		});
-		if($scope.myProjects === null)
-		{
-			$scope.myProjectsEmpty = true;
-		}
+		
 	}
 
-	$scope.goToMyProject = function()
+	$scope.goToProject = function(projectId)
 	{
-		console.log("projects only from classID: "  + classId)
-		$location.path('/thisProject' + classId);
+		for (var i = 0; i < $scope.myProjects; i++)
+		{
+			if($scope.myProjects.id === projectId)
+			{
+				console.log("project ID: "  + projectId)
+				$location.path('/project/' + projectId);
+			}
+		};
 	}
 
 	var init = function()
@@ -34,16 +45,16 @@ angular.module('SeHub')
 		$scope.arrayHolder = [];
 		var tempArr = [];
 		var sizeOfSmallArrays = 3;
-		for (var i = 0 ; i < $scope.projects.length ; i++) {
+		for (var i = 0 ; i < $scope.myProjects.length ; i++) {
 			if(i % sizeOfSmallArrays !== 0){
-				tempArr.push($scope.projects[i]);
+				tempArr.push($scope.myProjects[i]);
 			}else{
 				if(i !== 0){
 					$scope.arrayHolder.push(tempArr);
 					tempArr = [];
-					tempArr.push($scope.projects[i]);
+					tempArr.push($scope.myProjects[i]);
 				}else{
-					tempArr.push($scope.projects[i]);
+					tempArr.push($scope.myProjects[i]);
 				}
 			}
 		};
