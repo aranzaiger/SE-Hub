@@ -86,7 +86,7 @@ def create_project(token):
         print e
         pass
 
-    project.info = get_github_data(project.gitRepository)
+    project.info = json.dumps(get_github_data(project.gitRepository))
     db.put(project)
 
     #update user projects list
@@ -94,8 +94,6 @@ def create_project(token):
 
     db.put(user)
     db.save
-    t1 = threading.Thread(target=updateProjectInfo,args=(project.key().id(),))
-    t1.start()
 
     return Response(response=project.to_JSON(),
                                 status=200,
