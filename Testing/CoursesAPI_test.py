@@ -23,18 +23,17 @@ class CoursesTestPlan(unittest.TestCase):
         print(self._testMethodName+"Has begun")
         print("***********************************************")
         headers = {'content-type': 'application/json'}
-        url = 'http://se-hub.appspot.com/api/courses/create/_QA_TOKEN_TEST_LECTURER'
-        params = {'seToken': 'seToken' }
+        url = self.__class__.url_ +'api/courses/create/_QA_TOKEN_TEST_LECTURER'
+        #params = {'seToken': 'seToken' }
         data = {
-            'courseName': 'QA COURSE',
-            'campusName': 'https://yt3.ggpht.com/--ZkWxybWGOM/AAAAAAAAAAI/AAAAAAAAAAA/_nAICC_kzzI/s88-c-k-no/photo.jpg',
-            'projects': '@gay.lord.ultima.multi.omega',
+            'courseName': 'Advance Math',
+            'campusName': 'JCE',
             'startDate': {'year': 2015, 'month' : 4, 'day' : 3},
-            'endDate': {'year': 2016,'month' : 6,'day' : 6}
+            'endDate': {'year': 2016, 'month' : 5, 'day' : 14}
         }
 
         #r = requests.post(self.__class__.url_+'api/courses/create/'+__CONFIG__['TOKENS']['STUDENT'],data=payload)
-        r = requests.post(url, params=params, data=json.dumps(data), headers=headers)
+        r = requests.post(url, data=json.dumps(data), headers=headers)
         '''
         payload = {
             'courseName': 'QA COURSE',
@@ -47,7 +46,7 @@ class CoursesTestPlan(unittest.TestCase):
         # r = requests.post(self.__class__.url_+'api/courses/create/'+__CONFIG__['TOKENS']['LECTURER'],data=payload)
         #r = requests.post('http://localhost:8080/api/courses/create/_QA_TOKEN_TEST_LECTURER',data=payload)
         print(r._content)
-        if(r.status_code!=201):print("_________"+self._testMethodName+"Has Failed"+"_________")
+        if(r.status_code!=201):print("_____"+self._testMethodName+" has Failed"+"_____" + r._content)
         self.assertEquals(r.status_code, 201)
 
 
@@ -101,6 +100,73 @@ class CoursesTestPlan(unittest.TestCase):
         print("***********************************************")
         r = requests.get(self.__class__.url_+'api/courses/getCourseByCampusName/JCE')
         self.assertEquals(r.status_code, 200)
+        print("***********************************************")
+        print(self._testMethodName+"Has finished Successfully")
+        print("***********************************************")
+
+    #/api/courses/createMessage/<string:token>
+    '''
+    Payload
+    - JSON Object, Example:
+    {
+    'courseName': 'Advance Math',
+    'message': 'The lecture today is canceled'
+    }
+    '''
+    def test_createMessage_lecturerToken(self):
+        print (datetime.datetime.now().time())
+        print("***********************************************")
+        print(self._testMethodName+"Has begun")
+        print("***********************************************")
+        headers = {'content-type': 'application/json'}
+        url = self.__class__.url_+'api/courses/createMessage/_QA_TOKEN_TEST_LECTURER'
+        #params = {'seToken': 'seToken' }
+        data = {
+            'courseName': 'Advance Math',
+            'message': 'The lecture today is canceled'
+        }
+
+        #r = requests.post(self.__class__.url_+'api/courses/create/'+__CONFIG__['TOKENS']['STUDENT'],data=payload)
+        r = requests.post(url, data=json.dumps(data), headers=headers)
+        self.assertEquals(r.status_code, 201, 'message: ' + r.json()['message'])
+        print("***********************************************")
+        print(self._testMethodName+"Has finished Successfully")
+        print("***********************************************")
+
+    def test_createMessage_studentToken(self):
+        print (datetime.datetime.now().time())
+        print("***********************************************")
+        print(self._testMethodName+"Has begun")
+        print("***********************************************")
+        headers = {'content-type': 'application/json'}
+        url = self.__class__.url_+'api/courses/createMessage/_QA_TOKEN_TEST_STUDENT'
+        #params = {'seToken': 'seToken' }
+        data = {
+            'courseName': 'Advance Math',
+            'message': 'The lecture today is canceled'
+        }
+        #r = requests.post(self.__class__.url_+'api/courses/create/'+__CONFIG__['TOKENS']['STUDENT'],data=payload)
+        r = requests.post(url, data=json.dumps(data), headers=headers)
+        self.assertEquals(r.status_code, 403, 'message: ' + r.json()['message'])
+        print("***********************************************")
+        print(self._testMethodName+"Has finished Successfully")
+        print("***********************************************")
+
+    def test_createMessage_invalidToken(self):
+        print (datetime.datetime.now().time())
+        print("***********************************************")
+        print(self._testMethodName+"Has begun")
+        print("***********************************************")
+        headers = {'content-type': 'application/json'}
+        url = self.__class__.url_+'api/courses/createMessage/invalidToken'
+        #params = {'seToken': 'seToken' }
+        data = {
+            'courseName': 'Advance Math',
+            'message': 'The lecture today is canceled'
+        }
+        #r = requests.post(self.__class__.url_+'api/courses/create/'+__CONFIG__['TOKENS']['STUDENT'],data=payload)
+        r = requests.post(url, data=json.dumps(data), headers=headers)
+        self.assertEquals(r.status_code, 403, 'message: ' + r.json()['message'])
         print("***********************************************")
         print(self._testMethodName+"Has finished Successfully")
         print("***********************************************")
