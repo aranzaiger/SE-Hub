@@ -86,27 +86,16 @@ def create_project(token):
         print e
         pass
 
-
-
-    # def updateProjectInfo(response):
-    #
-    #     projectDic = dict(json.loads(response.data))
-    #     project = Project.get_by_id(int(projectDic['id']))
-    #     project.info = json.dumps(get_github_data(project.gitRepository))
-    #     db.put(project)
-    #     db.save
-    #     return response
-
+    project.info = get_github_data(project.gitRepository)
     db.put(project)
+
     #update user projects list
     user.projects_id_list.append(str(project.key().id()))
 
-    print "finish project"
     db.put(user)
     db.save
     t1 = threading.Thread(target=updateProjectInfo,args=(project.key().id(),))
     t1.start()
-    # thread.start_new_thread(updateProjectInfo, (project.key().id(),))
 
     return Response(response=project.to_JSON(),
                                 status=200,
@@ -208,7 +197,6 @@ def getProjectsByCourse(token, courseId):
 
     for p in query.run():
         proj = dict(json.loads(p.to_JSON()))
-        proj['info'] = get_github_data(p.gitRepository)
         arr.append(proj)
     print arr
     if len(arr) != 0:
@@ -262,7 +250,6 @@ def getProjectsByUser(token):
     for p in user.projects_id_list:
         project = Project.get_by_id(int(p))
         projDict = dict(json.loads(project.to_JSON()))
-        projDict['info'] = get_github_data(project.gitRepository)
         arr.append(projDict)
 
     if len(arr) != 0:
@@ -342,25 +329,16 @@ def documentation():
     return auto.html()
 
 
-# def after_this_request(func):
-#     if not hasattr(g, 'call_after_request'):
-#         g.call_after_request = []
-#     g.call_after_request.append(func)
-#     return func
-#
-#
-# @project_routes.after_request
-# def per_request_callbacks(response):
-#     for func in getattr(g, 'call_after_request', ()):
-#         response = func(response)
-#     return response
-#
 
-def updateProjectInfo(projectId):
-    print "in updateProjectInfo"
-    import time
-    project = Project.get_by_id(int(projectId))
-    project.info = json.dumps(get_github_data(project.gitRepository))
-    db.put(project)
-    db.save
-    return
+@project_routes.route('/api/projects/updateProjectsInfo', methods=['GET'])
+def updateProjectsInfo():
+    try:
+        projects = Project.all()
+        for project in projects.run():
+            project.info = json.dumps(get_github_data(project.gitRepository))
+            db.put(project)
+        db.save
+        return accepted()
+    except Exception as e:
+        print e
+        return bad_request()
