@@ -8,23 +8,31 @@
 				<!-- <img ng-src="{{project.logo_url}} class = "md-avatar"> -->
 			</div>
 			<div flex = "20">
-				{{project.projectName}}
+				Project Name: {{project.projectName}}
 			</div>
 			<div layout = "row" flex = "45">
 				<div flex>
-					<md-button ng-click="editProject()" style = "size:180%; width:50%;" ng class="md-raised md-primary">
+					<md-button ng-click="editProject()" style = "size:150%; width:50%;" ng class="md-raised md-primary">
 						<i class="fa fa-pencil-square-o"></i>
 					</md-button>
 				</div>
 				<div flex>
-					<md-button ng-click="removeProject()" style = "size:180%; width:40%;" ng class="md-raised md-primary">
+					<md-button ng-click="removeProject()" style = "size:150%%; width:40%;" ng class="md-raised md-primary">
 						<i class="fa fa-times"></i>
 					</md-button>
 				</div>
 			</div>
 		</div>
 		<div flex = "99" layout = "row">
-			<div flex = "45">
+			<div flex = "18">
+				Team Members:
+				<ul>
+					<li ng-repeat = "member in project.members">
+						<a ng-href="#/profile/{{member.id}}"> {{member.name}}</a>
+					</li>	
+				</ul>
+			</div>
+			<div flex = "40">
 				<!-- Graph -->
 				<div ng-if="loadingData" layout-paddig layout-margin class="loader">
 					<md-progress-circular md-mode="indeterminate"></md-progress-circular>
@@ -33,10 +41,46 @@
 					<canvas layout-padding layout-margin ng-if = "!loadingData" id="line" class="chart chart-line" data="project.info.stats.weekly_commits" labels="project.weekly_labels" legend="true" ></canvas> 
 				</md-card>
 			</div>
-			<div flex = "45">
+			<div flex = "40">
 				<md-card>
 					<canvas layout-padding layout-margin ng-if = "!loadingData" id="project.projectName" class="chart chart-bar" data="project.info.stats.micro.data" labels="project.info.stats.micro.labels" series="project.info.stats.micro.series"></canvas> 
 				</md-card>
+			</div>
+		</div>
+		<div>
+			<div flex = "96">
+				<div flex>
+					<md-card>
+						<md-content class="md-padding">
+							<md-tabs md-dynamic-height md-border-bottom>
+								<md-tab label="Messages">
+									<md-content class="md-padding">
+										<h1 class="md-display-2">Messages</h1>
+										<p>Messages...</p>
+									</md-content>
+								</md-tab>
+								<md-tab label="Commits">
+									<md-content class="md-padding">
+										<h1 class="md-display-2">Commits</h1>
+										<p>Commits...</p>
+									</md-content>
+								</md-tab>
+								<md-tab label="Bugs">
+									<md-content class="md-padding">
+										<h1 class="md-display-2">Bugs</h1>
+										<p> Bugs ..</p>
+									</md-content>
+								</md-tab>
+								<md-tab label="tasks">
+									<md-content class="md-padding">
+										<h1 class="md-display-2">tasks</h1>
+										<p>tasks..</p>
+									</md-content>
+								</md-tab>
+							</md-tabs>
+						</md-content>
+					</md-card>
+				</div>
 			</div>
 		</div>
 
