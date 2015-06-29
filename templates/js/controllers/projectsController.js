@@ -2,7 +2,7 @@ angular.module('SeHub')
 .controller('projectsController', ['$scope', '$routeParams', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $routeParams, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
 	var token = $cookies['com.sehub.www'];
-	var classId = $routeParams.id;
+	var classId = $routeParams.classId;
 	$scope.projectEmpty = false;
 
 	$scope.displayProjects = function()
@@ -22,12 +22,30 @@ angular.module('SeHub')
 			$scope.projectEmpty = true;
 		}
 	}
-
-	$scope.displayProjects(); // Displaying all projects related to user
+	$scope.joinCourse = function()
+	{
+		apiService.joinCourse(token, classId).success(function(data)
+		{
+			console.log("Success!!");
+      		$mdDialog.show($mdDialog.alert().title('Joined Course').content('You have successfully joined course.')
+	        .ariaLabel('Join course alert dialog').ok('Lets Start!').targetEvent())
+			.then(function() {
+							$location.path('/projects/' + classId); // TODO TODO TODO
+						}); // Pop-up alert
+		}).error(function(err)
+		{
+      		$mdDialog.show($mdDialog.alert().title('Error Joining Course').content('You have failed joined the course.')
+	        .ariaLabel('Join course alert dialog').ok('Try Again!').targetEvent()); // Pop-up alert
+			// .then(function() {
+			// 				// $location.path('/newCourse'); // TODO TODO TODO
+			// 			}); 
+		});
+	}
 
 	$scope.createProjectClicked = function()
 	{
 		console.log("project created! not rly!! " + classId);
+		
 		// $window.location.href = 'http://localhost:8080/home#/tasks/new'; // Reference to 'newTask' page
 	}
 
@@ -61,13 +79,16 @@ angular.module('SeHub')
 	}
 
 
+	// Running...
+	$scope.displayProjects(); // Displaying all projects related to user
+
 
 	    	
 	    	/*
 	    	var jsonNewCourse =
 	    	{
-	    		'courseName': $scope.course.courseName,
-	    		'campusName': $scope.course.campusName,
+	    		'projectName': $scope.course.courseName,
+	    		'courseId': classId,
 	    		'startDate': {
 	    			'year' : $scope.course.startDate.getFullYear(),
 	    			'day' : $scope.course.startDate.getDate(),

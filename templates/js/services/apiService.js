@@ -117,7 +117,7 @@ service.factory('apiService', ['$http', function($http) {
 			return $http(req);
 		},
 		getProjectsByCourse: function(token, classId){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getProjectByCourse/" + token + "/" + classId;
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getProjectsByCourse/" + token + "/" + classId;
 			req = {
 				method : "GET",
 				url : url
@@ -126,7 +126,7 @@ service.factory('apiService', ['$http', function($http) {
 			return $http(req);
 		},
 		getProjectsByUser: function(token){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getProjectByCourse/" + token;
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/projects/getProjectsByUser/" + token;
 			req = {
 				method : "GET",
 				url : url
@@ -153,7 +153,7 @@ service.factory('apiService', ['$http', function($http) {
 			return $http(req);
 		},
 		joinCourse: function(token, courseId){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/getUserById/" + token + "/" + courseId;
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/joinCourse/" + token + "/" + courseId;
 			req = {
 				method : "PUT",
 				url : url
@@ -162,6 +162,15 @@ service.factory('apiService', ['$http', function($http) {
 		},
 		createMessage: function(token, payLoad){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/create/" + token;
+			req = {
+				method : "POST",
+				url : url,
+				data: payLoad
+			};
+			return $http(req);
+		},
+		createProject: function(token, payLoad){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/projects/create/" + token;
 			req = {
 				method : "POST",
 				url : url,
