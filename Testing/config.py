@@ -13,5 +13,9 @@ __CONFIG__ = {
     },
     'CAMPUS_NAME':{
         'JCE':'JCE'
+    },
+    'ID':{
+        'STUDENT_ID':4818609708728320,
+        'LECTURER_ID':6225984592281600
     }
 }
