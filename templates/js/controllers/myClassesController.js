@@ -121,7 +121,7 @@ angular.module('SeHub')
 
 	var displayCourses = function()
 	{
-		apiService.getCoursesByCampus(campusId).success(function(data) // Shows all classes from this campus
+		apiService.getAllCoursesByCampus(token, campusId).success(function(data) // Shows all classes from this campus
 		{
 			$scope.courses = data;
 			console.log("success " + $scope.courses);
