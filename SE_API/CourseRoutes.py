@@ -149,8 +149,8 @@ def joinCourse(token, courseId):
     if course is None:
         return bad_request("No such course")
 
-    if user.key().id() in course.membersId:
-        return no_content("User is already member in Project")
+    if str(user.key().id()) in course.membersId:
+        return bad_request("User is already member in Course")
 
     course.membersId.append(str(user.key().id()))
     user.courses_id_list.append(str(course.key().id()))

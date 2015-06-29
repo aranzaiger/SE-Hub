@@ -122,8 +122,8 @@ def joinProject(token, projectId):
     if project is None:
         return bad_request("No such Project")
 
-    if user.key().id() in project.membersId:
-        return no_content("User is already member in Project")
+    if str(user.key().id()) in project.membersId:
+        return bad_request("User is already member in Project")
 
     project.membersId.append(str(user.key().id()))
 
