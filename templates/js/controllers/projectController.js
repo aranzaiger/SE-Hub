@@ -15,12 +15,10 @@ angular.module('SeHub')
 	$scope.editProject = function(ev)
 	{
 		$scope.isEditPressed = true;
-		console.log("EditPressed " + $scope.isEditPressed);
 	}
 
 	$scope.removeProject = function(ev)
 	{
-		console.log("Project has been removed!");
 		$mdDialog.show($mdDialog.alert().title('Remove Project').content('Are you sure you want to remove the project ?')
 		.ariaLabel('Removing project alert dialog').ok('Yes').targetEvent(ev));
 		// .then(function() {
@@ -28,15 +26,27 @@ angular.module('SeHub')
 		// }); // Pop-up alert
 	};
 
-	
+	$scope.getProfileRoute = function(assigneeName)
+	{
+		for(var i = 0; i < $scope.project.members.length; i++)
+		{
+			
+			if(assigneeName === $scope.project.members[i].name)
+			{
+				console.log(assigneeName);
+				console.log($scope.project.members[i].name);
+				return '#/profile/' + $scope.project.members[i].id;
+			}
+			else
+				return '#';
+		}
+	}
 
 	$scope.getProjectInfo = function()
 	{
 		apiService.getProjectsById(token, projectId).success(function(data)
 		{
 			$scope.project = data;
-			console.log($scope.project);
-			$scope.init_line_lables();
 			// if($scope.user === $scope.project.info.master_id)
 			// {
 			// 	$scope.isMasterOrLecturer = true;
@@ -45,19 +55,10 @@ angular.module('SeHub')
 			// {
 				$scope.loadingData = false;
 			// }
-			
-			console.log($scope.project);
 		}).error(function(err)
 		{
 			console.log("Error: " + err.message);
 		});
-	}
-
-	$scope.init_line_lables = function(){
-		$scope.project.weekly_labels = [];
-		for(var i = 0 ; i < $scope.project.info.stats.weekly_commits[0].length; i++)
-			$scope.project.weekly_labels.push('w '+i.toString());
-
 	}
 
 	$scope.getProjectInfo(); // Get all this project data
