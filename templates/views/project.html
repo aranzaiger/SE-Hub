@@ -107,24 +107,29 @@
 										<table style="width:100%;" border = "1">
 											<tr>
 												<th>Title</th>
-												<th style = "width:25%;">Name</th>
-												<th style = "width:10%;">url</th>
+												<th style = "width:15%;">Labels</th>
+												<th style = "width:10%;">Milestone</th>
+												<th style = "width:10%;">User</th>
 											</tr>
 											<tr ng-repeat = "issue in project.info.issues" layout-margin align="center">
-											 <!-- ng-repeat = "member in project.members"  -->
 												<td align="top">
-													<div>
+													<a target="_blank" ng-href="{{issue.html_url}}" style="text-decoration:none; color:black;">
 														{{issue.title}}
-													</div>
-												</td>
-												<td>
-													<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;">
-														{{issue.user.login}}
 													</a>
 												</td>
 												<td>
-													<a ng-href="{{issue.html_url}}" style="text-decoration:none; color:black;">
-														Link
+													<span ng-repeat = "label in issue.labels">
+														<md-card style="background-color:{{label.color}}">
+															{{label.name}}
+														</md-card>
+													</span>
+												</td>
+												<td>
+													{{issue.milestone.title}}
+												</td>
+												<td>
+													<a target="_blank" ng-href="#/profile/{{member.id}}" style="text-decoration:none;color:black;">
+														{{issue.user.login}}
 													</a>
 												</td>
 											</tr>
