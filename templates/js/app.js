@@ -4,7 +4,6 @@ var welcome = angular.module('welcome', ['ngMaterial', 'seHub.services', 'ngRout
 
 var app = angular.module('SeHub', ['ngMaterial', 'ngRoute', 'seHub.services', 'ngCookies', 'chart.js', '720kb.datepicker']);
 
-
 welcome.config(function($mdThemingProvider) {
 	$mdThemingProvider.theme('default')
 		.primaryPalette('teal');
@@ -12,17 +11,12 @@ welcome.config(function($mdThemingProvider) {
 
 welcome.controller('welcomeController', ['$scope', 'apiService', '$cookies', '$window', function($scope, apiService, $cookies, $window) {
 	console.log("Welcome Controller");
-
 	var uid = $cookies['com.sehub.www'];
 	if(uid){
 		console.info("Session in Place");
 		$window.location.href = DEBUG ? 'http://localhost:8080/home' : 'http://se-hub.appspot.com/home';
 	}
-
-
-
 }]);
-
 
 app.config(['$routeProvider', '$locationProvider',
 	function($routeProvider, $locationProvider) {

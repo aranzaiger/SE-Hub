@@ -1,80 +1,80 @@
 <div class="register">
 	<md-content layout-padding>
-	<md-card layout-padding>
-		<h1 style="margin-left:15px"><i class="fa fa-pencil"></i> Registration</h1>
-		<center>
-			First Login Of {{user.name}}
-			<div class="avatar">
-				<img ng-src="{{user.avatar_url}}" alt="{{item.who}}">
-			</div>
-		</center>
-		<div layout="col">
-			<div>
-				<md-input-container ng-if="userHasNoName">
-					<label>Full Name: </label>
-					<input ng-model="user.name" ng-minlength="1" required>
-				</md-input-container>
-			</div>
-			<br></br>
-			<div layout="row" layout-align="center center">
-				<p>Are You A Lecturer?</p>
-				<md-switch ng-model="user.isLecturer" aria-label="Switch 1">
-				</md-switch>
-			</div>
-		</div>
-		<div>
-			<div ng-if="user.isLecturer">
+		<md-card layout-padding>
+			<h1 style="margin-left:15px"><i class="fa fa-pencil"></i> Registration</h1>
+			<center>
+				First Login Of {{user.name}}
+				<div class="avatar">
+					<img ng-src="{{user.avatar_url}}" alt="{{item.who}}">
+				</div>
+			</center>
+			<div layout="col">
 				<div>
-					<md-button ng-click = "createCampus($event)" ng-model="jsonCreateCampus" class="md-raised">Create Campus</md-button>
-					<div class = "createCampus" ng-if="createCampusClicked">
-						<md-input-container>
-							<label>Academic Suffix Email</label>
-							<input type="text" ng-model="user.campusMail" ng-minlength="1" required/>
-						</md-input-container>						
-						<md-input-container>
-							<label>Campus Name</label>
-							<input type="text" ng-if="createCampusClicked" ng-model="user.campusName" ng-minlength="1" required !important/>
-						</md-input-container>
-						<md-input-container>
-							<label>Campus Avatar Url (optional)</label>
-							<input type="text" ng-if="createCampusClicked" ng-model="user.newCampusAvatar"/>
-						</md-input-container>
+					<md-input-container ng-if="userHasNoName">
+						<label>Full Name: </label>
+						<input ng-model="user.name" ng-minlength="1" required>
+					</md-input-container>
+				</div>
+				<br></br>
+				<div layout="row" layout-align="center center">
+					<p>Are You A Lecturer?</p>
+					<md-switch ng-model="user.isLecturer" aria-label="Switch 1">
+					</md-switch>
+				</div>
+			</div>
+			<div>
+				<div ng-if="user.isLecturer">
+					<div>
+						<md-button ng-click = "createCampus($event)" ng-model="jsonCreateCampus" class="md-raised">Create Campus</md-button>
+						<div class = "createCampus" ng-if="createCampusClicked">
+							<md-input-container>
+								<label>Academic Suffix Email</label>
+								<input type="text" ng-model="user.campusMail" ng-minlength="1" required/>
+							</md-input-container>						
+							<md-input-container>
+								<label>Campus Name</label>
+								<input type="text" ng-if="createCampusClicked" ng-model="user.campusName" ng-minlength="1" required !important/>
+							</md-input-container>
+							<md-input-container>
+								<label>Campus Avatar Url (optional)</label>
+								<input type="text" ng-if="createCampusClicked" ng-model="user.newCampusAvatar"/>
+							</md-input-container>
+						</div>
+					</div>
+				</div>
+				<div class = "dropDown">
+					<md-select placeholder="Pick your Campus" ng-model="campus" style="z-index: 300" ng-change="dropdownClicked()">
+						<md-option ng-switch="user.isLecturer" ng-repeat="c in campuses" value="{{c.title}}">{{c.title}}</md-option>
+					</md-select>
+				</div>
+			</div>
+			<div layout="col" layout-align="center center">
+				<div>
+					<div class="campusAvatar" ng-if="campusChecked">
+						<img ng-src="{{campusObj.avatar_url}}" alt="campusAvatar">
 					</div>
 				</div>
 			</div>
-			<div class = "dropDown">
-				<md-select placeholder="Pick your Campus" ng-model="campus" style="z-index: 300" ng-change="dropdownClicked()">
-					<md-option ng-switch="user.isLecturer" ng-repeat="c in campuses" value="{{c.title}}">{{c.title}}</md-option>
-				</md-select>
-			</div>
-		</div>
-		<div layout="col" layout-align="center center">
 			<div>
-				<div class="campusAvatar" ng-if="campusChecked">
-					<img ng-src="{{campusObj.avatar_url}}" alt="campusAvatar">
+				<div class = "disabledSubmitButton">
+					<md-button ng-click="submitClicked($event)" ng-disabled="!campusChecked" class="md-raised md-primary">Submit</md-button>
 				</div>
 			</div>
-		</div>
-		<div>
-			<div class = "disabledSubmitButton">
-				<md-button ng-click="submitClicked($event)" ng-disabled="!campusChecked" class="md-raised md-primary">Submit</md-button>
-			</div>
-		</div>
-		<div layout="row" layout-align="center center">
-			<div ng-if="campusChecked">
+			<div layout="row" layout-align="center center">
+				<div ng-if="campusChecked">
+					<div>
+						<md-input-container>
+							<label>Academic Email</label>
+							<input type="text" ng-model="user.AcMail" ng-length="1" required/>
+						</md-input-container>
+					</div>
+				</div>
 				<div>
-					<md-input-container>
-						<label>Academic Email</label>
-						<input type="text" ng-model="user.AcMail" ng-length="1" required/>
-					</md-input-container>
+					<div class="mail_suffix">
+							{{campusObj.email_ending}}
+					</div>
 				</div>
 			</div>
-			<div>
-				<div class="mail_suffix">
-						{{campusObj.email_ending}}
-				</div>
-			</div>
-		</div>
-	</md-card>
+		</md-card>
 	</md-content>
 </div>
