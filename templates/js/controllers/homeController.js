@@ -50,12 +50,10 @@ angular.module('SeHub')
   }
   $scope.postMessageClicked = function() // Posting the message itself
   {  
-    
-
     if($scope.msg.msgToAdd != null)
     {
       jsonNewMsg = {
-      'courseName': 'A', // TODO Should be ===> $scope.course.courseName
+      'courseName': 'Math', // TODO Should be ===> $scope.course.courseName
       'message': $scope.msg.msgToAdd
       };
 

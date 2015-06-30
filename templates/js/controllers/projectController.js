@@ -26,14 +26,13 @@ angular.module('SeHub')
 		// }); // Pop-up alert
 	};
 
-	$scope.getProfileRoute = function(assigneeName)
+	$scope.getProfileRoute = function(userName)
 	{
 		for(var i = 0; i < $scope.project.members.length; i++)
 		{
-			
-			if(assigneeName === $scope.project.members[i].name)
+			if(userName === $scope.project.members[i].name)
 			{
-				console.log(assigneeName);
+				console.log(userName);
 				console.log($scope.project.members[i].name);
 				return '#/profile/' + $scope.project.members[i].id;
 			}

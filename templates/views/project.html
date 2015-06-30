@@ -68,32 +68,37 @@
 								</md-tab>
 								<md-tab label="Commits">
 									<md-content class="md-padding">
-										<h1 class="md-display-2">Commits</h1>
-										<table style="width:100%;" border = "1">
+										<table style="width:100%;" border = "1" class = "tabDesign">
 											<tr>
-												<th>Name</th>
-												<th>Title</th>
-												<th>Url</th>
+												<th>Message</th>
+												<th style = "width:20%;">Date</th>
+												<th style = "width:10%;">Committer</th>
 											</tr>
-											<tr ng-repeat = "member in project.members">
+											<tr ng-repeat = "commit in project.info.commits" layout-margin align = "center">
 												<td>
+													<span ng-repeat = "msg in commit">
+														<a target = "_blank"ng-href="{{commit.html_url}}" 
+														style="text-decoration:none; color:black;">
+															{{msg.message}}
+														</a>
+													</span>
+												</td>
+												<td>
+													<span ng-repeat = "date in commit.author">
+														{{date.date}}
+													</span>
+												</td>
+												<td ng-repeat = "member in project.members">
 													<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;">
 														{{member.name}}
 													</a>
 												</td>
-												<td>
-													<div ng-repeat = "commit in project.info.info">
-														{{commit.commits_url}}
-													</div>
-												</td>
-												<td></td>
 											</tr>
 										</table>
 									</md-content>
 								</md-tab>
 								<md-tab label="Issues">
 									<md-content class="md-padding" style="overflow:scroll;">
-										<h1 class="md-display-2">Issues</h1>
 										<table style="width:100%;" border = "1">
 											<tr>
 												<th>Title</th>
@@ -127,7 +132,6 @@
 												</td>
 											</tr>
 										</table>
-
 									</md-content>
 								</md-tab>
 								<md-tab label="tasks">

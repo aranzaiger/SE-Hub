@@ -169,7 +169,7 @@ service.factory('apiService', ['$http', function($http) {
 			return $http(req);
 		},
 		createMessage: function(token, payLoad){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/create/" + token;
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/messages/create/" + token;
 			req = {
 				method : "POST",
 				url : url,
@@ -177,7 +177,7 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		create: function(token, payLoad){
+		create: function(token, payLoad){ // createProject
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/projects/create/" + token;
 			req = {
 				method : "POST",
