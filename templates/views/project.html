@@ -102,31 +102,30 @@
 									</md-content>
 								</md-tab>
 								<md-tab label="Issues">
-									<md-content class="md-padding">
+									<md-content class="md-padding" style="overflow:scroll;">
 										<h1 class="md-display-2">Issues</h1>
 										<table style="width:100%;" border = "1">
 											<tr>
-												<th style = "width:25%;">Name</th>
 												<th>Title</th>
+												<th style = "width:25%;">Name</th>
 												<th style = "width:10%;">url</th>
 											</tr>
-											<tr ng-repeat = "member in project.members">
-												<td align="center">
-													<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;">
-														{{member.name}}
-													</a>
-												</td>
+											<tr ng-repeat = "issue in project.info.issues" layout-margin align="center">
+											 <!-- ng-repeat = "member in project.members"  -->
 												<td align="top">
-													<div ng-repeat = "issue in project.info.issues" layout-margin>
+													<div>
 														{{issue.title}}
 													</div>
 												</td>
 												<td>
-													<div ng-repeat = "issue in project.info.issues" layout-margin>
-														<a ng-href="{{issue.html_url}}" style="text-decoration:none; color:black;">
-															{{issue.html_url}}
-														</a>
-													</div>
+													<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;">
+														{{issue.user.login}}
+													</a>
+												</td>
+												<td>
+													<a ng-href="{{issue.html_url}}" style="text-decoration:none; color:black;">
+														Link
+													</a>
 												</td>
 											</tr>
 										</table>
