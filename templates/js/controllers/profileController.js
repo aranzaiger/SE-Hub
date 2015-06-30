@@ -7,27 +7,34 @@ angular.module('SeHub')
 			var id = $routeParams.id;
 			$scope.loadingData = true;
 			$scope.isInRegisterMode = false;
+			$scope.userExists = false;
 
 			$scope.title = "Profile";
 
 			apiService.getUserById(token, id).success(function(data) {
-				if (data.message == 'No User Found') {
+				if (!data) {
 					console.error("No User Found!");
+					$scope.loadingData = false;
+					return;
 				}
 				$scope.user = data;
-				apiService.getCampusesByUserId(token, id).success(function(data) {
-					$scope.campuses = data;
-					console.log(data);
-					apiService.getCoursesByUserID(token, id).success(function(data){
-						$scope.courses = data;
-					}).error(function(err){
-						console.error('In apiService.getCoursesByUserID', err);
-					})
+				$scope.userExists = true;
+				apiService.getCampusesByUserId(token, id)
+					.success(function(data) {
+						$scope.campuses = data;
+						console.log(data);
+						apiService.getCoursesByUserID(token, id)
+							.success(function(data) {
+								$scope.courses = data;
+							}).error(function(err) {
+								console.error('In apiService.getCoursesByUserID', err);
+							});
 
-					$scope.loadingData = false;
-				}).error(function(err) {
-					console.error(err);
-				});
+						$scope.loadingData = false;
+					}).error(function(err) {
+						console.error(err);
+						console.error("++++++++++++++++++++");
+					});
 
 			});
 
@@ -55,48 +62,15 @@ angular.module('SeHub')
 				}
 			}
 
-			/**
-			 * DEBUG DATA
-			 */
-			// $scope.courses = [{
-			// 	"courseName": "Advance Math",
-			// 	"campusName": "JCE",
-			// 	"startDate": {
-			// 		"year": 2015,
-			// 		"month": 4,
-			// 		"day": 3
-			// 	},
-			// 	"endDate": {
-			// 		"year": 2016,
-			// 		"month": 5,
-			// 		"day": 14
-			// 	},
-			// 	"taskFlag": false,
-			// 	"campus_avatar": "https://yt3.ggpht.com/--ZkWxybWGOM/AAAAAAAAAAI/AAAAAAAAAAA/_nAICC_kzzI/s88-c-k-no/photo.jpg"
-			// }];
-
-			// $scope.campuses = [{
-			// 	'title': 'JCE',
-			// 	'email_ending': '@post.jce.ac.il',
-			// 	'master_user_id': 123453433341,
-			// 	'avatar_url': 'https://yt3.ggpht.com/--ZkWxybWGOM/AAAAAAAAAAI/AAAAAAAAAAA/_nAICC_kzzI/s88-c-k-no/photo.jpg'
-			// }, {
-			// 	'title': 'Stanford',
-			// 	'email_ending': '@post.jce.ac.il',
-			// 	'master_user_id': 123453433341,
-			// 	'avatar_url': 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR9M4uQgaJP1zyiCGw-dK31hU8buWqeuOi9vTXBd4Y8hQcFTZqA'
-			// }];
-
-
 			$scope.labels = ['Commits', 'Issues Assigned', 'Messages', 'Open Tasks'];
 			//$scope.series = ['Project A', 'Project B'];
 
 			$scope.data = [
-				[54, 3, 15, 3]//,
+				[54, 3, 15, 3] //,
 				//[28, 48, 40, 3]
 			];
 
-			$scope.isUser = $scope.$parent.user.id.toString() /*The Actual User*/ === $routeParams.id /*The Profile User*/;
+			$scope.isUser = $scope.$parent.user.id.toString() /*The Actual User*/ === $routeParams.id /*The Profile User*/ ;
 
 		}
 	]);

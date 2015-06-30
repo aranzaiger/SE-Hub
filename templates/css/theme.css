@@ -241,6 +241,14 @@ body.noscroll
     /*width:80%;*/
   }
 
+.gray-font-no-animation
+  {
+    color: #7f7f7f;
+    font-size: 300%;
+    text-shadow:#e0e0e0 1px 1px 0;
+    
+  }
+
   .gray-font
   {
     color: #7f7f7f;
