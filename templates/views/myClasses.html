@@ -2,36 +2,40 @@
 	<md-content layout-padding layout-margin>
 		<h1 layout-margin style="margin-left:15px"><i class="fa fa-graduation-cap"></i> My Classes</h1>
 	</md-content>
-	<md-card class="cardAllcourses">
-		<div flex = "99" layout = "row" ng-repeat = "t in holdArrays" value = "{{t}}" layout-padding>
-				<div flex = "32" layout = "column" ng-repeat = "course in t" value = "{{course}}" >
-					<div ng-if = "!scope.coursesEmpty">
-						<div ng-if="t.length != 1"> 
-							<md-button ng-click = "goToClass(course.id, course.courseName)" style="width:100%; height:32%;" layout-padding class = "md-raised" >
-								<div style="width:97%;height:97%">
-									<md-card-content>
-										<h2 class="md-title">{{course.courseName}}</h2> <!-- Should Be "course.title" -->
-									</md-card-content>
-		    					</div>
-							</md-button>
-						</div>
-						<div ng-if="t.length == 1">
-							<md-button ng-click = "goToClass(course.id, course.courseName)" style="width:32%; height:32%;" layout-padding class = "md-raised" >
-								<div style="width:97%;height:97%">
-					      			<md-card-content>
-							        	<h2 class="md-title">{{course.courseName}}</h2> <!-- Should Be "course.title" -->
-					      			</md-card-content>
-		    					</div>
-							</md-button>
-						</div>
+	<div layout-paddig layout-margin class="loader" ng-if="loadingData">
+		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+	</div>
+	<div ng-if = "coursesEmpty && !loadingData" layout-padding layout-margin>
+		You Are Not Related To Any Course, You May Join Any Course You Wish.
+	</div>
+	<div ng-if = "!coursesEmpty">
+		<md-card class="cardAllcourses">
+			<div flex = "99" layout = "row" ng-repeat = "t in holdArrays" value = "{{t}}" layout-padding>
+				<div flex = "32" layout = "column" ng-repeat = "course in t" value = "{{course}}" >			
+					<div ng-if="t.length != 1"> 
+						<md-button ng-click = "goToClass(course.id, course.courseName)" style="width:100%; height:32%;" layout-padding class = "md-raised" >
+							<div style="width:97%;height:97%">
+								<md-card-content>
+									<h2 class="md-title">{{course.courseName}}</h2> <!-- Should Be "course.title" -->
+								</md-card-content>
+	    					</div>
+						</md-button>
 					</div>
-					<div class="spacer"></div>
-					<div ng-if = "scope.coursesEmpty">
-						You Are Not Related To Any Course, You May Join Any Course You Wish.
+					<div ng-if="t.length == 1">
+						<md-button ng-click = "goToClass(course.id, course.courseName)" style="width:32%; height:32%;" layout-padding class = "md-raised" >
+							<div style="width:97%;height:97%">
+				      			<md-card-content>
+						        	<h2 class="md-title">{{course.courseName}}</h2> <!-- Should Be "course.title" -->
+				      			</md-card-content>
+	    					</div>
+						</md-button>
 					</div>
 				</div>
+				<div class="spacer"></div>
 			</div>
-	</md-card>
+		</md-card>
+	</div>
+	
 
 
 	<!-- Lecturer Mode -->
