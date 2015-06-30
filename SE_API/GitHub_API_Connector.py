@@ -47,6 +47,11 @@ def get_repo_weekly_commits(repo_url):
 
     return week_obj
 
+def get_repo_commits(repo_url):
+    url = 'https://api.github.com/repos/' + repo_url + '/commits' + '?client_id=' + githubKeys.getId() + '&client_secret=' + githubKeys.getSecret()
+    req = requests.get(url)
+    return req.json()
+
 def make_macro(stats, info, project_id):
     macro = {'labels': [], 'data': [[0]]}
     macro['labels'].append('Commits')
@@ -87,6 +92,7 @@ def get_github_data(repo_url, project_id):
     project_info['stats']['micro'] = make_micro(github_stats, issues)
     project_info['stats']['weekly_commits'] = weekly_commits
     project_info['issues'] = issues
+    project_info['commits'] = get_repo_commits(repo_url)
 
     return project_info
 
