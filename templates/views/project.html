@@ -1,45 +1,35 @@
 <div class = "project">
 	<md-content layout-padding layout-margin>
 		<div layout = "row">
-		<div layout = "column">
 			<div>
 				<h1 layout-margin style="margin-left:15px"><i class="fa fa-cube"></i> Project '{{project.projectName}}'</h1>
 			</div>
 			<div> <!-- ng-if = "{{project.logo_url}}"> -->
-				<div flex = "25">
+				<div flex = "10">
 					<img ng-src="{{project.logo_url}}" class = "md-avatar">
 				</div>
 			</div>
-		</div>
-		<div>
-			<div layout = "row" flex = "45">
-				<!-- <div ng-if = "isMasterOrLecturer"> -->
-				<md-card layout = "row">
-					<div layout-padding>
-						<md-button ng-click="editProject($event)"  ng class="md-raised md-primary">
-							<i class="fa fa-pencil-square-o"></i>
-						</md-button>
-					</div>
-					<div layout-padding>
-						<md-button ng-click="removeProject($event)" ng class="md-raised md-primary">
-							<i class="fa fa-times"></i>
-						</md-button>
-					</div>
-				</md-card>
-				<!-- </div>	 -->
+			<div>
+				<div layout = "row" flex = "45">
+					<!-- <div ng-if = "isMasterOrLecturer"> -->
+					<md-card layout = "row">
+						<div layout-padding>
+							<md-button ng-click="editProject($event)"  ng class="md-raised md-primary">
+								<i class="fa fa-pencil-square-o"></i>
+							</md-button>
+						</div>
+						<div layout-padding>
+							<md-button ng-click="removeProject($event)" ng class="md-raised md-primary">
+								<i class="fa fa-times"></i>
+							</md-button>
+						</div>
+					</md-card>
+					<!-- </div>	 -->
+				</div>
 			</div>
 		</div>
-		</div>
-
-<!-- 		<div flex = "99" layout = "row" layout-padding>
-			
-			<div flex = "20">
-				Project Name: {{project.projectName}}
-			</div>
-
-		</div> -->
 		<md-card>
-			<div flex = "99" layout = "row">
+			<div flex = "80" layout = "row" style="height:40%;" layout-margin>
 				<div flex = "10" layout-padding layout-margin border = "1">
 					Team Members:
 					<ul layout-padding>
@@ -48,16 +38,16 @@
 						</li>	
 					</ul>
 				</div>
-				<div flex = "45">
+				<div flex = "40">
 					<!-- Graph -->
 					<div ng-if="loadingData" layout-paddig layout-margin class="loader">
 						<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 					</div>
 					<md-card>
-						<canvas layout-padding layout-margin ng-if = "!loadingData" id="line" class="chart chart-line" data="project.info.stats.weekly_commits" labels="project.weekly_labels" legend="true" ></canvas> 
+						<canvas layout-padding layout-margin ng-if = "!loadingData" id="line" class="chart chart-line" data="project.info.stats.weekly_commits.data" labels="project.info.stats.weekly_commits.labels" legend="true" ></canvas> 
 					</md-card>
 				</div>
-				<div flex = "40">
+				<div flex = "35">
 					<md-card>
 						<canvas layout-padding layout-margin ng-if = "!loadingData" id="project.projectName" class="chart chart-bar" data="project.info.stats.micro.data" labels="project.info.stats.micro.labels" series="project.info.stats.micro.series"></canvas> 
 					</md-card>
@@ -82,8 +72,8 @@
 										<table style="width:100%;" border = "1">
 											<tr>
 												<th>Name</th>
-												<th>Number</th>
-												<th>url</th>
+												<th>Title</th>
+												<th>Url</th>
 											</tr>
 											<tr ng-repeat = "member in project.members">
 												<td>
@@ -128,19 +118,16 @@
 													{{issue.milestone.title}}
 												</td>
 												<td>
-													<a ng-href="#/profile/{{issue.user.id}}" style="text-decoration:none; color:black;">
-														{{issue.user.login}}
-													</a>
+													<span ng-repeat = "member in project.members">
+														<a ng-href = "{{getProfileRoute(issue.assignee.login)}}" style="text-decoration:none; color:black;">
+															{{issue.assignee.login}}
+														</a>
+													</span>
+													
 												</td>
 											</tr>
 										</table>
 
-									</md-content>
-								</md-tab>
-								<md-tab label="Bugs">
-									<md-content class="md-padding">
-										<h1 class="md-display-2">Bugs</h1>
-										<p> Bugs ..</p>
 									</md-content>
 								</md-tab>
 								<md-tab label="tasks">
