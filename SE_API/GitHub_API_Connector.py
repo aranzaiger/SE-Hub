@@ -3,6 +3,7 @@ import requests
 from GithubAPI.GithubAPI import GitHubAPI_Keys
 from models.Task import Task
 from google.appengine.ext import db
+import datetime
 
 githubKeys = GitHubAPI_Keys()
 
@@ -26,10 +27,25 @@ def get_repo_issues(repo_url):
 def get_repo_weekly_commits(repo_url):
     url = 'https://api.github.com/repos/' + repo_url + '/stats/participation' + '?client_id=' + githubKeys.getId() + '&client_secret=' + githubKeys.getSecret()
     req = requests.get(url)
+    week_obj = {}
+    week_obj['data'] = []
     try:
-        return req.json()['all']
+        week_obj['data'].append(req.json()['all'][-4:])
     except:
-        return []
+        week_obj['data'].append([0,0,0,0])
+
+    week_obj['labels'] = []
+    # i = 24 * 7 * -1
+    # while i != 0:
+    #     week_obj['labels'].append((datetime.datetime.today() - datetime.timedelta(hours=i)).strftime("%A"))
+    #     i += 24
+
+    week_obj['labels'].append("A Month Ago")
+    week_obj['labels'].append("2 Weeks Ago")
+    week_obj['labels'].append("1 Weeks Ago")
+    week_obj['labels'].append("Most Resent Week")
+
+    return week_obj
 
 def make_macro(stats, info, project_id):
     macro = {'labels': [], 'data': [[0]]}
@@ -65,7 +81,7 @@ def get_github_data(repo_url, project_id):
     github_stats =  get_repo_stats(repo_url) #first Call
     project_info['info'] = get_repo_general_info(repo_url)
     issues = get_repo_issues(repo_url)
-    weekly_commits  = [get_repo_weekly_commits(repo_url)]
+    weekly_commits  = get_repo_weekly_commits(repo_url)
     github_stats =  get_repo_stats(repo_url) #Second Call
     project_info['stats']['macro'] = make_macro(github_stats, project_info['info'], project_id)
     project_info['stats']['micro'] = make_micro(github_stats, issues)
