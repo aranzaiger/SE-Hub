@@ -3,10 +3,8 @@ angular.module('SeHub')
 {
 	console.log("in controller");
 
-	$scope.createTaskClicked = function(name)
+	$scope.createTaskClicked = function()
 	{
-		var taskName = name;
-		console.log("task created! " + taskName);
 		$location.path("/tasks/new"); // Reference to 'newTask' page
 	}
 

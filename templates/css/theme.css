@@ -456,7 +456,7 @@ p.tasksFeed
 {
   padding-left: 4px;
   margin: 5px;
-  width:340;
+  width:99%;
   height: auto;
   background-color: aliceblue;
  
@@ -465,7 +465,7 @@ p.messagesFeed
 {
   padding-left: 4px;
   margin: 5px;
-  width:690;
+  width:99%;
   height: auto;
   background-color: #f5f5f5;
 }

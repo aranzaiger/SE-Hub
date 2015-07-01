@@ -13,6 +13,14 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
+		getUserById: function(token, id){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/getUserById/" + token + "/" + id;
+			req = {
+				method : "GET",
+				url : url
+			};
+			return $http(req);
+		},
 		getAllCampuses: function(token){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/campuses/getAll/" + token;
 			req = {
@@ -21,25 +29,11 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		sendValidationMail: function(token, email){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/validation/sendmail/" + token;
-			payload = {
-				email: email
-			};
+		getCampusesByUser: function(token){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/campuses/getCampusesByUser/" + token;
 			req = {
-				method: "POST",
-				url: url,
-				data: payload
-			};
-			return $http(req);
-		},
-		updateUser: function(token, payLoad){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/updateUser/" + token;
-			
-			req = {
-				method: "PUT",
-				url: url,
-				data: payLoad
+				method : "GET",
+				url : url
 			};
 			return $http(req);
 		},
@@ -48,7 +42,6 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		},
@@ -57,7 +50,6 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		},
@@ -66,17 +58,6 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
-
-			};
-			return $http(req);
-		},
-		createMessage: function(token, payLoad){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/createMessage/" + token;
-			req = {
-				method : "POST",
-				url : url,
-				data: payLoad
-
 			};
 			return $http(req);
 		},
@@ -85,25 +66,6 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
-
-			};
-			return $http(req);
-		},
-		createCourse: function(token, payLoad){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/create/" + token;
-			req = {
-				method : "POST",
-				url : url,
-				data: payLoad
-			};
-			return $http(req);
-		},
-		getCampusesByUser: function(token){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/campuses/getCampusesByUser/" + token;
-			req = {
-				method : "GET",
-				url : url
-
 			};
 			return $http(req);
 		},
@@ -112,7 +74,6 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		},
@@ -121,7 +82,6 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		},
@@ -138,16 +98,6 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
-
-			};
-			return $http(req);
-		},
-
-		getUserById: function(token, id){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/getUserById/" + token + "/" + id;
-			req = {
-				method : "GET",
-				url : url
 			};
 			return $http(req);
 		},
@@ -156,14 +106,21 @@ service.factory('apiService', ['$http', function($http) {
 			req = {
 				method : "GET",
 				url : url
-
 			};
 			return $http(req);
 		},
-		joinCourse: function(token, courseId){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/joinCourse/" + token + "/" + courseId;
+		getCoursesByUserID: function(token, userId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCoursesByUser/" + token + "/" + userId;
 			req = {
-				method : "PUT",
+				method : "GET",
+				url : url
+			};
+			return $http(req);
+		},
+		getAllFutureTasks: function(token, courseId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getAllFutureTasks/" + token + "/" + courseId;
+			req = {
+				method : "GET",
 				url : url
 			};
 			return $http(req);
@@ -186,11 +143,50 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		getCoursesByUserID: function(token, userId){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCoursesByUser/" + token + "/" + userId;
+		createMessage: function(token, payLoad){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/createMessage/" + token;
 			req = {
-				method : "GET",
+				method : "POST",
+				url : url,
+				data: payLoad
+			};
+			return $http(req);
+		},
+		sendValidationMail: function(token, email){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/validation/sendmail/" + token;
+			payload = {
+				email: email
+			};
+			req = {
+				method: "POST",
+				url: url,
+				data: payload
+			};
+			return $http(req);
+		},
+		createCourse: function(token, payLoad){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/create/" + token;
+			req = {
+				method : "POST",
+				url : url,
+				data: payLoad
+			};
+			return $http(req);
+		},
+		joinCourse: function(token, courseId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/joinCourse/" + token + "/" + courseId;
+			req = {
+				method : "PUT",
 				url : url
+			};
+			return $http(req);
+		},
+		updateUser: function(token, payLoad){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/users/updateUser/" + token;
+			req = {
+				method: "PUT",
+				url: url,
+				data: payLoad
 			};
 			return $http(req);
 		}

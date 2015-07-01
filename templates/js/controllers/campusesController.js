@@ -1,6 +1,7 @@
 angular.module('SeHub')
 .controller('campusesController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService, $rootScope)
 {
+	$scope.loadingData = true;
 	$scope.campusesEmpty = false;
 	var token = $cookies['com.sehub.www'];
 	
@@ -34,6 +35,7 @@ angular.module('SeHub')
 	{
 		apiService.getCampusesByUser(token).success(function(data) // Get all the campuses
 		{
+			$scope.loadingData = true;
 			$scope.campuses = data;
 			console.log("INSIDE " + $scope.campuses);
 			init(); // Executing the function to initialize campuses display

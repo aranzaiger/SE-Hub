@@ -88,6 +88,54 @@
 					</md-card>
 				</div>
 			</div>
+			<md-card height="70%">
+				<md-content class="md-padding">
+					<md-tabs md-dynamic-height md-border-bottom>
+						<md-tab label="Messages">
+							<md-content class="md-padding">
+								<div class = "messagesContent"> 
+									<md-card ng-repeat = "msg in messages">
+										<div layout="column">
+											<div layout="row" layout-margin layout-padding>
+												<div flex="10" class="md-avatar">
+													<img ng-src="{{user.avatar_url}}" style="width:100%">
+												</div>
+												<div flex>	
+													<div layout = "column">
+														<div>
+															<b>{{user.name}}</b>
+														</div>
+														<div>
+															class_name
+														</div>
+													</div>
+												</div>
+											</div>
+											<div>
+												<div flex="69" class="msgSent" layout-margin layout-padding>
+													{{msg.text}}
+												</div>
+											</div>	
+										</div>
+									</md-card>
+								</div>
+							</md-content>
+						</md-tab>
+						<md-tab label="one">
+							<md-content class="md-padding">
+								<h1 class="md-display-2">Tab One</h1>
+								One
+							</md-content>
+						</md-tab>
+						<md-tab label="two">
+							<md-content class="md-padding">
+								<h1 class="md-display-2">Tab Two</h1>
+								Two
+							</md-content>
+						</md-tab>
+					</md-tabs>
+				</md-content>
+			</md-card>
 			<div class ="addMessage" layout="row" layout-margin layout padding>
 				<div>
 					<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary"><i class="fa fa-comments"></i></md-button>
