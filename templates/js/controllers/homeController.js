@@ -34,28 +34,16 @@ angular.module('SeHub')
     console.log("Student Mode!");
   }
 
-  // apiService.getCourseByCampusName(token).success(function(data)
-  // {
-  //   console.log("Campus Name is ON! " + token)
-  //   $scope.course = data;
-  // }).error(function(err)
-  // {
-  //   console.log("Error ===> " + err + " ===> getCourseByCampusName")
-  // });
-
-
   $scope.addMessageClicked = function()
   {
     $scope.addMsg = true; // Reveal the "POST" Button
   }
   $scope.postMessageClicked = function() // Posting the message itself
   {  
-    
-
     if($scope.msg.msgToAdd != null)
     {
       jsonNewMsg = {
-      'courseName': 'A', // TODO Should be ===> $scope.course.courseName
+      'courseName': 'Math', // TODO Should be ===> $scope.course.courseName
       'message': $scope.msg.msgToAdd
       };
 
@@ -80,6 +68,37 @@ angular.module('SeHub')
     $scope.msg.msgToAdd = null;
   }
 
+  $scope.displayTasks = function()
+  {
+    // apiService.getAllFutureTasks(token, courseId).success(function(data) // need to check courseId
+    // {
+
+    // }).error(function(err)
+    // {
+
+    // });
+
+
+  }
+
+  $scope.getCourses = function()
+  {
+    // apiService.getAllCoursesByCampus(token, campusId).success(function(data) // Shows all classes from this campus
+    // {
+    //   $scope.loadingData = false;
+    //   $scope.courses = data;
+    //   console.log("success " + $scope.courses);
+    //   init(); // Executing the function to initialize course display
+    //   if($scope.courses && $scope.courses.length > 0)
+    //   {
+    //     $scope.coursesEmpty = false;
+    //   }
+    // }).error(function(err)
+    // {
+    //   console.log("error: " + err);
+    // }); 
+  }
+
   $scope.clearAllClicked = function() // Clear Screen from text
   {
     $scope.messages = []; 
@@ -97,4 +116,6 @@ angular.module('SeHub')
 
   // animation
   $scope.isEnterd = top.setIsEnterd;
+  $scope.getCourses(); // Get all the courses info
+  $scope.displayTasks(); // Display all tasks in task feed
 }]);

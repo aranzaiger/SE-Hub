@@ -4,7 +4,7 @@
 		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 
 	</div>
-	<md-content layout-padding>
+	<md-content layout-padding ng-if="userExists && !loadingData">
 		<md-card layout-padding>
 			<h1><i class="fa fa-cogs"></i> {{title}}</h1>
 		<div layout="row">
@@ -73,7 +73,7 @@
 						<div class="settingListRoot">
 	                        <div ng-repeat="course in courses" class="settingListItem" layout="row">
 	                        	<div>
-                            		<img alt="{{ person.name }}" ng-src="{{ course.campus_avatar }}" class="md-avatar" />
+                            		<img alt="{{ person.name }}" src="https://www.isc2.org/uploadedimages/education/classroom-based-training-icon.png" class="md-avatar" />
 	                        	</div>
                             	<div class="port_spacer">
 					    			{{ course.courseName }} - <strong>IN</strong> {{course.campusName}}
@@ -115,8 +115,34 @@
 			<!-- End Campuses & Classes Div -->
 		</div>
 		</md-card>
-
-
-
 	</md-content>
+
+	<md-content layout-padding ng-if="!userExists && !loadingData" class="gray-font-no-animation">
+		<md-card>
+			<div layout="row">
+				<div class="spacer"></div>
+				<div>
+					<h1><i class="fa fa-exclamation-triangle"></i></h1>
+				</div>
+				<div class="spacer"></div>
+			</div>
+			<div layout="row">
+				<div class="spacer"></div>
+				<div>
+					<h1>User Not Found</h1>
+					
+				</div>
+				<div class="spacer"></div>
+			</div>
+			<div layout="row">
+				<div class="spacer"></div>
+				<div>
+					<P>Might Not Be A Registered SE-Hub User</P>
+					
+				</div>
+				<div class="spacer"></div>
+			</div>
+					
+		</md-card>
+	</md-content>	
 </div>

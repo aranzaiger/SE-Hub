@@ -1,7 +1,6 @@
 angular.module('SeHub')
 .controller('myProjectsController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
-	$scope.isEditPressed = false;
 	$scope.loadingData = true;
 	$scope.myProjectsEmpty = true;
 	$scope.user = $scope.$parent.user;
@@ -52,18 +51,5 @@ angular.module('SeHub')
 		};
 		$scope.arrayHolder.push(tempArr);
 	}
-
-	$scope.editPressed = function()
-	{
-		$scope.isEditPressed = true;
-		console.log("EditPressed " + $scope.isEditPressed);
-	}
-	$scope.removeProject = function()
-	{
-		console.log("Project has been removed!");
-	}
-
-
 	$scope.displayMyProjects(); // Will display all my projects
-
 }]);

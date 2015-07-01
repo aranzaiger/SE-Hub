@@ -1,13 +1,151 @@
-<div class = "myClasses">
+<div class = "project">
 	<md-content layout-padding layout-margin>
-		<h1 layout-margin style="margin-left:15px"><i class="fa fa-cube"></i> Project</h1>
-		Yipi Kayea Mother Fraker
-		<div>
-			
+		<div layout = "row">
+			<div>
+				<h1 layout-margin style="margin-left:15px"><i class="fa fa-cube"></i> Project '{{project.projectName}}'</h1>
+			</div>
+			<div> <!-- ng-if = "{{project.logo_url}}"> -->
+				<div flex = "10">
+					<img ng-src="{{project.logo_url}}" class = "md-avatar">
+				</div>
+			</div>
+			<div>
+				<div layout = "row" flex = "45">
+					<!-- <div ng-if = "isMasterOrLecturer"> -->
+					<md-card layout = "row">
+						<div layout-padding>
+							<md-button ng-click="editProject($event)"  ng class="md-raised md-primary">
+								<i class="fa fa-pencil-square-o"></i>
+							</md-button>
+						</div>
+						<div layout-padding>
+							<md-button ng-click="removeProject($event)" ng class="md-raised md-primary">
+								<i class="fa fa-times"></i>
+							</md-button>
+						</div>
+					</md-card>
+					<!-- </div>	 -->
+				</div>
+			</div>
 		</div>
-
-
-
+		<md-card>
+			<div flex = "80" layout = "row" style="height:40%;" layout-margin>
+				<div flex = "10" layout-padding layout-margin border = "1">
+					Team Members:
+					<ul layout-padding>
+						<li ng-repeat = "member in project.members">
+							<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;"> {{member.name}}</a>
+						</li>	
+					</ul>
+				</div>
+				<div flex = "40">
+					<!-- Graph -->
+					<div ng-if="loadingData" layout-paddig layout-margin class="loader">
+						<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+					</div>
+					<md-card>
+						<canvas layout-padding layout-margin ng-if = "!loadingData" id="line" class="chart chart-line" data="project.info.stats.weekly_commits.data" labels="project.info.stats.weekly_commits.labels" legend="true" ></canvas> 
+					</md-card>
+				</div>
+				<div flex = "35">
+					<md-card>
+						<canvas layout-padding layout-margin ng-if = "!loadingData" id="project.projectName" class="chart chart-bar" data="project.info.stats.micro.data" labels="project.info.stats.micro.labels" series="project.info.stats.micro.series"></canvas> 
+					</md-card>
+				</div>
+			</div>
+		</md-card>
+		<div>
+			<div flex = "96" style="height:70%;">
+				<div flex>
+					<md-card>
+						<md-content class="md-padding">
+							<md-tabs md-dynamic-height md-border-bottom>
+								<md-tab label="Messages">
+									<md-content class="md-padding">
+										<h1 class="md-display-2">Messages</h1>
+										<p>Messages...</p>
+									</md-content>
+								</md-tab>
+								<md-tab label="Commits">
+									<md-content class="md-padding">
+										<table style="width:100%;" border = "1" class = "tabDesign">
+											<tr>
+												<th>Message</th>
+												<th style = "width:20%;">Date</th>
+												<th style = "width:10%;">Committer</th>
+											</tr>
+											<tr ng-repeat = "commit in project.info.commits" layout-margin align = "center">
+												<td>
+													<span ng-repeat = "msg in commit">
+														<a target = "_blank"ng-href="{{commit.html_url}}" 
+														style="text-decoration:none; color:black;">
+															{{msg.message}}
+														</a>
+													</span>
+												</td>
+												<td>
+													<span ng-repeat = "date in commit.author">
+														{{date.date}}
+													</span>
+												</td>
+												<td ng-repeat = "member in project.members">
+													<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;">
+														{{member.name}}
+													</a>
+												</td>
+											</tr>
+										</table>
+									</md-content>
+								</md-tab>
+								<md-tab label="Issues">
+									<md-content class="md-padding" style="overflow:scroll;">
+										<table style="width:100%;" border = "1">
+											<tr>
+												<th>Title</th>
+												<th style = "width:15%;">Labels</th>
+												<th style = "width:10%;">Milestone</th>
+												<th style = "width:10%;">User</th>
+											</tr>
+											<tr ng-repeat = "issue in project.info.issues" layout-margin align="center">
+												<td align="top">
+													<a target="_blank" ng-href="{{issue.html_url}}" style="text-decoration:none; color:black;">
+														{{issue.title}}
+													</a>
+												</td>
+												<td>
+													<span ng-repeat = "label in issue.labels">
+														<md-card style="background-color:{{label.color}}">
+															{{label.name}}
+														</md-card>
+													</span>
+												</td>
+												<td>
+													{{issue.milestone.title}}
+												</td>
+												<td>
+													<span ng-repeat = "member in project.members">
+														<a ng-href = "{{getProfileRoute(issue.assignee.login)}}" style="text-decoration:none; color:black;">
+															{{issue.assignee.login}}
+														</a>
+													</span>
+													
+												</td>
+											</tr>
+										</table>
+									</md-content>
+								</md-tab>
+								<md-tab label="tasks">
+									<md-content class="md-padding">
+										<h1 class="md-display-2">tasks</h1>
+										<p>tasks..</p>
+									</md-content>
+								</md-tab>
+							</md-tabs>
+						</md-content>
+					</md-card>
+				</div>
+			</div>
+		</div>
 
 
 

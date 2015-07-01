@@ -2,6 +2,7 @@ angular.module('SeHub')
 .controller('myClassesController', ['$scope', '$location', '$routeParams', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope',
 	function ($scope, $location, $routeParams, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
+	$scope.loadingData = true;
 	$scope.isStudent = false;
 	$scope.isCourse = false;
 	$scope.isNewCourse = false;
@@ -11,7 +12,7 @@ angular.module('SeHub')
 	$scope.user.finalDate = '';
 	$scope.user.startDate = '';
 	$scope.showMyClass = false;
-	$scope.coursesEmpty = false;
+	$scope.coursesEmpty = true;
 	$scope.campusId;
 	var campusId = $routeParams.campusId;
 	
@@ -124,12 +125,13 @@ angular.module('SeHub')
 	{
 		apiService.getAllCoursesByCampus(token, campusId).success(function(data) // Shows all classes from this campus
 		{
+			$scope.loadingData = false;
 			$scope.courses = data;
 			console.log("success " + $scope.courses);
 			init(); // Executing the function to initialize course display
-			if(!$scope.courses)
+			if($scope.courses && $scope.courses.length > 0)
 			{
-				$scope.coursesEmpty = true;
+				$scope.coursesEmpty = false;
 			}
 		}).error(function(err)
 		{
