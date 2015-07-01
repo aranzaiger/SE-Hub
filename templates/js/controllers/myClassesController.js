@@ -131,7 +131,6 @@ angular.module('SeHub')
 			init(); // Executing the function to initialize course display
 			if($scope.courses && $scope.courses.length > 0)
 			{
-				// $scope.coursesEmpty = true;
 				$scope.coursesEmpty = false;
 			}
 		}).error(function(err)
