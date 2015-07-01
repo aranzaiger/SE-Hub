@@ -232,6 +232,7 @@ if debug:
         """
         <span class="card-title">Go To This URL To Set The SE-Token Cookie</span>
         <br>
+        <p>This User Will Automatically be added to JCE Campus as a Lecturer</p>
         <b>Route Parameters</b><br>
             - gitHubUserName: A Username<br>
         <br>
