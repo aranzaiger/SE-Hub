@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<SCRIPT LANGUAGE="JavaScript">
+cookie_name = "com.sehub.www";
+var YouEntered;
+
+function putCookie() {
+
+if(document.cookie != document.cookie)
+{index = document.cookie.indexOf(cookie_name);}
+else
+{ index = -1;}
+
+if (index == -1)
+{
+YouEntered=document.cf.cfd.value;
+document.cookie=""+cookie_name+"="+YouEntered+"; path=/";
+    window.location.assign("/");
+}
+
+}
+</SCRIPT>
+
+<FORM NAME="cf">
+
+Enter The User Token: <INPUT TYPE="text" NAME="cfd" size="20">
+<INPUT TYPE="button" Value="Set to Cookie"
+onClick="putCookie()">
+
+</FORM>
+</body>
+</html>

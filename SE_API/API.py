@@ -206,6 +206,10 @@ def login():
     return github.authorize()
 
 
+@app.route('/debug/login')
+def set_local_token_view():
+    return app.send_static_file('DEBUG_Views/set_cookie.html')
+
 
 @app.route('/api/qa/init')
 def init_QA():
