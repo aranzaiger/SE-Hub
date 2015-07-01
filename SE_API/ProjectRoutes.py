@@ -88,7 +88,7 @@ def create_project(token):
 
     db.put(project)
     project.info = json.dumps(get_github_data(project.gitRepository,  project.key().id()))
-
+    db.put(project)
     #update user projects list
     user.projects_id_list.append(str(project.key().id()))
 
