@@ -73,7 +73,7 @@ angular.module('SeHub')
     		jsonNewProj.logo_url = $scope.project.logoUrl;
 
 
-    	apiService.create(token, jsonNewProj).success(function(data)
+    	apiService.createProject(token, jsonNewProj).success(function(data)
     	{
     		loadingData = false;
     		projectId = data.id;

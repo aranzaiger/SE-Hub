@@ -53,8 +53,8 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		getAllMessages: function(token){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getAllMessages/" + token;
+		getMessagesByGroupId: function(token, groupId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/messages/getMessagesByGroup/" + token + "/" + groupId;
 			req = {
 				method : "GET",
 				url : url
@@ -134,17 +134,8 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		create: function(token, payLoad){ // createProject
+		createProject: function(token, payLoad){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/projects/create/" + token;
-			req = {
-				method : "POST",
-				url : url,
-				data: payLoad
-			};
-			return $http(req);
-		},
-		createMessage: function(token, payLoad){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/createMessage/" + token;
 			req = {
 				method : "POST",
 				url : url,
