@@ -62,7 +62,7 @@
 															<b>{{user.name}}</b>
 														</div>
 														<div>
-															{{c.courseName}}
+															{{courseObj.courseName}}
 														</div>
 													</div>
 												</div>
@@ -142,8 +142,8 @@
 						<md-card ng-repeat = "msg in messages">
 							<div layout="column">
 								<div layout="row" layout-margin layout-padding>
-									<div flex="10" class="md-avatar">
-										<img ng-src="{{user.avatar_url}}" style="width:100%">
+									<div flex="10">
+										<img ng-src="{{user.avatar_url}}" class="roundUserAvatar" style = "width:70%;">
 									</div>
 									<div flex>	
 										<div layout = "column">
