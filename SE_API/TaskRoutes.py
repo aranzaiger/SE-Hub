@@ -19,6 +19,7 @@ from flask.ext.autodoc import Autodoc
 from models.Task import Task
 from models.Course import Course
 from models.TaskComponent import TaskComponent
+from models.TaskGrade import TaskGrade
 
 #Validation Utils Libs
 from SE_API.Validation_Utils import *
@@ -349,6 +350,155 @@ def getTaskComponents(token, taskId):
                         mimetype="application/json")
     else:
         return no_content()
+
+@task_routes.route('/api/tasks/getAllUserTasks/<string:token>', methods=["GET"])
+@auto.doc()
+def getAllTasksByUser(token):
+    """
+    <span class="card-title">>This Call will return an array of all of the User's Tasks</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - SeToken: token<br>
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'title' : 'Task1',<br>
+        'courseId' : 12345678,<br>
+        'description' : 'prepare by sunday',<br>
+        'dueDate' : {
+                    'year' : 2015,
+                    'month' : 12,
+                    'day' : 23
+                    }<br>
+        'isPersonal' : true,<br>
+        'task_id' : 589689456894<br>
+    }<br>
+    </code>
+    <br>
+    """
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad User Token")
+
+    arr = []
+    for c in user.courses_id_list:
+
+        dic = {}
+        course = Course.get_by_id(int(c))
+        dic['courseName'] = course.courseName
+        dic['courseId'] = course.key().id()
+        courseTasks = Task.all().filter("courseId = ", course.key().id())
+        taskArr = []
+        for t in courseTasks.run():
+            taskDic =dict(json.loads(t.to_JSON()))
+            #add a key 'forSortDate' for sorting dates
+            taskTime = datetime.datetime(taskDic['dueDate']['year'], taskDic['dueDate']['month'], taskDic['dueDate']['day'])
+            taskDic['forSortDate'] = taskTime
+            grade = TaskGrade.all().filter("taskId = ", t.key().id()).filter("userId = ", user.key().id())
+            for g in grade.run():
+                taskDic['grade'] = g.grade
+            if grade.count() == 0:
+                taskDic['grade'] = 0
+            taskArr.append(taskDic)
+
+        taskArr = sorted(taskArr, key=itemgetter('forSortDate'), reverse=False)
+        for i in taskArr:
+            del i['forSortDate']
+
+        userTaskArr = []
+        projectTaskArr = []
+        for t in taskArr:
+            if t['isPersonal']:
+                userTaskArr.append(t)
+            else:
+                projectTaskArr.append(t)
+
+
+        dic['PersonalTasks'] = userTaskArr
+        dic['projectTasks'] = projectTaskArr
+        arr.append(dic)
+
+    #sort array by date, and remove added key
+
+
+    return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
+
+
+
+# @task_routes.route('/api/tasks/getUserFullTasksById/<string:token>/<string:taskId>', methods=["GET"])
+# @auto.doc()
+# def getFullTasksById(token, taskId):
+#     """
+#     <span class="card-title">>This Call will return an array of all components for a given task</span>
+#     <br>
+#     <b>Route Parameters</b><br>
+#          - SeToken: token<br>
+#         - taskId: 1234567890
+#     <br>
+#     <br>
+#     <b>Payload</b><br>
+#      - NONE
+#     <br>
+#     <br>
+#     <b>Response</b>
+#     <br>
+#     200 - JSON Example:<br>
+#     <code>
+#     [
+#         {<br>
+#             'taskId' : 7589454894,
+#             'userId' : -1,
+#             'type' : 'kindOfType',
+#             'label' : 'kindOfLabel',
+#             'isMandatory' : true,
+#             'order' : 2
+#         }<br>
+#         {<br>
+#             'taskId' : 7589454894,
+#             'userId' : yossi,
+#             'type' : 'otherKindOfType',
+#             'label' : 'otherKindOfLabel',
+#             'isMandatory' : false,
+#             'order' : 4
+#         }<br>
+#     ]
+#     </code>
+#     <br>
+#     """
+#     user = get_user_by_token(token)
+#     if user is None:
+#         return bad_request("Bad User Token")
+#
+#     task = Task.get_by_id(int(taskId))
+#     if task is None:
+#         return bad_request("Bad Task id")
+#
+#     taskCompQuery = TaskComponent.all()
+#     taskCompQuery.filter("taskId = ", task.key().id())
+#
+#     if task.isPersonal:
+#         taskCompQuery.filter("userId = ", user.key().id())
+#     else:
+#         taskCompQuery.filter("userId = ", user.key().id())
+#
+#     if taskCompQuery.count() == 0:
+#         #create componenets and Score for user
+#
+#
+#     for i in taskCompQuery.run():
+#         print i.to_JSON()
+#
+#     return no_content()
 
 
 
