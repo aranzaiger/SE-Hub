@@ -48,7 +48,7 @@ def create_task(token):
      - JSON Object, Example: <br>
     {<br>
         "title":"task1",<br>
-        "courseName":"aran",<br>
+        "courseId":1234567890,<br>
         "description":"pls fddfsdfdsk",<br>
         "dueDate":{"year":2010,<br>
                     "month":2,<br>
@@ -87,47 +87,44 @@ def create_task(token):
     403 - Invalid token or not a lecturer
     """
     if not request.data:
-        return bad_request()
+        return bad_request("no payload")
     payload = json.loads(request.data)
     if not is_lecturer(token):  #todo: change to lecturer id
         return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
-    #TODO: add seconds and minutes
-    #check the user(lecturer) is owner of the course
-    # try:
-    #     arr = []
-    #     query = Course.all()
-    #     query.filter('courseName =',payload['courseName'])
-    #     for t in query.run():
-    #         arr.append(dict(json.loads(t.to_JSON())))
-    #     if len(arr) == 0:
-    #         return bad_request("No such course")
-    # except Exception as e:
-    #     print e
-    #     return bad_request("Missing courseName")
 
-
-    #todo: check legality
-    #create Task object
+    #check lecturer is owner of course
     try:
-        #parse dueDate
-        try:
-            date = datetime.date(payload['dueDate']['year'],payload['dueDate']['month'],payload['dueDate']['day'])
-        except Exception:
-            return bad_request("invalid dueDate format")
-
-        task = Task(title=payload['title'], courseName=payload['courseName'], description=payload['description'], dueDate=date)
-
-        # print "id: ",task.key().id()
-        #parse isPersonal
-        try:
-            task.isPersonal = payload['isPersonal']
-        except Exception:
-            pass
+        courseId = payload['courseId']
     except Exception as e:
         print e
-        return bad_request()
+        return bad_request("invalid courseId format")
+
+    course = Course.get_by_id(int(courseId))
+    if course is None:
+        return bad_request("No such Course")
+
+    if course.master_id != user.key().id():
+        return forbidden("Lecturer is not owner of Course")
+
+    #parse dueDate
+    try:
+        date = datetime.date(payload['dueDate']['year'],payload['dueDate']['month'],payload['dueDate']['day'])
+    except Exception:
+        return bad_request("invalid dueDate format")
+    #create Task object
+    try:
+        task = Task(title=payload['title'], courseId=payload['courseId'], description=payload['description'], dueDate=date)
+    except Exception as e:
+        print e
+        return bad_request("bad")
+    try:
+        task.isPersonal = payload['isPersonal']
+    except Exception:
+        pass
+
+
     db.put(task)
     db.save
 
@@ -141,7 +138,9 @@ def create_task(token):
         db.put(component)
         db.save
 
-    return created()
+    return Response(response=task.to_JSON(),
+                                status=200,
+                                mimetype="application/json")
 
 
 #----------------------------------------------------------
