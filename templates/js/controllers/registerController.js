@@ -1,5 +1,6 @@
 angular.module('SeHub')
-	.controller('registerController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService, $rootScope) {
+	.controller('registerController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope',
+		function($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService, $rootScope) {
 		$scope.userHasNoName = false;
 		$scope.campusChecked = false;
 		$scope.createCampusClicked = false;
@@ -36,7 +37,8 @@ angular.module('SeHub')
 		});
 
 		$scope.dropdownClicked = function() {
-			if ($scope.campus) {
+			$scope.createCampusClicked = false;
+			if($scope.campus) {
 				$scope.campusChecked = true;
 				$scope.campusObj = null;
 				for (var i = $scope.campuses.length - 1; i >= 0; i--) {
@@ -46,7 +48,6 @@ angular.module('SeHub')
 					}
 				};
 			};
-
 		};
 
 		$scope.submitClicked = function(ev) {
@@ -54,12 +55,8 @@ angular.module('SeHub')
 
 			if ($scope.user.AcMail != null) {
 				var fullMail = $scope.user.AcMail + $scope.campusObj.email_ending; // Holds the full academic email of the user
-
 				apiService.updateUser(token, $scope.user).success(function(data) {
-
 				}).error(function() {
-					// TODO Error
-					console.log("Error occured on updateUser");
 				});
 
 				console.log("Mail: " + fullMail);
@@ -73,7 +70,6 @@ angular.module('SeHub')
 							.ok('Got it!')
 							.targetEvent(ev))
 						.then(function() {
-							// TODO ADD- delete cookies and redirect only after pressed 'Got it'
 							$cookieStore.remove("com.sehub.www"); // Removing the cookies
 							$window.location.href = 'http://se-hub.appspot.com'; // Reference to 'welcome' page
 
@@ -114,7 +110,6 @@ angular.module('SeHub')
 					console.log("DONE - 200");
 					$mdDialog.show($mdDialog.alert().title('E-mail Verification').content('A verification e-mail has been sent to your email address.')
 						.ariaLabel('Email verification alert dialog').ok('Got it!').targetEvent(email)); // Pop-up alert for e-mail verification
-					// TODO ADD delete cookies and redirect only after pressed 'Got it'
 					$cookieStore.remove("com.sehub.www"); // Removing the cookies
 					$window.location.href = 'http://se-hub.appspot.com'; // Reference to 'welcome' page
 				}).error(function() {

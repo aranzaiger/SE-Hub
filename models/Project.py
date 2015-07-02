@@ -9,7 +9,7 @@ class Project(db.Model):
     courseId = db.IntegerProperty(required=True)
     master_id = db.IntegerProperty(required=True)
     grade = db.IntegerProperty(required=True, default=0)
-    logo_url = db.StringProperty(required=False)
+    logo_url = db.StringProperty(required=False, default=None)
     gitRepository = db.StringProperty(required=True)
     membersId = db.StringListProperty(required=True)
     info = db.TextProperty(required=False, default="{}")

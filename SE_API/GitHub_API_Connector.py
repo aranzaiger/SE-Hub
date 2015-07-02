@@ -77,8 +77,9 @@ def make_micro(stats, issues):
 def get_issue_num(issues, user):
     numOfIssues = 0
     for issue in issues:
-        if issue['user']['login'] == user:
-            numOfIssues += 1
+        if issue['assignee']:
+            if issue['assignee']['login'] == user:
+                numOfIssues += 1
     return numOfIssues
 
 def get_github_data(repo_url, project_id):

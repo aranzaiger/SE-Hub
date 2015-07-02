@@ -354,6 +354,51 @@ def getCoursesByUser(token, userId):
         return Response(response='[]',
                         status=200,
                         mimetype="application/json")
+
+@course_routes.route('/api/courses/getCoursesById/<string:token>/<string:courseId>', methods=['GET'])
+@auto.doc()
+def getCoursesByID(token, courseId):
+    """
+    <span class="card-title">This Call will return A Course By ID</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'<br>
+        - courseId: 1234354543<br>
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE <br>
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Array, Example:<br>
+    { <br>
+                'title': 'JCE',<br>
+                'email_ending': '@post.jce.ac.il',<br>
+                'master_user_id': 123453433341, (User that created the campus)<br>
+                'avatar_url': 'http://some.domain.com/imagefile.jpg',<br>
+                'id' : 1234567890<br>
+    }<br>
+    <br>
+    403 - Invalid Token<br>
+    """
+
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad user Token")
+
+    try:
+        course = Course.get_by_id(int(courseId))
+    except Exception as e:
+        return bad_request("Bad id format")
+
+    if course is None:
+        return bad_request("Bad Course Id")
+
+    return Response(response=course.to_JSON(),
+                    status=200,
+                    mimetype="application/json")
 #----------------------------------------------------------
 #                     PUT
 #----------------------------------------------------------

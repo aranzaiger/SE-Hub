@@ -205,11 +205,55 @@ def oauth(oauth_token):
 def login():
     return github.authorize()
 
+debug = True # Change In Production
+if debug:
+    counter = 300
 
-@app.route('/debug/login')
-def set_local_token_view():
-    return app.send_static_file('DEBUG_Views/set_cookie.html')
+    @auto.doc()
+    @app.route('/debug/login')
+    def set_local_token_view():
+        """
+        <span class="card-title">Go To This URL To Set The SE-Token Cookie</span>
+        <br>
+        <b>Route Parameters</b><br>
+            - token: None<br>
+        <br>
+        <b>Payload</b><br>
+         - None
+        <b>Response</b>
+        <br>
+        None.
+    """
+        return app.send_static_file('DEBUG_Views/set_cookie.html')
 
+    @auto.doc()
+    @app.route('/debug/createUser/<string:gitHubUserName>')
+    def createUser(gitHubUserName):
+        """
+        <span class="card-title">Go To This URL To Set The SE-Token Cookie</span>
+        <br>
+        <p>This User Will Automatically be added to JCE Campus as a Lecturer</p>
+        <b>Route Parameters</b><br>
+            - gitHubUserName: A Username<br>
+        <br>
+        <b>Payload</b><br>
+         - None
+        <b>Response</b>
+        <br>
+        None.
+        """
+        try:
+            query = Campus.all().filter('title =', 'JCE')
+            for c in query.run(limit=1):
+                campus = c
+            user = User(name=";", username=gitHubUserName, isFirstLogin=False,
+                        avatar_url='http://placekitten.com/g/200/'+str(counter), accessToken="RandomGitHubToken",
+                        email='username@mailservice.com', campuses_id_list=[str(campus.key().id())],
+                        seToken=str(uuid.uuid4()), isLecturer=True)
+            db.put(user)
+            return created(gitHubUserName + 'Was Created. Token: ' + user.seToken)
+        except Exception as e:
+            return bad_request(str(e))
 
 @app.route('/api/qa/init')
 def init_QA():
