@@ -2,6 +2,7 @@ import json
 
 __author__ = 'Aran'
 from google.appengine.ext import db
+from models.User import User
 
 class Message(db.Model):
     groupId = db.IntegerProperty(required=True)
@@ -11,6 +12,7 @@ class Message(db.Model):
     isProject = db.BooleanProperty(default=False)
 
     def to_JSON(self):
+        user = User.get_by_id(self.master_id)
         data = {
                 'groupId' : self.groupId,
                 'message' : self.message,
@@ -23,6 +25,7 @@ class Message(db.Model):
                 },
                 'id' : self.key().id(),
                 'master_id' : self.master_id,
-                'isProject' : self.isProject
+                'isProject' : self.isProject,
+                'user': json.loads(user.to_JSON())
         }
         return json.dumps(data)

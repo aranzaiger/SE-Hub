@@ -143,7 +143,20 @@ def getMessagesByGroup(token, groupId):
             },<br>
             'id' : 1234567890,<br>
             'master_id' : 1234567890,<br>
-            'isProject' : false<br>
+            'isProject' : false,<br>
+            'user': {<br>
+        'username': 'DarkLord',<br>
+        'name': 'Darth Vader',<br>
+        'email': 'darkLord@death.planet,<br>
+        'isLecturer': 'True',<br>
+        'seToken': 'xxxxxx-xxxxx-xxxxx-xxxxxx',<br>
+        'avatar_url': 'http://location.git.com/somthing'<br>
+        'isFirstLogin': False,<br>
+        'campuses_id_list': [43243532532,5325325325,532532342],<br>
+        'courses_id_list': [53523,43432423,432432432432]<br>
+        'id': 1234567890 <br>
+        }<br>
+
         }<br>
     </code>
     <br>
