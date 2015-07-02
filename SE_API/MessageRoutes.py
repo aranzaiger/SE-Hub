@@ -52,13 +52,6 @@ def createMessage(token):
     {<br>
         'groupId' : 123456789,<br>
         'message' : 'Class is canceled',<br>
-        'date' : {<br>
-            'year': 2015,<br>
-            'month': 3,<br>
-            'day': 14,<br>
-            'hour': 16,<br>
-            'minute': 53<br>
-        },<br>
         'isProject' : true<br>
     }<br>
     <br>
