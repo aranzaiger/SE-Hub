@@ -74,8 +74,6 @@ angular.module('SeHub')
 	    		}
 	    	};
 
-	    	console.log("Json here: " + $scope.chosenCampus);
-    		console.log(jsonNewCourse);
 	      	
 	      	apiService.createCourse(token, jsonNewCourse).success(function(data)
 	      	{
@@ -88,7 +86,8 @@ angular.module('SeHub')
 						}); // Pop-up alert
 	      	}).error(function(err)
 	      	{
-	      		console.log(err);
+	      		$mdDialog.show($mdDialog.alert().title('Error Creating Class').content(err)
+	      		.ariaLabel('Create Class alert dialog').ok('Try Again!').targetEvent()); // Pop-up alert
 	      	});
 	    }
 	    else

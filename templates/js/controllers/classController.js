@@ -45,7 +45,6 @@ angular.module('SeHub')
 								$scope.projectsEmpty = false;
 							}
 							init(); // Executing the function to initialize projects display
-							console.log("project created! not rly!! " + classId);
 						}).error(function(err) {
 						console.error("Error: " + err);
 					});
