@@ -95,52 +95,56 @@ angular.module('SeHub')
 			if ($scope.project.logoUrl)
 				jsonNewProj.logo_url = $scope.project.logoUrl;
 
+    	apiService.createProject(token, jsonNewProj).success(function(data)
+    	{
+    		loadingData = false;
+    		projectId = data.id;
+      		$mdDialog.show($mdDialog.alert().title('Project Created').content('You have successfully created project.')
+	        .ariaLabel('Project created alert dialog').ok('Great!').targetEvent())
+			.then(function() {
+							$location.path('/project/' + projectId); // TODO TODO TODO
+						}); // Pop-up alert
 
-			apiService.create(token, jsonNewProj).success(function(data) {
-				loadingData = false;
-				projectId = data.id;
-				$mdDialog.show($mdDialog.alert().title('Project Created').content('You have successfully created project.')
-						.ariaLabel('Project created alert dialog').ok('Great!').targetEvent())
-					.then(function() {
-						$location.path('/project/' + projectId); // TODO TODO TODO
-					}); // Pop-up alert
+    	}).error(function(err)
+    	{
+    		console.log("Error: " + err.message);
+      		$mdDialog.show($mdDialog.alert().title('Error Creating Project').content('You have failed Creating the project.')
+	        .ariaLabel('Create project alert dialog').ok('Try Again!').targetEvent()); // Pop-up alert
+    	});
+    
+	}
 
-			}).error(function(err) {
-				console.log("Error: " + err.message);
-				$mdDialog.show($mdDialog.alert().title('Error Creating Project').content('You have failed Creating the project.')
-					.ariaLabel('Create project alert dialog').ok('Try Again!').targetEvent()); // Pop-up alert
-			});
+	$scope.goToProject = function(projectId)
+	{
+		console.log("projects only from classID: "  + projectId)
+		$location.path('/project/' + projectId);
+	}
 
-		}
-
-		$scope.goToProject = function(projectId) {
-			console.log("projects only from classID: " + projectId)
-			$location.path('/project/' + projectId);
-		}
-
-		var init = function() {
-			$scope.arrayHolder = [];
-			var tempArr = [];
-			var sizeOfSmallArrays = 3;
-			for (var i = 0; i < $scope.projects.length; i++) {
-				if (i % sizeOfSmallArrays !== 0) {
+	var init = function()
+	{
+		$scope.arrayHolder = [];
+		var tempArr = [];
+		var sizeOfSmallArrays = 3;
+		for (var i = 0 ; i < $scope.projects.length ; i++) {
+			if(i % sizeOfSmallArrays !== 0){
+				tempArr.push($scope.projects[i]);
+			}else{
+				if(i !== 0){
+					$scope.arrayHolder.push(tempArr);
+					tempArr = [];
 					tempArr.push($scope.projects[i]);
-				} else {
-					if (i !== 0) {
-						$scope.arrayHolder.push(tempArr);
-						tempArr = [];
-						tempArr.push($scope.projects[i]);
-					} else {
-						tempArr.push($scope.projects[i]);
-					}
+				}else{
+					tempArr.push($scope.projects[i]);
 				}
-			};
-			$scope.arrayHolder.push(tempArr);
-		}
+			}
+		};
+		$scope.arrayHolder.push(tempArr);
+	}
 
 
-		// Running...
-		$scope.displayProjects(); // Displaying all projects related to user
+	// Running...
+	$scope.displayProjects(); // Displaying all projects related to user
 
 
-	}]);
+
+}]);
