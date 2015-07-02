@@ -194,6 +194,98 @@ def getMessagesByGroup(token, groupId):
                         status=200,
                         mimetype="application/json")
 
+@message_routes.route('/api/messages/getAllUserMessages/<string:token>', methods=["GET"])
+@auto.doc()
+def getAllUserMessages(token):
+    """
+    <span class="card-title">>This Call will return an array of all messages (sorted by date),<br>
+                                </span>
+    <br>
+    <b>Route Parameters</b><br>
+        - SeToken: token <br>
+        - groupId: 1234567890
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>[<br>
+        {<br>
+            'groupId' : 1234567890,<br>
+            'message' : 'hello all',<br>
+            'date' : {<br>
+                'year': 2015,<br>
+                'month': 5,<br>
+                'day': 5,<br>
+                'hour': 5,<br>
+                'minute': 5<br>
+            },<br>
+            'id' : 1234567890,<br>
+            'master_id' : 1234567890,<br>
+            'isProject' : false,<br>
+            'user': {<br>
+        'username': 'DarkLord',<br>
+        'name': 'Darth Vader',<br>
+        'email': 'darkLord@death.planet,<br>
+        'isLecturer': 'True',<br>
+        'seToken': 'xxxxxx-xxxxx-xxxxx-xxxxxx',<br>
+        'avatar_url': 'http://location.git.com/somthing'<br>
+        'isFirstLogin': False,<br>
+        'campuses_id_list': [43243532532,5325325325,532532342],<br>
+        'courses_id_list': [53523,43432423,432432432432]<br>
+        'id': 1234567890 <br>
+        },<br>
+        'group': {The Group Object Project OR Campus (according to isProject)}<br><br>
+
+        }<br>
+        ]<br>
+    </code>
+    <br>
+    """
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("No such User")
+
+    arr = []
+
+    query = Message.all()
+    query.filter('isProject =', False)
+    for m in query.run():
+        if str(m.groupId) in user.courses_id_list:
+            msgDic = dict(json.loads(m.to_JSON()))
+            #add a key 'forSortDate' for sorting dates
+            msgTime = datetime.datetime(msgDic['date']['year'], msgDic['date']['month'], msgDic['date']['day'], msgDic['date']['hour'], msgDic['date']['minute'])
+            msgDic['forSortDate'] = msgTime
+            arr.append(msgDic)
+
+    query = Message.all()
+    query.filter('isProject =', True)
+    for m in query.run():
+        if str(m.groupId) in user.projects_id_list:
+            msgDic = dict(json.loads(m.to_JSON()))
+            #add a key 'forSortDate' for sorting dates
+            msgTime = datetime.datetime(msgDic['date']['year'], msgDic['date']['month'], msgDic['date']['day'], msgDic['date']['hour'], msgDic['date']['minute'])
+            msgDic['forSortDate'] = msgTime
+            arr.append(msgDic)
+
+    arr = sorted(arr, key=itemgetter('forSortDate'), reverse=True)
+    for i in arr:
+        del i['forSortDate']
+    print arr
+
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
+    else:
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
+
 
 #----------------------------------------------------------
 #                     DELETE
