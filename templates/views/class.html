@@ -1,43 +1,38 @@
 <div class = "class">
-	<h1 style="margin-left:15px"><i class="fa fa-graduation-cap"></i> Class {{project.courseName}}</h1>
-	<div layout-paddig layout-margin class="loader" ng-if="loadingData">
-		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
-	</div>
-	<div ng-if = "projectsEmpty && !loadingData" layout-padding layout-margin>
-		You Are Not Related To Any Project.
-	</div>
-	<div ng-if = "!projectsEmpty">
-			<md-card class="cardAllProjects">						
-				<div flex ="99" class = "allProjectsShow" layout = "row" ng-repeat = "t in arrayHolder" value = "{{t}}" layout-padding>
-					<div flex = "32" layout = "column" ng-repeat = "project in t" value = "{{project}}" layout-padding>
-						<div ng-if="t.length != 1"> 
-							<md-button ng-click = "goToProject(project.id)" style="width:100%; height:32%;" layout-padding class = "md-raised">
-								{{project.projectName}}
-								<div layout-align="center center" style=" width:70%;">
-									<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data" labels="project.info.stats.macro.labels"></canvas> 
-								</div>
-							</md-card>
-						</div>
-						<div ng-if="t.length == 1"> 
-							<md-button ng-click = "goToProject(project.id)" style="width:32%; height:32%;" layout-padding class = "md-raised">
-								{{project.projectName}}
-								<!-- <div style="height:100%; width:32%;"> -->
-									<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data" labels="project.info.stats.macro.labels"></canvas> 
-								<!-- </div> -->
-							</md-card>
-						</div>
-					</div>
-				</div>
-			</md-card>
+	<div layout="column" layout-align="center center" style="width:100%">
+		<!-- Course Title -->
+		<div flex> 
+			<h1 style="margin-left:15px">
+				<i class="fa fa-graduation-cap"></i> Class {{project.courseName}} 
+				<span ng-if="isCourseOver"> - <i>This Course Is Over</i></span>
+			</h1>
+		</div>
+		<!-- Course Time Line -->
+		<div layout="row" layout-align="center center" style="width: 100%">
+			<div>
+				{{course.startDate}} &nbsp;
+			</div>
+			<div flex="70">
+				<md-progress-linear md-mode="determinate" value="{{courseTimePresentege}}"></md-progress-linear>
+			</div>
+			<div>
+				 &nbsp;{{course.endDate}}
+			</div>
+			
 		</div>
 	</div>
-	<div ng-if="!isInCourse" layout-padding layout-margin>
-		<md-button ng-click = "joinCourse()" ng class = "md-raised md-primary"> Join Class</md-button>
+	<!-- Course Management Buttons -->
+	<div layout-padding layout-margin layout="row" layout-align="left">
+		<div ng-if="!isInCourse" layout-margin>
+				<md-button ng-click = "joinCourse()" ng class = "md-raised md-primary" ng-disabled="isCourseOver"><i class="fa fa-plus"></i> Join Class</md-button>
+		</div>
+		<div layout-margin>
+			<md-content>
+				<md-button ng-click="createProjectClicked()" ng class="md-raised md-primary" ng-disabled="isCourseOver">Create Project <i ng-class="createSctionStatus"></i></md-button>
+			</md-content>	
+		</div>
 	</div>
-	<!-- <div ng-if = "user.isLecturer"> -->
-		<md-content layout-padding layout-margin>
-			<md-button ng-click="createProjectClicked()" ng class="md-raised md-primary">Create Project</md-button>
-		</md-content>
+		<!-- Create Project Section -->
 		<div ng-if = "isCreateProjectClicked">
 			<md-card layout-padding style="width:60%">
 				<div layout="column">
@@ -84,6 +79,47 @@
 				</div>
 			</md-card>
 		</div>
+	</div>
+	<div layout-paddig layout-margin class="loader" ng-if="loadingData">
+		<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+	</div>
+	<div ng-if = "projectsEmpty && !loadingData" layout-padding layout-margin>
+		You Are Not Related To Any Project.
+	</div>
+	<div ng-if = "!projectsEmpty">
+			<md-card class="cardAllProjects">						
+				<div flex ="99" class = "allProjectsShow" layout = "row" ng-repeat = "t in arrayHolder" value = "{{t}}" layout-padding>
+					<div flex = "32" layout = "column" ng-repeat = "project in t" value = "{{project}}" layout-padding>
+						<div ng-if="t.length != 1"> 
+							<md-button ng-click = "goToProject(project.id)" style="width:100%; height:32%;" layout-padding class = "md-raised">
+								<div style="height: 30%" layout="row">
+									<div class="spacer"></div>
+									<div>
+										<img ng-src="{{project.logo_url}}" alt="" 
+										ng-if="project.logo_url" style="display: block;width:auto;height:100%;">
+										<span ng-if="!project.logo_url">{{project.projectName}}</span>
+									</div>
+									<div class="spacer"></div>
+								</div>
+								<div layout-align="center center" style=" width:70%;">
+									<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data" labels="project.info.stats.macro.labels"></canvas> 
+								</div>
+							</md-card>
+						</div>
+						<div ng-if="t.length == 1"> 
+							<md-button ng-click = "goToProject(project.id)" style="width:32%; height:32%;" layout-padding class = "md-raised">
+								{{project.projectName}}
+								<!-- <div style="height:100%; width:32%;"> -->
+									<canvas layout-padding layout-margin id="project.projectName" class="chart chart-bar" data="project.info.stats.macro.data" labels="project.info.stats.macro.labels"></canvas> 
+								<!-- </div> -->
+							</md-card>
+						</div>
+					</div>
+				</div>
+			</md-card>
+		</div>
+	</div>
+	
 	<!-- </div> -->
 	<div layout-margin>
 		
