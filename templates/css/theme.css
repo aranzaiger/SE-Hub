@@ -428,7 +428,13 @@ body.noscroll
 
 .tabDesign
 {
+  padding-left: 4px;
+  padding-right: 4px;
+  margin: 5px;
+  /*background-color: #f5f5f5;*/
   overflow: scroll;
+  height:500;
+  /*width:690;*/
 }
 
 .tasksContent

@@ -36,6 +36,7 @@ angular.module('SeHub')
 		});
 
 		$scope.dropdownClicked = function() {
+			$scope.createCampusClicked = false;
 			if ($scope.campus) {
 				$scope.campusChecked = true;
 				$scope.campusObj = null;
