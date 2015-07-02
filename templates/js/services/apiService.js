@@ -189,6 +189,14 @@ service.factory('apiService', ['$http', function($http) {
 				data: payLoad
 			};
 			return $http(req);
+		},
+		getCampuseById: function(token, id){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCoursesById/" + id;
+			req = {
+				method: "GET",
+				url: url
+			};
+			return $http(req);
 		}
 	};
 }]);
