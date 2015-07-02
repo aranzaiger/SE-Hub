@@ -155,7 +155,7 @@ def getMessagesByGroup(token, groupId):
     query = Message.all()
 
     try:
-        query.filter("groupId = ", int(groupId))
+        query.filter("groupId =", int(groupId))
     except Exception as e:
         return bad_request("Bad id format")
 
