@@ -368,19 +368,75 @@ def getAllTasksByUser(token):
     <b>Response</b>
     <br>
     200 - JSON Example:<br>
-    <code>
-        {<br>
-        'title' : 'Task1',<br>
-        'courseId' : 12345678,<br>
-        'description' : 'prepare by sunday',<br>
-        'dueDate' : {
-                    'year' : 2015,
-                    'month' : 12,
-                    'day' : 23
-                    }<br>
-        'isPersonal' : true,<br>
-        'task_id' : 589689456894<br>
-    }<br>
+    <code>[<br>
+              {<br>
+                "courseName": "Advance Math",<br>
+                "courseId": 4762397176758272,<br>
+                "PersonalTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 4762397176758272,<br>
+                    "title": "task1",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5888297083600896<br>
+                  }<br>
+                ],<br>
+                "projectTasks": []<br>
+              },<br>
+              {<br>
+                "courseName": "Bad Math",<br>
+                "courseId": 5659598665023488,<br>
+                "PersonalTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task1",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5096648711602176<br>
+                  },<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task4",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5167017455779840<br>
+                  }<br>
+                ],<br>
+                "projectTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": false,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task3",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5237386199957504<br>
+                  }<br>
+                ]<br>
+              }<br>
+    ]<br>
     </code>
     <br>
     """
