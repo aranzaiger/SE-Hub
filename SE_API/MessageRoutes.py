@@ -155,7 +155,8 @@ def getMessagesByGroup(token, groupId):
         'campuses_id_list': [43243532532,5325325325,532532342],<br>
         'courses_id_list': [53523,43432423,432432432432]<br>
         'id': 1234567890 <br>
-        }<br>
+        },<br>
+        'group': {The Group Object Project OR Campus (according to isProject)}<br><br>
 
         }<br>
     </code>
