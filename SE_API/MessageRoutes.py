@@ -1,3 +1,5 @@
+import copy
+
 __author__ = 'Aran'
 
 from flask import Blueprint
@@ -52,13 +54,6 @@ def createMessage(token):
     {<br>
         'groupId' : 123456789,<br>
         'message' : 'Class is canceled',<br>
-        'date' : {<br>
-            'year': 2015,<br>
-            'month': 3,<br>
-            'day': 14,<br>
-            'hour': 16,<br>
-            'minute': 53<br>
-        },<br>
         'isProject' : true<br>
     }<br>
     <br>
@@ -252,9 +247,11 @@ def getAllUserMessages(token):
 
     arr = []
 
-    query = Message.all()
-    query.filter('isProject =', False)
-    for m in query.run():
+    allMsgs = Message.all()
+    projectMsgs = copy.deepcopy(allMsgs)
+
+    projectMsgs.filter('isProject =', False)
+    for m in projectMsgs.run():
         if str(m.groupId) in user.courses_id_list:
             msgDic = dict(json.loads(m.to_JSON()))
             #add a key 'forSortDate' for sorting dates
@@ -262,9 +259,9 @@ def getAllUserMessages(token):
             msgDic['forSortDate'] = msgTime
             arr.append(msgDic)
 
-    query = Message.all()
-    query.filter('isProject =', True)
-    for m in query.run():
+
+    allMsgs.filter('isProject =', True)
+    for m in allMsgs.run():
         if str(m.groupId) in user.projects_id_list:
             msgDic = dict(json.loads(m.to_JSON()))
             #add a key 'forSortDate' for sorting dates

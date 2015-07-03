@@ -19,6 +19,7 @@ from flask.ext.autodoc import Autodoc
 from models.Task import Task
 from models.Course import Course
 from models.TaskComponent import TaskComponent
+from models.TaskGrade import TaskGrade
 
 #Validation Utils Libs
 from SE_API.Validation_Utils import *
@@ -48,7 +49,7 @@ def create_task(token):
      - JSON Object, Example: <br>
     {<br>
         "title":"task1",<br>
-        "courseName":"aran",<br>
+        "courseId":1234567890,<br>
         "description":"pls fddfsdfdsk",<br>
         "dueDate":{"year":2010,<br>
                     "month":2,<br>
@@ -87,47 +88,44 @@ def create_task(token):
     403 - Invalid token or not a lecturer
     """
     if not request.data:
-        return bad_request()
+        return bad_request("no payload")
     payload = json.loads(request.data)
     if not is_lecturer(token):  #todo: change to lecturer id
         return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
-    #TODO: add seconds and minutes
-    #check the user(lecturer) is owner of the course
-    # try:
-    #     arr = []
-    #     query = Course.all()
-    #     query.filter('courseName =',payload['courseName'])
-    #     for t in query.run():
-    #         arr.append(dict(json.loads(t.to_JSON())))
-    #     if len(arr) == 0:
-    #         return bad_request("No such course")
-    # except Exception as e:
-    #     print e
-    #     return bad_request("Missing courseName")
 
-
-    #todo: check legality
-    #create Task object
+    #check lecturer is owner of course
     try:
-        #parse dueDate
-        try:
-            date = datetime.date(payload['dueDate']['year'],payload['dueDate']['month'],payload['dueDate']['day'])
-        except Exception:
-            return bad_request("invalid dueDate format")
-
-        task = Task(title=payload['title'], courseName=payload['courseName'], description=payload['description'], dueDate=date)
-
-        # print "id: ",task.key().id()
-        #parse isPersonal
-        try:
-            task.isPersonal = payload['isPersonal']
-        except Exception:
-            pass
+        courseId = payload['courseId']
     except Exception as e:
         print e
-        return bad_request()
+        return bad_request("invalid courseId format")
+
+    course = Course.get_by_id(int(courseId))
+    if course is None:
+        return bad_request("No such Course")
+
+    if course.master_id != user.key().id():
+        return forbidden("Lecturer is not owner of Course")
+
+    #parse dueDate
+    try:
+        date = datetime.date(payload['dueDate']['year'],payload['dueDate']['month'],payload['dueDate']['day'])
+    except Exception:
+        return bad_request("invalid dueDate format")
+    #create Task object
+    try:
+        task = Task(title=payload['title'], courseId=payload['courseId'], description=payload['description'], dueDate=date)
+    except Exception as e:
+        print e
+        return bad_request("bad")
+    try:
+        task.isPersonal = payload['isPersonal']
+    except Exception:
+        pass
+
+
     db.put(task)
     db.save
 
@@ -141,7 +139,9 @@ def create_task(token):
         db.put(component)
         db.save
 
-    return created()
+    return Response(response=task.to_JSON(),
+                                status=200,
+                                mimetype="application/json")
 
 
 #----------------------------------------------------------
@@ -350,6 +350,211 @@ def getTaskComponents(token, taskId):
                         mimetype="application/json")
     else:
         return no_content()
+
+@task_routes.route('/api/tasks/getAllUserTasks/<string:token>', methods=["GET"])
+@auto.doc()
+def getAllTasksByUser(token):
+    """
+    <span class="card-title">>This Call will return an array of all of the User's Tasks</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - SeToken: token<br>
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>[<br>
+              {<br>
+                "courseName": "Advance Math",<br>
+                "courseId": 4762397176758272,<br>
+                "PersonalTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 4762397176758272,<br>
+                    "title": "task1",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5888297083600896<br>
+                  }<br>
+                ],<br>
+                "projectTasks": []<br>
+              },<br>
+              {<br>
+                "courseName": "Bad Math",<br>
+                "courseId": 5659598665023488,<br>
+                "PersonalTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task1",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5096648711602176<br>
+                  },<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task4",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5167017455779840<br>
+                  }<br>
+                ],<br>
+                "projectTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": false,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task3",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5237386199957504<br>
+                  }<br>
+                ]<br>
+              }<br>
+    ]<br>
+    </code>
+    <br>
+    """
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad User Token")
+
+    arr = []
+    for c in user.courses_id_list:
+
+        dic = {}
+        course = Course.get_by_id(int(c))
+        dic['courseName'] = course.courseName
+        dic['courseId'] = course.key().id()
+        courseTasks = Task.all().filter("courseId = ", course.key().id())
+        taskArr = []
+        for t in courseTasks.run():
+            taskDic =dict(json.loads(t.to_JSON()))
+            #add a key 'forSortDate' for sorting dates
+            taskTime = datetime.datetime(taskDic['dueDate']['year'], taskDic['dueDate']['month'], taskDic['dueDate']['day'])
+            taskDic['forSortDate'] = taskTime
+            grade = TaskGrade.all().filter("taskId = ", t.key().id()).filter("userId = ", user.key().id())
+            for g in grade.run():
+                taskDic['grade'] = g.grade
+            if grade.count() == 0:
+                taskDic['grade'] = 0
+            taskArr.append(taskDic)
+
+        taskArr = sorted(taskArr, key=itemgetter('forSortDate'), reverse=False)
+        for i in taskArr:
+            del i['forSortDate']
+
+        userTaskArr = []
+        projectTaskArr = []
+        for t in taskArr:
+            if t['isPersonal']:
+                userTaskArr.append(t)
+            else:
+                projectTaskArr.append(t)
+
+
+        dic['PersonalTasks'] = userTaskArr
+        dic['projectTasks'] = projectTaskArr
+        arr.append(dic)
+
+    #sort array by date, and remove added key
+
+
+    return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
+
+
+
+# @task_routes.route('/api/tasks/getUserFullTasksById/<string:token>/<string:taskId>', methods=["GET"])
+# @auto.doc()
+# def getFullTasksById(token, taskId):
+#     """
+#     <span class="card-title">>This Call will return an array of all components for a given task</span>
+#     <br>
+#     <b>Route Parameters</b><br>
+#          - SeToken: token<br>
+#         - taskId: 1234567890
+#     <br>
+#     <br>
+#     <b>Payload</b><br>
+#      - NONE
+#     <br>
+#     <br>
+#     <b>Response</b>
+#     <br>
+#     200 - JSON Example:<br>
+#     <code>
+#     [
+#         {<br>
+#             'taskId' : 7589454894,
+#             'userId' : -1,
+#             'type' : 'kindOfType',
+#             'label' : 'kindOfLabel',
+#             'isMandatory' : true,
+#             'order' : 2
+#         }<br>
+#         {<br>
+#             'taskId' : 7589454894,
+#             'userId' : yossi,
+#             'type' : 'otherKindOfType',
+#             'label' : 'otherKindOfLabel',
+#             'isMandatory' : false,
+#             'order' : 4
+#         }<br>
+#     ]
+#     </code>
+#     <br>
+#     """
+#     user = get_user_by_token(token)
+#     if user is None:
+#         return bad_request("Bad User Token")
+#
+#     task = Task.get_by_id(int(taskId))
+#     if task is None:
+#         return bad_request("Bad Task id")
+#
+#     taskCompQuery = TaskComponent.all()
+#     taskCompQuery.filter("taskId = ", task.key().id())
+#
+#     if task.isPersonal:
+#         taskCompQuery.filter("userId = ", user.key().id())
+#     else:
+#         taskCompQuery.filter("userId = ", user.key().id())
+#
+#     if taskCompQuery.count() == 0:
+#         #create componenets and Score for user
+#
+#
+#     for i in taskCompQuery.run():
+#         print i.to_JSON()
+#
+#     return no_content()
 
 
 

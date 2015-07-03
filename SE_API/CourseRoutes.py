@@ -399,10 +399,6 @@ def getCoursesByID(token, courseId):
     return Response(response=course.to_JSON(),
                     status=200,
                     mimetype="application/json")
-#----------------------------------------------------------
-#                     PUT
-#----------------------------------------------------------
-
 
 
 
