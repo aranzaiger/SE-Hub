@@ -185,10 +185,11 @@ def oauth(oauth_token):
 
     tempName = ";"
 
-    if user_data["email"] == "":
-        for email in userEmails:
-            if email["primary"] and email["verified"]:
-                tempEmail = email["email"]
+    if 'email' in user_data:
+        if user_data["email"] == "":
+            for email in userEmails:
+                if email["primary"] and email["verified"]:
+                    tempEmail = email["email"]
     else:
         tempEmail = user_data["email"]
 
