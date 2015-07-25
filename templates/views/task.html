@@ -1,19 +1,18 @@
-<div>
-	<div class="spacer"></div>
-	
-	<div layout="coulumn" flex="80">
+<div layout='row'>
+	<div flex='20'></div>
+	<div layout="coulumn" flex="60">
 		<md-card layout-padding style="width:100%">
-			<h3><i class="fa fa-clipboard"></i> {{task.title}}</h3>
+			<h1><i class="fa fa-clipboard"></i> {{task.title}}</h1>
 			<h4>Due At: {{ task.date }}</h4>
 			<p>{{ dueTimeFromNow }}</p>
-			<p ng-bind-html-unsafe="task.description"></p>
+			<p style="white-space: pre-wrap;">{{task.description}}</p>
 			<p>{{(task.isPersonal) ? "Personal" : "Project"}} Task</p>
 
 			<!-- <md-divider></md-divider> -->
 
 			<div ng-repeat="component in task.components">
 				<md-card layout-padding>
-					<div ng-if="conponent.isMandatory">
+					<div ng-if="component.isMandatory && !(component.value && component.value != '')">
 						<font color="red">
 							<i class="fa fa-certificate"></i>
 						</font>
@@ -22,40 +21,49 @@
 					<div ng-if="component.type == 'textbox'">
 						<md-input-container>
 							<label>{{component.label}}</label>
-							<input ng-model="component.value">
+							<input ng-model="component.value" ng-disabled="readOnly">
 	    				</md-input-container>
 					</div>
 					<!-- if Text Area -->
 					<div ng-if="component.type == 'textarea'">
 						<md-input-container>
 							<label>{{component.label}}</label>
-							<textarea ng-model="component.value"></textarea>
+							<textarea ng-model="component.value" ng-disabled="readOnly"></textarea>
 	    				</md-input-container>
 					</div>
 					<!-- if Checkbox -->
 					<div ng-if="component.type == 'checkbox'">
-						<md-checkbox ng-model="component.value" aria-label="Checkbox 1">
+						<md-checkbox ng-model="component.value" aria-label="Checkbox 1" ng-disabled="readOnly">
 				          {{ component.label}}
 				        </md-checkbox>
 					</div>
 					<!-- if Link -->
 					<div ng-if="component.type == 'link'" layout="column" ng-init="initLinkComp(component)" style="width: 100%" layout-align="center">
 						<md-button ng-href="{{component.href}}" style="width: 100%" target="_blank">
-						<i class="fa fa-link"></i> {{component.title}}
+							<i class="fa fa-link"></i> {{component.title}}
 						</md-button>
 					</div>
 					<!-- if RadioButtons -->
 					<div ng-if="component.type == 'radiobuttons'" ng-init="initRadioButtonsComp(component)">
 						{{component.title}}
-						<md-radio-group ng-model="component.value" ng-change="RB(component)">
+						<md-radio-group ng-model="component.value" ng-change="RB(component)" ng-disabled="readOnly">
 					      <md-radio-button ng-repeat="option in component.values" value="{{option.text}}" class="md-primary">{{option.text}}</md-radio-button>
 	    				</md-radio-group>
 					</div>
 				</md-card>
 			</div>
+			<div layout='row' ng-if='!readOnly'>
+				<div class='spacer'></div>
+				<div style='position:relative;'>
+					<md-button class='md-primary' ng-click='submitTask($event)'>Submit</md-button>	
+				</div>	
+			</div>
 		</md-card>
 	</div>
-	<div class="spacer"></div>
+
+	<div flex='20'></div>
 
 
 </div>
+
+		

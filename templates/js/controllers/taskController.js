@@ -1,7 +1,8 @@
 angular.module('SeHub')
 	.controller('taskController', ['$scope', '$rootScope', 'dataService', 'apiService',
-		'$cookies', '$location', '$routeParams',
-		function($scope, $rootScope, dataService, apiService, $cookies, $location, $routeParams) {
+		'$cookies', '$location', '$routeParams', '$mdDialog',
+
+		function($scope, $rootScope, dataService, apiService, $cookies, $location, $routeParams, $mdDialog) {
 
 			var taskId = $routeParams.taskId;
 			var submitterId = $routeParams.submitterId;
@@ -13,7 +14,7 @@ angular.module('SeHub')
 				$scope.readOnly = false;
 			}
 
-			$scope.dateInit = function(date){
+			$scope.dateInit = function(date) {
 				d = moment(new Date(date.year, date.month - 1, date.day));
 				$scope.task.date = d.format("d MMMM YYYY");
 			}
@@ -48,6 +49,30 @@ angular.module('SeHub')
 							id: i
 						});
 				};
+			}
+
+			function validateComponents() {
+				for (var i = 0; i < $scope.task.components.length; i++) {
+					if ($scope.task.components[i].isMandatory && (!$scope.task.components[i].value || $scope.task.components[i].value == ''))
+						return false;
+				}
+				return true;
+			}
+
+			$scope.submitTask = function(event) { //Dialog will pop-up if not all mandatory fields are filled
+				if (validateComponents()) {
+					alert('All Shit Are Filled');
+					return;
+				}
+				$mdDialog.show(
+					$mdDialog.alert()
+					.title('Hey There...')
+					.content('You Must Fill All Mandatory Fields In Order To Submit The Task')
+					.ariaLabel('Not All Mandatory Are Filled')
+					.ok('Got it!')
+					.targetEvent(event)
+				);
+
 			}
 
 
@@ -87,15 +112,15 @@ angular.module('SeHub')
 			$scope.dateInit($scope.task.dueDate);
 
 			$scope.dueTime = function() {
-			if (!$scope.task.date || $scope.task.date === '')
-				$scope.dueTimeFromNow = "";
-			var d = new Date($scope.task.date);
-			$scope.descriptionInit = function(desc){
-				desc.replace('\n', '<br>');
+				if (!$scope.task.date || $scope.task.date === '')
+					$scope.dueTimeFromNow = "";
+				var d = new Date($scope.task.date);
+				$scope.descriptionInit = function(desc) {
+					desc.replace('\n', '<br>');
+				}
+				$scope.descriptionInit($scope.task.description);
+				$scope.dueTimeFromNow = moment(d).fromNow();
 			}
-			$scope.descriptionInit($scope.task.description);
-			$scope.dueTimeFromNow = moment(d).fromNow();
-		}
 
 		}
 	]); //End Controller

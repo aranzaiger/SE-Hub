@@ -87,7 +87,7 @@
 			<h3><i class="fa fa-clipboard"></i> {{task.task.title}}</h3>
 			<h4>Due At: {{ task.date }}</h4>
 			<p>{{ dueTimeFromNow }}</p>
-			<p>{{task.task.description}}</p>
+			<p style="white-space: pre-wrap;">{{task.task.description}}</p>
 			<p>{{(task.isPersonal) ? "Personal" : "Project"}} Task</p>
 
 			<md-divider ng-if="!$last"></md-divider>
