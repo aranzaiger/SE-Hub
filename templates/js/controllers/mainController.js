@@ -1,5 +1,3 @@
-var DEBUG = true;
-
 angular.module('SeHub')
 	.controller('mainController', 
 		['$scope', '$rootScope', 'dataService', 'apiService', '$cookies', 
@@ -16,7 +14,7 @@ angular.module('SeHub')
 				if (status == 204) {
 					console.error("No User Found!");
 					$cookieStore.remove('com.sehub.www');
-					window.location = DEBUG ? 'http://localhost:8080' : 'http://se-hub.appstpot.com/';
+					window.location = 'http://se-hub.appstpot.com/';
 				}
 				$scope.loadingData = false;
 				$scope.user = data;

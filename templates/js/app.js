@@ -79,3 +79,9 @@ app.config(['$routeProvider', '$locationProvider',
 	}
 ]);
 
+app.config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('teal')
+    .accentPalette('blue-grey');
+
+});
