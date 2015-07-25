@@ -1,3 +1,5 @@
+var DEBUG = true;
+
 angular.module('SeHub')
 	.controller('mainController', 
 		['$scope', '$rootScope', 'dataService', 'apiService', '$cookies', 
@@ -10,9 +12,11 @@ angular.module('SeHub')
 			$scope.loadingData = true;
 			$scope.isInRegisterMode = false;
 
-			apiService.getUserByToken(token).success(function(data) {
-				if (data.message == 'No User Found') {
+			apiService.getUserByToken(token).success(function(data, status) {
+				if (status == 204) {
 					console.error("No User Found!");
+					$cookieStore.remove('com.sehub.www');
+					window.location = DEBUG ? 'http://localhost:8080' : 'http://se-hub.appstpot.com/';
 				}
 				$scope.loadingData = false;
 				$scope.user = data;
@@ -60,6 +64,10 @@ angular.module('SeHub')
 					$location.path('/home')
 				}
 
+			}).error(function(err){
+				console.error(err);
+				$cookieStore.remove('com.sehub.www');
+				window.location = DEBUG ? 'http://localhost:8080' : 'http://se-hub.appstpot.com/';
 			});
 
 
