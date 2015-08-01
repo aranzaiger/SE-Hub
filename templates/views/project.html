@@ -1,12 +1,17 @@
 <div class = "project">
 	<md-content layout-padding layout-margin>
 		<div layout = "row">
-			<div>
-				<h1 layout-margin style="margin-left:15px"><i class="fa fa-cube"></i> Project '{{project.projectName}}'</h1>
-			</div>
+			<div ng-if="!project.logo_url || project.logo_url = ''">
+				<h1 layout-margin style="margin-left:15px"><i class="fa fa-cube"></i> {{project.projectName}}</h1>
+			</div ng-if="project.logo_url && project.logo_url != ''">
 			<div> <!-- ng-if = "{{project.logo_url}}"> -->
-				<div flex = "10">
-					<img ng-src="{{project.logo_url}}" class = "md-avatar">
+				<div flex = "10" layout='row'>
+					<div>
+						<img ng-src="{{project.logo_url}}" class = "md-avatar">
+					</div>
+					<div class='port_spacer'>
+						 <h1>{{project.projectName}}</h1>
+					</div>
 				</div>
 			</div>
 			<div>
