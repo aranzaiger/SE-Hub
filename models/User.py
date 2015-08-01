@@ -43,11 +43,14 @@ def get_stats(user):
         stats = info["stats"]['micro']
         p_data = stats['data']
         p_series = stats['series']
-        user_index = p_series.index(user.username)
-        #adding commits
-        data[0] = data[0] + p_data[user_index][0]
-        #adding open issues
-        data[1] = data[1] + p_data[user_index][1]
+        try:
+            user_index = p_series.index(user.username)
+            #adding commits
+            data[0] = data[0] + p_data[user_index][0]
+            #adding open issues
+            data[1] = data[1] + p_data[user_index][1]
+        except Exception:
+            pass
     messages = Message.all().filter('master_id =', user.key().id())
     for m in messages.run():
         data[2] = data[2] + 1
