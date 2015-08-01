@@ -3,6 +3,7 @@ import json
 __author__ = 'Aran'
 from google.appengine.ext import db
 
+
 class User(db.Model):
     username = db.StringProperty(required=True)
     name = db.StringProperty(required=False)
@@ -26,6 +27,36 @@ class User(db.Model):
                 'campuses_id_list': self.campuses_id_list,
                 'courses_id_list': self.courses_id_list,
                 'projects_id_list': self.projects_id_list,
-                'id' : self.key().id()
+                'id' : self.key().id(),
+                'stats': get_stats(self)
                 }
         return json.dumps(data)
+
+def get_stats(user):
+    from models.Project import Project
+    from models.Message import Message
+    labels = ['Commits', 'Open Issues Assigned', 'Messages', 'Unfinished Tasks']
+    data = [0, 0, 0, 0]
+    for pid in user.projects_id_list:
+        project = Project.get_by_id(int(pid))
+        info = json.loads(project.info)
+        stats = info["stats"]['micro']
+        p_data = stats['data']
+        p_series = stats['series']
+        try:
+            user_index = p_series.index(user.username)
+            #adding commits
+            data[0] = data[0] + p_data[user_index][0]
+            #adding open issues
+            data[1] = data[1] + p_data[user_index][1]
+        except Exception:
+            pass
+    messages = Message.all().filter('master_id =', user.key().id())
+    for m in messages.run():
+        data[2] = data[2] + 1
+
+    #need to do tasks
+    ####
+
+    data = [data]
+    return {'data': data, 'labels': labels}
