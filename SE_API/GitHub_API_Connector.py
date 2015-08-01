@@ -10,23 +10,31 @@ githubKeys = GitHubAPI_Keys()
 def get_repo_general_info(repo_url):
     url = 'https://api.github.com/repos/' + repo_url + '?client_id='+githubKeys.getId()+'&client_secret=' + githubKeys.getSecret()
     req = requests.get(url)
+    if req.status_code == 202:
+        return None
     return req.json()
 
 
 def get_repo_stats(repo_url):
     url = 'https://api.github.com/repos/' + repo_url + '/stats/contributors' + '?client_id='+githubKeys.getId()+'&client_secret=' + githubKeys.getSecret()
     req = requests.get(url)
+    if req.status_code == 202:
+        return None
     return req.json()
 
 
 def get_repo_issues(repo_url):
     url = 'https://api.github.com/repos/' + repo_url + '/issues' + '?client_id=' + githubKeys.getId() + '&client_secret=' + githubKeys.getSecret()
     req = requests.get(url)
+    if req.status_code == 202:
+        return None
     return req.json()
 
 def get_repo_weekly_commits(repo_url):
     url = 'https://api.github.com/repos/' + repo_url + '/stats/participation' + '?client_id=' + githubKeys.getId() + '&client_secret=' + githubKeys.getSecret()
     req = requests.get(url)
+    if req.status_code == 202:
+        return None
     week_obj = {}
     week_obj['data'] = []
     try:
@@ -50,6 +58,8 @@ def get_repo_weekly_commits(repo_url):
 def get_repo_commits(repo_url):
     url = 'https://api.github.com/repos/' + repo_url + '/commits' + '?client_id=' + githubKeys.getId() + '&client_secret=' + githubKeys.getSecret()
     req = requests.get(url)
+    if req.status_code == 202:
+        return None
     return req.json()
 
 def make_macro(stats, info, project_id):
@@ -84,11 +94,44 @@ def get_issue_num(issues, user):
 
 def get_github_data(repo_url, project_id):
     project_info = {'stats': {}}
-    github_stats =  get_repo_stats(repo_url) #first Call
-    project_info['info'] = get_repo_general_info(repo_url)
-    issues = get_repo_issues(repo_url)
-    weekly_commits  = get_repo_weekly_commits(repo_url)
-    github_stats =  get_repo_stats(repo_url) #Second Call
+    info_stats = {'stats': False, 'info': False, 'issues': False, 'commits': False}
+    all_good = False
+    # github_stats =  get_repo_stats(repo_url) #first Call
+    # if github_stats is not None:
+    #     info_stats['stats'] = True
+    # project_info['info'] = get_repo_general_info(repo_url)
+    # if project_info['info'] is not None:
+    #     info_stats['info'] = True
+    # issues = get_repo_issues(repo_url)
+    # if issues is not None:
+    #     info_stats['issues'] = True
+    # weekly_commits = get_repo_weekly_commits(repo_url)
+    # if issues is not None:
+    #     info_stats['commits'] = True
+
+    while not all_good:
+        if not info_stats['stats']:
+            github_stats =  get_repo_stats(repo_url)
+            if github_stats is not None:
+                info_stats['stats'] = True
+        if not info_stats['info']:
+            project_info['info'] = get_repo_general_info(repo_url)
+            if project_info['info'] is not None:
+                info_stats['info'] = True
+        if not info_stats['issues']:
+            issues = get_repo_issues(repo_url)
+            if issues is not None:
+                info_stats['issues'] = True
+        if not info_stats['commits']:
+            weekly_commits = get_repo_weekly_commits(repo_url)
+            if issues is not None:
+                info_stats['commits'] = True
+        all_good = True
+        for stat in info_stats:
+            if not info_stats[stat]:
+                all_good = False
+
+    github_stats = get_repo_stats(repo_url) #Second Call
     project_info['stats']['macro'] = make_macro(github_stats, project_info['info'], project_id)
     project_info['stats']['micro'] = make_micro(github_stats, issues)
     project_info['stats']['weekly_commits'] = weekly_commits
