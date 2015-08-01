@@ -8,9 +8,24 @@ angular.module('SeHub')
 	$scope.user = $scope.$parent.user;
 	$scope.loadingData = true;
 	$scope.isMasterOrLecturer = false;
+	$scope.isMember = false;
 
 	// $scope.thisProject = {};
 	// $scope.thisProject.courseName = $routeParams.className;
+
+	$scope.joinProject = function()
+	{
+		apiService.joinProject(token, projectId).success(function(data)
+		{
+			$scope.isMember = true;
+			$scope.project = data;
+			$mdDialog.show($mdDialog.alert().title('Join Project').content('Joined successfully.')
+				.ariaLabel('Join project alert dialog').ok('Aight').targetEvent(ev));
+		}).error(function(err)
+		{
+			console.log("Error: " + err.message);
+		});
+	}
 
 	$scope.editProject = function(ev)
 	{
@@ -46,6 +61,13 @@ angular.module('SeHub')
 		apiService.getProjectsById(token, projectId).success(function(data)
 		{
 			$scope.project = data;
+			for(var i = 0; i < data.members.length; i++)
+			{
+				if($scope.user.id === data.members[i].id)
+				{
+					$scope.isMember = true;
+				}
+			}
 			// if($scope.user === $scope.project.info.master_id)
 			// {
 			// 	$scope.isMasterOrLecturer = true;

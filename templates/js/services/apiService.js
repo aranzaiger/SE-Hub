@@ -181,6 +181,14 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
+		joinProject: function(token, projectId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/projects/joinProject/" + token + "/" + projectId;
+			req = {
+				method: "PUT",
+				url: url
+			};
+			return $http(req);
+		},
 		getCourseById: function(token, id){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCoursesById/" + token + "/" + id;
 			req = {
