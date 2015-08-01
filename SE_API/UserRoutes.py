@@ -646,6 +646,13 @@ def removeUserFromCourse(token, userId, courseId):
     except Exception as e:
         return bad_request("user is not listed to this course")
 
+    #remove user from all projects in course
+    projects = Project.all().filter("courseId =", course.key().id())
+    for p in projects:
+        if p.key().id() in userToRemove.projects_id_list:
+            userToRemove.projects_id_list.remove(p.key().id())
+            p.membersId.remove(userToRemove.key().id())
+            db.put(p)
 
 
     db.put(userToRemove)
