@@ -322,15 +322,14 @@ def getUserById(token, id):
     if u is None:
         return no_content('No user Found')
 
+
     for index, c in enumerate(u.campuses_id_list):
         c = json.loads(Campus.get_by_id(int(c)).to_JSON())
         u.campuses_id_list[index] = c
 
-        return Response(response=u.to_JSON(),
+    return Response(response=u.to_JSON(),
                         status=200,
                         mimetype="application/json")  # Real response!
-
-    return no_content("No User Found")
 
 
 
@@ -579,6 +578,7 @@ def removeUserFromCampus(token, userId, campusId):
         if requestingUser.key().id() != userToRemove.key().id():
             return forbidden("No permission to delete user")
 
+    #remove campus from user campus list
     try:
         userToRemove.campuses_id_list.remove(campusId)
     except Exception as e:
@@ -646,6 +646,13 @@ def removeUserFromCourse(token, userId, courseId):
     except Exception as e:
         return bad_request("user is not listed to this course")
 
+    #remove user from all projects in course
+    projects = Project.all().filter("courseId =", course.key().id())
+    for p in projects:
+        if p.key().id() in userToRemove.projects_id_list:
+            userToRemove.projects_id_list.remove(p.key().id())
+            p.membersId.remove(userToRemove.key().id())
+            db.put(p)
 
 
     db.put(userToRemove)
