@@ -8,6 +8,7 @@ angular.module('SeHub')
 			$scope.loadingData = true;
 			$scope.isInRegisterMode = false;
 			$scope.userExists = false;
+			$scope.isUser = false;
 
 			$scope.title = "Profile";
 
@@ -36,6 +37,13 @@ angular.module('SeHub')
 						console.error("++++++++++++++++++++");
 					});
 
+				$scope.labels = data.stats.labels;
+				//$scope.series = ['Project A', 'Project B'];
+
+				$scope.data = data.stats.data;
+
+				$scope.isUser = $scope.$parent.user.id.toString() /*The Actual User*/ === $routeParams.id /*The Profile User*/ ;
+
 			});
 
 
@@ -62,15 +70,7 @@ angular.module('SeHub')
 				}
 			}
 
-			$scope.labels = ['Commits', 'Issues Assigned', 'Messages', 'Open Tasks'];
-			//$scope.series = ['Project A', 'Project B'];
 
-			$scope.data = [
-				[54, 3, 15, 3] //,
-				//[28, 48, 40, 3]
-			];
-
-			$scope.isUser = $scope.$parent.user.id.toString() /*The Actual User*/ === $routeParams.id /*The Profile User*/ ;
 
 		}
 	]);
