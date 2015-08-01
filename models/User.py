@@ -57,34 +57,3 @@ def get_stats(user):
 
     data = [data]
     return {'data': data, 'labels': labels}
-
-"""
-info: Object
-commits: Array[30]
-info: Object
-issues: Array[7]
-stats: Object
-macro: Object
-micro: Object
-data: Array[4]
-0: Array[2]
-0: 13
-1: 1
-length: 2
-__proto__: Array[0]
-1: Array[2]
-2: Array[2]
-3: Array[2]
-length: 4
-__proto__: Array[0]
-labels: Array[2]
-0: "Commits"
-1: "Open Issues"
-length: 2
-__proto__: Array[0]
-series: Array[4]
-0: "etyemy"
-1: "devMatan"
-2: "aranzaiger"
-3: "sagidayan"
-"""
