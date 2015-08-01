@@ -80,7 +80,7 @@
                             	</div>
 					    		<div class="spacer"></div>
 					    		<div>
-						    		<md-button class="" ng-if="isUser">
+						    		<md-button class="" ng-if="isUser" ng-click='removeCourse(course)'>
 						    		X
 						    		</md-button>
 					    		</div>
@@ -101,11 +101,7 @@
 					    			<strong>{{ campus.title }}</strong> {{campus.email_ending}} 
                             	</div>
 					    		<div class="spacer"></div>
-					    		<div>
-						    		<md-button class="" ng-if="isUser">
-						    		X
-						    		</md-button>
-					    		</div>
+					    		
 	                            <md-divider ng-if="!$last"></md-divider>
 	                        </div>
 	                    </div>
