@@ -579,6 +579,7 @@ def removeUserFromCampus(token, userId, campusId):
         if requestingUser.key().id() != userToRemove.key().id():
             return forbidden("No permission to delete user")
 
+    #remove campus from user campus list
     try:
         userToRemove.campuses_id_list.remove(campusId)
     except Exception as e:
