@@ -322,15 +322,14 @@ def getUserById(token, id):
     if u is None:
         return no_content('No user Found')
 
+
     for index, c in enumerate(u.campuses_id_list):
         c = json.loads(Campus.get_by_id(int(c)).to_JSON())
         u.campuses_id_list[index] = c
 
-        return Response(response=u.to_JSON(),
+    return Response(response=u.to_JSON(),
                         status=200,
                         mimetype="application/json")  # Real response!
-
-    return no_content("No User Found")
 
 
 
