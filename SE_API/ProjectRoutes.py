@@ -145,7 +145,9 @@ def joinProject(token, projectId):
         return bad_request("User is already member in Project")
 
     project.membersId.append(str(user.key().id()))
+    user.projects_id_list.append(str(project.key().id()))
 
+    db.put(user)
     db.put(project)
     db.save
 
