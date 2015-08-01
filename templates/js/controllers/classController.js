@@ -8,6 +8,7 @@ angular.module('SeHub')
 		$scope.isCreateProjectClicked = false;
 		$scope.submitNewCourseClicked = false;
 		$scope.loadingData = true;
+		$scope.creatingProject = false;
 		$scope.isInCourse = false;
 		var startDate = null;
 		var endDate = null;
@@ -71,7 +72,6 @@ angular.module('SeHub')
 		}
 
 		$scope.createProjectClicked = function() {
-			// console.log("project created! is it ?!???! " + classId);
 			$scope.isCreateProjectClicked = !$scope.isCreateProjectClicked;
 			if($scope.isCreateProjectClicked)
 				$scope.createSctionStatus = "fa fa-angle-up";
@@ -80,10 +80,8 @@ angular.module('SeHub')
 		}
 
 		$scope.submitNewProject = function() {
-			loadingData = true;
-			// debugger;
+			$scope.creatingProject = true;
 			var intClassId = parseInt(classId);
-			// console.log($scope);
 			var jsonNewProj = {
 				'projectName': $scope.project.projectName,
 				'courseId': intClassId,

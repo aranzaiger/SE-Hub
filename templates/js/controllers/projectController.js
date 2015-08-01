@@ -23,7 +23,8 @@ angular.module('SeHub')
 				.ariaLabel('Join project alert dialog').ok('Aight').targetEvent(ev));
 		}).error(function(err)
 		{
-			console.log("Error: " + err.message);
+			$mdDialog.show($mdDialog.alert().title('Join Project').content(err.message)
+				.ariaLabel('Join project alert dialog').ok('Try Again').targetEvent(ev));
 		});
 	}
 
