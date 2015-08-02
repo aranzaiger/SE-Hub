@@ -1,4 +1,7 @@
-<div layout='row'>
+<div ng-if='loading' class='center_all'>
+	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+<div layout='row' ng-if='!loading'>
 	<div flex='20'></div>
 	<div layout="coulumn" flex="60">
 		<md-card layout-padding style="width:100%">

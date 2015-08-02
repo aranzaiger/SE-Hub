@@ -6,12 +6,24 @@ angular.module('SeHub')
 
 			var taskId = $routeParams.taskId;
 			var submitterId = $routeParams.submitterId;
+			var token = $cookies['com.sehub.www'];
+			var groupId = $routeParams.gId;
+			$scope.loading = true;
 
+			apiService.getTaskById(token, taskId, groupId).success(function(data) {
+				$scope.task = data;
+				$scope.dateInit($scope.task.dueDate);
+				$scope.loading = false;
+			}).error(function(err) {
+				$location.path('/tasks');
+			})
 
 			if (submitterId) { //In This Case we Only Want to show The Content of the Submitter
 				$scope.readOnly = true;
+
 			} else { //In This Case We Need An Empty Task To Be Able To Fill It
 				$scope.readOnly = false;
+				apiService.getTaskById(token, taskId, groupId);
 			}
 
 			$scope.dateInit = function(date) {
@@ -61,8 +73,23 @@ angular.module('SeHub')
 
 			$scope.submitTask = function(event) { //Dialog will pop-up if not all mandatory fields are filled
 				if (validateComponents()) {
-					alert('All Shit Are Filled');
-					return;
+					apiService.submitTask(token, taskId, groupId, $scope.task.components).success(function(data) {
+						$mdDialog.show(
+							$mdDialog.alert()
+							.title('Submitted!')
+							.content('Your Task Was Successfully Submitted!')
+							.ariaLabel('ddd')
+							.ok('GoTo My Submitted Task')
+							.then(function(dd){
+								if($scope.task.isPersonal)
+									$location.path('/tasks/overview/'+taskId+'/'+groupId+'/'+groupId);
+								else
+									$location.path('/tasks/overview/'+taskId+'/'+groupId+'/'+groupId);
+							})
+							.targetEvent(event)
+						);
+					})
+
 				}
 				$mdDialog.show(
 					$mdDialog.alert()
@@ -81,35 +108,35 @@ angular.module('SeHub')
 			=            Mock Data            =
 			=================================*/
 
-			$scope.task = {
-				"title": "task1",
-				"courseId": 1234567890,
-				"description": "one line\nsecondline\nthirdline",
-				"dueDate": {
-					"year": 2010,
-					"month": 2,
-					"day": 4
-				},
-				"isPersonal": true,
-				"components": [{
-					"type": "radiobuttons",
-					"label": "pick One|this|orthis|MaybeThis",
-					"isMandatory": true,
-					"order": 1
-				}, {
-					"type": "checkbox",
-					"label": "tick Me",
-					"isMandatory": true,
-					"order": 2
-				}, {
-					"type": "textarea",
-					"label": "fill shit",
-					"isMandatory": false,
-					"order": 3
-				}]
-			};
+			// $scope.task = {
+			// 	"title": "task1",
+			// 	"courseId": 1234567890,
+			// 	"description": "one line\nsecondline\nthirdline",
+			// 	"dueDate": {
+			// 		"year": 2010,
+			// 		"month": 2,
+			// 		"day": 4
+			// 	},
+			// 	"isPersonal": true,
+			// 	"components": [{
+			// 		"type": "radiobuttons",
+			// 		"label": "pick One|this|orthis|MaybeThis",
+			// 		"isMandatory": true,
+			// 		"order": 1
+			// 	}, {
+			// 		"type": "checkbox",
+			// 		"label": "tick Me",
+			// 		"isMandatory": true,
+			// 		"order": 2
+			// 	}, {
+			// 		"type": "textarea",
+			// 		"label": "fill shit",
+			// 		"isMandatory": false,
+			// 		"order": 3
+			// 	}]
+			// };
 
-			$scope.dateInit($scope.task.dueDate);
+
 
 			$scope.dueTime = function() {
 				if (!$scope.task.date || $scope.task.date === '')

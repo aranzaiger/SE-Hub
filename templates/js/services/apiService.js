@@ -197,8 +197,8 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		getAllFutureTasks: function(token, courseId){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getAllFutureCampusTasks/" + token + "/" + courseId;
+		getAllFutureTasks: function(token){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getAllFutureTasks/" + token;
 			req = {
 				method: "GET",
 				url: url
@@ -239,6 +239,24 @@ service.factory('apiService', ['$http', function($http) {
 		},
 		createTask: function(token, payload){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/create/" + token;
+			req = {
+				method: 'POST',
+				data: payload,
+				url: url
+			};
+			return $http(req);
+		},
+		getTaskById: function(token, taskId, ownerId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getTaskById/" + token + "/" + taskId + "/" + ownerId;
+			var req = {
+				method: 'GET',
+				url: url
+			};
+			return $http(req);
+
+		},
+		submitTask: function(token, taskId, ownerId, payload){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/submitTask/" + token + '/' + taskId + '/' + ownerId;
 			req = {
 				method: 'POST',
 				data: payload,

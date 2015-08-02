@@ -127,6 +127,10 @@ body.noscroll
   margin-bottom: auto;
 }
 
+.center_all{
+  margin:auto;
+}
+
 .mail_suffix
 {
   margin-top: auto;

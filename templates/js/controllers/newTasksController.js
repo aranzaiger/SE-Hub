@@ -51,7 +51,7 @@ angular.module('SeHub').controller('newTasksController', ['$scope', 'apiService'
 					console.error(err);
 				})
 			} else {
-				alert('Fill All Shit!');
+				alert('Please Fill All Task info & At least one component');
 			}
 		}
 
@@ -63,6 +63,8 @@ angular.module('SeHub').controller('newTasksController', ['$scope', 'apiService'
 			if (!$scope.task.description || $scope.task.description.trim() == '')
 				return false;
 			if (!$scope.task.date)
+				return false;
+			if ($scope.task.components.length < 1)
 				return false;
 
 			return true;
@@ -131,7 +133,7 @@ angular.module('SeHub').controller('newTasksController', ['$scope', 'apiService'
 				$scope.compDetails = [{
 					detail: "Label"
 				}, {
-					detail: "URL Path"
+					detail: "URL Path (You Need To Include 'http://'"
 				}];
 
 			if (type === 'radiobuttons')
