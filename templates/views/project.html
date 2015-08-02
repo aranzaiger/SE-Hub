@@ -108,7 +108,7 @@
 									</div>
 									<md-content class="tabDesign">
 										<md-card ng-repeat = "msg in projectMessages">
-											<div layout = "row" layout-padding ng-if="!displayingMessages">
+											<div layout = "row" layout-padding ng-if="!displayingMessages && msg.isProject">
 												<div flex = "10">
 													<img ng-src="{{msg.user.avatar_url}}" style="width:80%">
 												</div>
@@ -138,21 +138,21 @@
 											</tr>
 											<tr ng-repeat = "commit in project.info.commits" layout-margin align = "center">
 												<td>
-													<span ng-repeat = "msg in commit">
+													<span>
 														<a target = "_blank"ng-href="{{commit.html_url}}" 
 														style="text-decoration:none; color:black;">
-															{{msg.message}}
+															{{commit.commit.message}}
 														</a>
 													</span>
 												</td>
 												<td>
-													<span ng-repeat = "date in commit.author">
-														{{date.date}}
+													<span >
+														{{commit.commit.committer.date}}
 													</span>
 												</td>
-												<td ng-repeat = "member in project.members">
+												<td >
 													<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;">
-														{{member.name}}
+														{{commit.commit.committer.name}}
 													</a>
 												</td>
 											</tr>
@@ -185,7 +185,7 @@
 													{{issue.milestone.title}}
 												</td>
 												<td>
-													<span ng-repeat = "member in project.members">
+													<span>
 														<a ng-href = "{{getProfileRoute(issue.assignee.login)}}" style="text-decoration:none; color:black;">
 															{{issue.assignee.login}}
 														</a>
