@@ -44,20 +44,20 @@
 					Team Members:
 					<ul layout-padding>
 						<div layout = "column" ng-repeat = "member in project.members">
-							<!-- <li ng-repeat = "member in project.members"> -->
-								<div layout = "row">
-									<div>
-										<md-button ng-click = "goToProfile(member.id)">
-											{{member.name}}
-										</md-button>
-									</div>
+							<div layout = "row">
+								<div>
+									<md-button ng-click = "goToProfile(member.id)">
+										{{member.name}}
+									</md-button>
+								</div>
+								<div ng-if="isMaster">
 									<div ng-if = "isEditPressed">
 										<md-button ng-click="removeUserFromProject()" ng class="md-raised md-primary" aria-label="rU">
 											<i class="fa fa-times"></i>
 										</md-button>
 									</div>
 								</div>
-							<!-- </li>	 -->
+							</div>
 						</div>
 					</ul>
 				</div>
@@ -100,28 +100,33 @@
 			<div flex = "96" style="height:70%;">
 				<div flex>
 					<md-card>
-						<md-content class="md-padding">
+						<md-content>
 							<md-tabs md-dynamic-height md-border-bottom>
 								<md-tab label="Messages">
-									<md-card ng-repeat = "msg in userMessages">
-										<div layout = "column" layout-padding>
-											<div flex = "30" class="md-avatar">
-												<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
-											</div>
-											<div flex = "20" layout = "row">
-												<div>
-													{{msg.user.username}}
+									<div ng-if="displayingMessages" layout-paddig layout-margin class="loader">
+										<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+									</div>
+									<md-content class="tabDesign">
+										<md-card ng-repeat = "msg in projectMessages">
+											<div layout = "row" layout-padding ng-if="!displayingMessages">
+												<div flex = "10">
+													<img ng-src="{{msg.user.avatar_url}}" style="width:80%">
 												</div>
-												<div>
-													{{msg.group.courseName}}
-													{{msg.group.projectName}}
+												<div flex = "20" layout = "column">
+													<div>
+														{{msg.user.username}}
+													</div>
+													<div>
+														{{msg.group.courseName}}
+														{{msg.group.projectName}}
+													</div>
+												</div>
+												<div flex = "40">
+													{{msg.message}}
 												</div>
 											</div>
-											<div flex = "40">
-												{{msg.message}}
-											</div>
-										</div>
-									</md-card>
+										</md-card>
+									</md-content>
 								</md-tab>
 								<md-tab label="Commits">
 									<md-content class="tabDesign">
@@ -191,12 +196,12 @@
 										</table>
 									</md-content>
 								</md-tab>
-								<md-tab label="tasks">
+								<!-- <md-tab label="tasks">
 									<md-content class="md-padding">
 										<h1 class="md-display-2">tasks</h1>
 										<p>tasks..</p>
 									</md-content>
-								</md-tab>
+								</md-tab> -->
 							</md-tabs>
 						</md-content>
 					</md-card>

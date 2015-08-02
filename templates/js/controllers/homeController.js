@@ -118,6 +118,7 @@ angular.module('SeHub')
     apiService.getAllFutureTasks(token).success(function(data) // Get all Tasks // TODO change to closest TASK
     {
       $scope.userTasks = data;
+      console.log($scope.userTasks);
     }).error(function(err)
     {
       console.log(err.message);
