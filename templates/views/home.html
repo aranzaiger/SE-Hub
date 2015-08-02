@@ -81,16 +81,24 @@
 						</md-tab>
 						<md-tab label="Tasks waiting for review">
 							<md-content class="md-padding">
-								<md-card ng-repeat = "task in userTasks" layout-padding>
-									<div>
-										Title: 
-										<md-button ng-click="reviewTask(task)">
-											{{task.title}}
-										</md-button>
-										<br></br>
-										Description: {{task.description}}
-									</div>
-								</md-card>	
+								<div ng-repeat = "course in unSubmittedTasks">
+									<md-card ng-repeat = "task in course.tasks" layout-padding>
+										<div ng-repeat = "uName in task.usersToReview">
+											Title: {{task.title}}
+											<br></br>
+											<md-button ng-click="reviewTask(task.id, uName.id)">
+												Name: {{uName.name}}
+											</md-button>
+										</div>
+										<div ng-repeat = "projName in task.projectsToReview">
+											Title: {{task.title}}
+											<br></br>
+											<md-button ng-click="reviewTask(task.id, projName.id)">
+												Name: {{projName.projectName}}
+											</md-button>
+										</div>
+									</md-card>	
+								</div>
 							</md-content>
 						</md-tab>
 					</md-tabs>
