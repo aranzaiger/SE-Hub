@@ -28,7 +28,9 @@ angular.module('SeHub')
 		apiService.getAllUserMessages(token).success(function(data)
 	    {
 	    	$scope.displayingMessages = false;
-			$scope.projectMessages = data;
+	    	// for(var i = 0; i < data.length; i ++)
+	    	// 	if(!data.isPersonal)
+					$scope.projectMessages = data;
 	    }).error(function(err)
 	    {
 			console.log(err.message);
@@ -112,9 +114,6 @@ angular.module('SeHub')
 			'message': $scope.msg.msgToAdd,
 			'isProject': true
 			};
-			console.log(jsonNewMsg.message);
-			console.log(jsonNewMsg.groupId);
-			console.log(jsonNewMsg.isProject);
 			
 			apiService.createMessage(token, jsonNewMsg).success(function(data)
 			{
