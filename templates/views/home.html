@@ -121,30 +121,29 @@
 			</div>
 		</div>
 		<div class ="addMessage" layout="row" layout-margin layout padding>
-				<div>
-					<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary" aria-label="aM"><i class="fa fa-comments"></i></md-button>
+			<div>
+				<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary" aria-label="aM"><i class="fa fa-comments"></i></md-button>
+			</div>
+		</div>
+		<div ng-if="addMsg">
+			<div layout = "row" layout-margin layout padding layout-align = "left center">	
+				<md-button ng-click="postMessageClicked()" ng class="md-raised md-primary">Post</md-button>
+			</div>
+			<div class="port_spacer"></div>
+			<div layout-padding layout = "row">
+				<div flex = "60">
+					<md-input-container>
+						<label> Write Your Desired Message Here And Press Post</label>
+						<input type="text" minlength="1" ng-model="msg.msgToAdd" required></input>	
+					</md-input-container>
+				</div>
+				<div flex = "30">
+					<md-select placeholder="Choose Course" ng-model="courseObj.name" ng-change="chooseCourseClicked()" style="z-index: 300" class="courseDropDown" required>
+						<md-option ng-repeat="c in courses" value="{{c.courseName}}">{{c.courseName}}</md-option>
+					</md-select>
 				</div>
 			</div>
-			<div ng-if="addMsg">
-				<div layout = "row" layout-margin layout padding layout-align = "left center">	
-					<md-button ng-click="postMessageClicked()" ng class="md-raised md-primary">Post</md-button>
-					<md-button ng-click="clearAllClicked()" ng class="md-raised md-primary">Clear All</md-button>
-				</div>
-				<div class="port_spacer"></div>
-				<div layout-padding layout = "row">
-					<div flex = "60">
-						<md-input-container>
-							<label> Write Your Desired Message Here And Press Post</label>
-							<input type="text" minlength="1" ng-model="msg.msgToAdd" required></input>	
-						</md-input-container>
-					</div>
-					<div flex = "30">
-						<md-select placeholder="Choose Course" ng-model="courseObj.name" ng-change="chooseCourseClicked()" style="z-index: 300" class="courseDropDown" required>
-							<md-option ng-repeat="c in courses" value="{{c.courseName}}">{{c.courseName}}</md-option>
-						</md-select>
-					</div>
-				</div>
-			</div>
+		</div>
 		<md-content>
 			<md-card>
 				<div flex="100">

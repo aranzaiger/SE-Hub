@@ -77,6 +77,25 @@
 				</div>
 			</div>
 		</md-card>
+		<div class ="addMessage" layout="row" layout-margin layout padding>
+			<div>
+				<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary" aria-label="aM"><i class="fa fa-comments"></i></md-button>
+			</div>
+		</div>
+		<div ng-if="addMsg">
+			<div layout = "row" layout-margin layout padding layout-align = "left center">	
+				<md-button ng-click="postMessageClicked()" ng class="md-raised md-primary">Post</md-button>
+			</div>
+			<div class="port_spacer"></div>
+			<div layout-padding layout = "row">
+				<div flex = "60">
+					<md-input-container>
+						<label> Write Your Desired Message Here And Press Post</label>
+						<input type="text" minlength="1" ng-model="msg.msgToAdd" required></input>	
+					</md-input-container>
+				</div>
+			</div>
+		</div>
 		<div>
 			<div flex = "96" style="height:70%;">
 				<div flex>
@@ -84,27 +103,25 @@
 						<md-content class="md-padding">
 							<md-tabs md-dynamic-height md-border-bottom>
 								<md-tab label="Messages">
-									<!-- <md-content class="md-padding"> -->
-										<md-card ng-repeat = "msg in userMessages">
-											<div layout = "column" layout-padding>
-												<div flex = "30" class="md-avatar">
-													<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
+									<md-card ng-repeat = "msg in userMessages">
+										<div layout = "column" layout-padding>
+											<div flex = "30" class="md-avatar">
+												<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
+											</div>
+											<div flex = "20" layout = "row">
+												<div>
+													{{msg.user.username}}
 												</div>
-												<div flex = "20" layout = "row">
-													<div>
-														{{msg.user.username}}
-													</div>
-													<div>
-														{{msg.group.courseName}}
-														{{msg.group.projectName}}
-													</div>
-												</div>
-												<div flex = "40">
-													{{msg.message}}
+												<div>
+													{{msg.group.courseName}}
+													{{msg.group.projectName}}
 												</div>
 											</div>
-										</md-card>
-									<!-- </md-content> -->
+											<div flex = "40">
+												{{msg.message}}
+											</div>
+										</div>
+									</md-card>
 								</md-tab>
 								<md-tab label="Commits">
 									<md-content class="tabDesign">

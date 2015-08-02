@@ -12,6 +12,7 @@ angular.module('SeHub')
 	$scope.project = [];
 	$scope.isInProject = false;
 	$scope.projectMessages = [];
+	$scope.msg = {};
 	
 	// $scope.thisProject = {};
 	// $scope.thisProject.courseName = $routeParams.className;
@@ -26,8 +27,6 @@ angular.module('SeHub')
 	    {
 	      console.log(err.message);
 	    });
-
-
 	}
 
 	$scope.goToProfile = function(memberId)
@@ -86,11 +85,43 @@ angular.module('SeHub')
 		},
 		function()
 		{ // No - Dont remove
-    		console.log("Not removed");
-      
 		});
 			// $location.path('/class/' + data.id + '/' + data.courseName); // Will display all the projects in this course
 	};
+
+	$scope.addMessageClicked = function()
+	{
+		$scope.addMsg = !$scope.addMsg; // Reveal the "POST" Button
+	}
+	$scope.postMessageClicked = function() // Posting the message itself
+	{  
+		if($scope.msg.msgToAdd != null)
+		{
+			// console.log(msg.msgToAdd);
+			jsonNewMsg = {
+			'groupId': parseInt(projectId), // TODO Should be ===> $scope.courseObj.id
+			'message': $scope.msg.msgToAdd,
+			'isProject': true
+			};
+			console.log(jsonNewMsg.message);
+			console.log(jsonNewMsg.groupId);
+			console.log(jsonNewMsg.isProject);
+			
+			apiService.createMessage(token, jsonNewMsg).success(function(data)
+			{
+				$scope.projectMessages.push(data);
+			}).error(function(err)
+			{
+				console.log(err.message);
+			});
+		}
+		else
+		{
+			$mdDialog.show($mdDialog.alert().title('Error Creating Message').content('Message content or Course is missing')
+			.ariaLabel('Send Message alert dialog').ok('Try Again!').targetEvent()); // Pop-up alert
+		}
+		$scope.msg.msgToAdd = null;
+	}
 
 	$scope.getProfileRoute = function(userName)
 	{
@@ -143,6 +174,7 @@ angular.module('SeHub')
 			console.log(err.message);
 		});
 	}
-	$scope.getProjectInfo(); // Get all this project data
 	$scope.displayProjectMessages(); // Display all messages in project
+	$scope.getProjectInfo(); // Get all this project data
+
 }]);

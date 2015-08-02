@@ -4,7 +4,6 @@ angular.module('SeHub')
 {
   $scope.isStudent = false;
   $scope.addMsg = false;
-  $scope.msgToPost = "";
   $scope.oldText = "";
   $scope.messages = [];
   $scope.userMessages = [];
@@ -43,8 +42,7 @@ angular.module('SeHub')
     $scope.addMsg = !$scope.addMsg; // Reveal the "POST" Button
   }
   $scope.postMessageClicked = function() // Posting the message itself
-  {  
-    console.log($scope.courseObj);
+  {
     if($scope.msg.msgToAdd != null && $scope.courseObj.courseName)
     {
       jsonNewMsg = {
@@ -81,13 +79,8 @@ angular.module('SeHub')
       {
         for(var i = 0; i < $scope.user.projects_id_list.length; i++)
           for(var j = 0; j < data.length; j++)
-          {
             if($scope.user.projects_id_list[i] === data[j].id.toString())
-            {
-              // $location.path('/tasks/fill/' + task.id + '/' + data[j].id);
               $location.path('/tasks/overview/' + task.id + '/' + data[j].id + '/' + data[j].id);
-            }
-          }
       }).error(function(err)
       {
         console.log(err.message);
@@ -97,7 +90,6 @@ angular.module('SeHub')
 
   $scope.gotoTask = function(task)
   {
-    // console.log(task);
     if(task.isPersonal)
     {
       $location.path('/tasks/fill/' + task.id + '/' + $scope.user.id);
