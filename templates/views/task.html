@@ -1,8 +1,45 @@
 <div ng-if='loading' class='center_all'>
 	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>
+
+
+<div ng-if="readOnly && !loading">
+	<md-card style='position:fixed;top:11%;right:15px;width:20%'  layout-padding>
+		<h1>Submitter</h1>
+		<div layout="row">
+			<div flex="30"> <!-- Avatar -->
+	            <img ng-src="{{group.avatar_url}}" alt="" style="max-width:auto;padding:5px" ng-if='task.isPersonal'>
+	            <img ng-src="{{group.logo_url}}" alt="" style="max-width:auto;padding:5px" ng-if='!task.isPersonal'>
+	        </div>
+	        <div class="user-data" layout="column" flex>
+	            <div ng-if='task.isPersonal'>
+	                Student Name: {{group.name}}
+	            </div>
+	            <div ng-if='!task.isPersonal'>
+	                Project Name: {{group.projectName}}
+	            </div>
+	            <div>
+	            	Grade : {{task.garde.grade}}
+	            </div>
+	            <div>
+	            	<md-slider flex class="md-primary" md-discrete ng-model="task.garde.grade" step="1" min="1" max="100" aria-label="rating" ng-disabled="!isMaster">
+	      			</md-slider>
+	            </div>
+	            <div layout="row" ng-if='isMaster'>
+	            	<div class="spacer"></div>
+	            	<div>
+	            		<md-button ng-click='submitGrade($event)'>Submit</md-button>
+	            	</div>
+	            </div>
+	        </div>
+		</div>
+        
+
+    </md-card>
+</div>
+
 <div layout='row' ng-if='!loading'>
-	<div flex='20'></div>
+	<div flex='10'></div>
 	<div layout="coulumn" flex="60">
 		<md-card layout-padding style="width:100%">
 			<h1><i class="fa fa-clipboard"></i> {{task.title}}</h1>

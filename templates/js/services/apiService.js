@@ -271,6 +271,14 @@ service.factory('apiService', ['$http', function($http) {
 				url: url
 			};
 			return $http(req);
+		},
+		submitGrade: function(token, taskId, ownerId, grade){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/submitGrade/" + token + '/' + taskId + '/' + ownerId + '/' + grade;
+			req = {
+				method: 'POST',
+				url: url
+			};
+			return $http(req);
 		}
 	};
 }]);
