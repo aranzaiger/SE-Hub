@@ -814,7 +814,7 @@ def getTaskById(token, taskId, ownerId):
 
         # grade = TaskGrade(grade=0, taskId=task.key().id(), userId=user.key().id())
         # db.put(grade)
-    grade = TaskGrade.all().filter("taskId = ", taskId).filter("userId = ", ownerId)
+    grade = TaskGrade.all().filter("taskId = ", int(taskId)).filter("userId = ", int(ownerId))
     gradeFound = False
     for g in grade.run():
         task['grade'] = g
