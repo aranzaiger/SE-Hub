@@ -86,7 +86,7 @@ def createMessage(token):
         return bad_request("there")
 
     try:
-        msg['isProject'] = payload['isProject']
+        msg.isProject = payload['isProject']
     except Exception as e:
         pass
 
