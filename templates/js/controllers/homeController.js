@@ -47,8 +47,6 @@ angular.module('SeHub')
     console.log($scope.courseObj);
     if($scope.msg.msgToAdd != null && $scope.courseObj.courseName)
     {
-      console.log("NOW");
-
       jsonNewMsg = {
       'groupId': $scope.courseObj.id, // TODO Should be ===> $scope.courseObj.id
       'message': $scope.msg.msgToAdd
@@ -56,13 +54,11 @@ angular.module('SeHub')
 
       apiService.createMessage(token, jsonNewMsg).success(function(data)
       {
+        $scope.userMessages.push(data);
       }).error(function(err)
       {
         console.log(err.message);
       });
-
-      $scope.userMessages.push({"text": $scope.msg.msgToAdd});
-      $location.path('/home/');
     }
     else
     {
