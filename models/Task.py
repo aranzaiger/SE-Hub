@@ -7,7 +7,7 @@ from google.appengine.ext import db
 class Task(db.Model):
     title = db.StringProperty(required=True)
     courseId = db.IntegerProperty(required=True)
-    description = db.StringProperty(required=True,default=" ")
+    description = db.StringProperty(required=True,default=" ", multiline=True)
     dueDate = db.DateProperty(required=True)
     isPersonal = db.BooleanProperty(required=True, default=True)
 

@@ -188,6 +188,15 @@ service.factory('apiService', ['$http', function($http) {
 				url: url
 			};
 			return $http(req);
+		},
+		createTask: function(token, payload){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/create/" + token;
+			req = {
+				method: 'POST',
+				data: payload,
+				url: url
+			};
+			return $http(req);
 		}
 	};
 }]);
