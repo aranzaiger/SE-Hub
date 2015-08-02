@@ -37,14 +37,12 @@ angular.module('SeHub')
 		{
 			$scope.loadingData = true;
 			$scope.campuses = data;
-			console.log("INSIDE " + $scope.campuses);
 			init(); // Executing the function to initialize campuses display
 			
 		}).error(function()
 		{
-			// TODO
+			console.log(err.message);
 		});
-		// console.log($scope.campuses.length.toString());
 
 		if(!$scope.campuses) // If campuses is empty
 		{

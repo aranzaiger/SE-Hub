@@ -878,11 +878,12 @@ def sendTaskReminder():
                 course = Course.get_by_id(int(t.courseId))
                 if t.isPersonal:
                     for uId in course.membersId:
-                        tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", int(uId))
-                        if tc.count() == 0:
-                            user = User.get_by_id(int(uId))
-                            send_task_reminder(user.email, user.name, t.title, course.courseName)
-                            print ""
+                        if int(uId) != course.master_id:
+                            tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", int(uId))
+                            if tc.count() == 0:
+                                user = User.get_by_id(int(uId))
+                                send_task_reminder(user.email, user.name, t.title, course.courseName)
+                                print ""
 
                 else:
                     projects = Project.all().filter("courseId = ", course.key().id())

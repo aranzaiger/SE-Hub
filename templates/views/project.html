@@ -19,17 +19,17 @@
 					<!-- <div ng-if = "isMasterOrLecturer"> -->
 					<md-card layout = "row">
 						<div ng-if="!isMember" layout-padding>
-							<md-button ng-click="joinProject()" ng class = "md-raised md-primary">
+							<md-button ng-click="joinProject($event)" ng class = "md-raised md-primary" aria-label="jP">
 								<i class="fa fa-user-plus"></i>
 							</md-button>
 						</div>
 						<div layout-padding>
-							<md-button ng-click="editProject($event)"  ng class="md-raised md-primary">
+							<md-button ng-click="editProject($event)"  ng class="md-raised md-primary" aria-label="eP">
 								<i class="fa fa-pencil-square-o"></i>
 							</md-button>
 						</div>
 						<div layout-padding>
-							<md-button ng-click="removeProject($event)" ng class="md-raised md-primary">
+							<md-button ng-click="removeProject($event)" ng class="md-raised md-primary" aria-label="rP">
 								<i class="fa fa-times"></i>
 							</md-button>
 						</div>
@@ -43,9 +43,18 @@
 				<div flex = "10" layout-padding layout-margin border = "1">
 					Team Members:
 					<ul layout-padding>
-						<li ng-repeat = "member in project.members">
-							<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;"> {{member.name}}</a>
-						</li>	
+						<div layout = "row">
+							<li ng-repeat = "member in project.members">
+								<div>
+									<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;"> {{member.name}}</a>	
+								</div>
+								<div ng-if = "isEditPressed">
+									<md-button ng-click="removeUserFromProject()" ng class="md-raised md-primary" aria-label="rU">
+										<i class="fa fa-times"></i>
+									</md-button>
+								</div>
+							</li>	
+						</div>
 					</ul>
 				</div>
 				<div flex = "40">
