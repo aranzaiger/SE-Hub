@@ -70,11 +70,13 @@ def send_create_campus_request(email, name, campus_name):
     """
 
     message.html = """
-    <html><head></head><body>
+    <html><head>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    </head><body>
         <div>
         <center>
             <img src='https://cloud.githubusercontent.com/assets/2984053/6825467/7c9d0402-d303-11e4-9827-62a6d66f937a.png'>
-            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+
         </center>
         </div>
         <div style='width:70%'>
@@ -108,11 +110,13 @@ def notify_se_hub_campus_request(campus, campus_name):
     """ + str(campus.to_JSON())
 
     message.html = """
-    <html><head></head><body>
+    <html><head>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    </head><body>
         <div>
         <center>
             <img src='https://cloud.githubusercontent.com/assets/2984053/6825467/7c9d0402-d303-11e4-9827-62a6d66f937a.png'>
-            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+
         </center>
         </div>
         <div style='width:70%'>
@@ -151,18 +155,19 @@ def send_task_reminder( email, name, task_name, course_name):
     """
 
     message.html = """
-    <html><head></head><body>
+    <html><head>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+    </head><body>
         <div>
         <center>
             <img src='https://cloud.githubusercontent.com/assets/2984053/6825467/7c9d0402-d303-11e4-9827-62a6d66f937a.png'>
-            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
         </center>
         </div>
         <div style='width:70%'>
             <h3>Dear """+name+""":</h3>
 
             <center>
-                <img src='https://pixabay.com/static/uploads/photo/2014/03/05/07/54/reminder-279903_640.png'>
+                <img src='https://pixabay.com/static/uploads/photo/2014/03/05/07/54/reminder-279903_640.png' style='height:100px'>
             </center>
             <br>
 

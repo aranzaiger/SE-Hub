@@ -5,7 +5,6 @@ angular.module('SeHub')
 	$scope.myProjectsEmpty = true;
 	$scope.user = $scope.$parent.user;
 	var token = $cookies['com.sehub.www'];
-	console.log(token);
 
 	$scope.displayMyProjects = function()
 	{
@@ -18,11 +17,9 @@ angular.module('SeHub')
 				$scope.myProjectsEmpty = false;
 			}
 			init();  // Executing the function to initialize my projects display
-			console.log(data);
-			console.log("Success");
 		}).error(function(err)
 		{
-			console.log("Error: " + err.message);
+			console.log(err.message);
 		});
 	}
 
