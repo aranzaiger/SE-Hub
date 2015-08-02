@@ -700,12 +700,36 @@ def getAllUserTasks(token):
             #add a key 'forSortDate' for sorting dates
             taskTime = datetime.datetime(taskDic['dueDate']['year'], taskDic['dueDate']['month'], taskDic['dueDate']['day'])
             taskDic['forSortDate'] = taskTime
-            grade = TaskGrade.all().filter("taskId = ", t.key().id()).filter("userId = ", user.key().id())
+
+
+            if t.isPersonal:
+                ownerId = user.key().id()
+            else:
+                project = Project.all().filter("courseId = ", course.key().id())
+                for p in project.run():
+                    if str(p.key().id()) in user.projects_id_list:
+                        ownerId = p.key().id()
+
+            grade = TaskGrade.all().filter("taskId = ", t.key().id()).filter("userId = ", ownerId)
             for g in grade.run():
                 taskDic['grade'] = g.grade
             if grade.count() == 0:
-                taskDic['grade'] = 0
+                taskDic['grade'] = {'taskId': t.key().id(), 'userId': ownerId, 'grade': None}
+
+            taskDic['submitted'] = {}
+            if t.isPersonal:
+                total = len(course.membersId)
+            else:
+                total = Project.all().filter("courseId = ", course.key().id()).count()
+            taskDic['submitted']['total'] = total
+
+            basicTC = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", -1).count()
+            allTC = TaskComponent.all().filter("taskId = ", t.key().id()).count()
+            done = (basicTC/allTC) - 1
+            taskDic['submitted']['done'] = done
+
             taskArr.append(taskDic)
+
 
         taskArr = sorted(taskArr, key=itemgetter('forSortDate'), reverse=False)
         for i in taskArr:
@@ -731,6 +755,112 @@ def getAllUserTasks(token):
                         status=200,
                         mimetype="application/json")
 
+
+# @task_routes.route('/api/tasks/getAllUngradedTasks/<string:token>/<string:taskId>/<string:ownerId>', methods=["GET"])
+# @auto.doc()
+# def getAllUngradedTasks(token, taskId, ownerId):
+#     """
+#     <span class="card-title">>This Call will return an array of all components for a given task</span>
+#     <br>
+#     <b>Route Parameters</b><br>
+#          - SeToken: token<br>
+#         - taskId: 1234567890
+#         - ownerId: 123456789
+#     <br>
+#     <br>
+#     <b>Payload</b><br>
+#      - NONE
+#     <br>
+#     <br>
+#     <b>Response</b>
+#     <br>
+#     200 - JSON Example:<br>
+#     <code>
+#     [
+#         {<br>
+#             'taskId' : 7589454894,
+#             'userId' : -1,
+#             'type' : 'kindOfType',
+#             'label' : 'kindOfLabel',
+#             'isMandatory' : true,
+#             'order' : 2
+#         }<br>
+#         {<br>
+#             'taskId' : 7589454894,
+#             'userId' : yossi,
+#             'type' : 'otherKindOfType',
+#             'label' : 'otherKindOfLabel',
+#             'isMandatory' : false,
+#             'order' : 4
+#         }<br>
+#     ]
+#     </code>
+#     <br>
+#     """
+#     user = get_user_by_token(token)
+#     if user is None:
+#         return bad_request("Bad User Token")
+#     arr = []
+#
+#     courses = Course.all().filter("master_id = ", user.key().id())
+#     if courses.count() == 0:
+#         return no_content("user is not lecturer of any course")
+#     for course in courses.run():
+#         tasks = Task.all().filter("courseId = ", course.key().id())
+#         for task in tasks.run():
+#
+#
+#
+#
+#     task = Task.get_by_id(int(taskId))
+#     if task is None:
+#         return bad_request("Bad Task id")
+#
+#     if task.isPersonal:
+#         if User.get_by_id(int(ownerId)) is None:
+#             return bad_request("no such user")
+#     else:
+#         if Project.get_by_id(int(ownerId)) is None:
+#             return bad_request("no such project")
+#
+#     task = json.loads(task.to_JSON())
+#     task['components'] = []
+#     task['grade'] = {}
+#
+#     taskCompQuery = TaskComponent.all()
+#     taskCompQuery.filter("taskId = ", int(taskId))
+#
+#     taskCompQuery.filter("userId = ", int(ownerId))
+#     # if task.isPersonal:
+#     #     taskCompQuery.filter("userId = ", user.key().id())
+#     # else:
+#     #     taskCompQuery.filter("userId = ", user.key().id())#TODO: fix to project
+#
+#     #check if never created a personalized task and if so, create it
+#     if taskCompQuery.count() == 0:
+#         taskCompQuery = TaskComponent.all().filter("taskId =", int(taskId)).filter("userId =", -1)
+#     print "query count is: ", taskCompQuery.count()
+#     for tc in taskCompQuery.run():
+#         task['components'].append(dict(json.loads(tc.to_JSON())))
+#
+#         # for tc in taskCompQuery.run():
+#         #     tcNew = TaskComponent(taskId=tc.taskId, userId=user.key().id(), type=tc.type, label=tc.label, isMandatory=tc.isMandatory, order=tc.order)
+#         #     db.put(tcNew)
+#
+#         # grade = TaskGrade(grade=0, taskId=task.key().id(), userId=user.key().id())
+#         # db.put(grade)
+#     grade = TaskGrade.all().filter("taskId = ", int(taskId)).filter("userId = ", int(ownerId))
+#     gradeFound = False
+#     for g in grade.run():
+#         task['grade'] = json.loads(g.to_JSON())
+#         gradeFound = True
+#     if not gradeFound:
+#         task['grade'] = {'taskId': taskId, 'userId': ownerId, 'grade': None}
+#
+#
+#     return Response(response=json.dumps(task),
+#                         status=200,
+#                         mimetype="application/json")
 
 
 @task_routes.route('/api/tasks/getTaskById/<string:token>/<string:taskId>/<string:ownerId>', methods=["GET"])
