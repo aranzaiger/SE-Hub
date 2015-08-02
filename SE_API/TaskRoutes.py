@@ -286,7 +286,7 @@ def getAllFutureCampusTasks(token, courseId):
 
 @task_routes.route('/api/tasks/getAllFutureTasks/<string:token>', methods=["GET"])
 @auto.doc()
-def getAllFutureCampusTasks(token):
+def getAllFutureTasks(token):
     """
     <span class="card-title">>This Call will return an array of all Future Tasks ordered by date</span>
     <br>
