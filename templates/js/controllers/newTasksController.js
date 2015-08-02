@@ -1,4 +1,4 @@
-angular.module('SeHub').controller('newTasksController', ['$scope', 'apiService', '$cookies', '$location' ,
+angular.module('SeHub').controller('newTasksController', ['$scope', 'apiService', '$cookies', '$location',
 	function($scope, apiService, $cookies, $location) {
 
 		$scope.newComp = {};
@@ -44,10 +44,10 @@ angular.module('SeHub').controller('newTasksController', ['$scope', 'apiService'
 					day: payload.dueDate.getDate()
 
 				}
-				
-				apiService.createTask(token, payload).success(function(data){
+
+				apiService.createTask(token, payload).success(function(data) {
 					$location.path('/tasks');
-				}).error(function(err){
+				}).error(function(err) {
 					console.error(err);
 				})
 			} else {
@@ -95,10 +95,10 @@ angular.module('SeHub').controller('newTasksController', ['$scope', 'apiService'
 			var type = $scope.newComp.type;
 			comp.type = type;
 			comp.order = compOrder;
-			compOrder ++;
+			compOrder++;
 			comp.isMandatory = $scope.newComp.isMandatory;
 			comp.label = "";
-			var i = 0
+			var i = 0;
 			if (!(type === 'textbox' || type === 'textarea' || type === 'checkbox'))
 				while ($scope.newComp.label[i]) {
 					comp.label += $scope.newComp.label[i] + "|";
