@@ -79,6 +79,33 @@ angular.module('SeHub')
     $scope.msg.msgToAdd = null;
   }
 
+  $scope.gotoTask = function(task)
+  {
+    console.log(task);
+    if(task.isPersonal)
+    {
+      $location.path('/tasks/fill/' + task.id + '/' + $scope.user.id);
+    }
+    else // it's a project task
+    {
+      apiService.getProjectsByCourse(token, task.courseId).success(function(data)
+      {
+        console.log($scope.user);
+        for(var i = 0; i < $scope.user.projects_id_list.length; i++)
+          for(var j = 0; j < data.length; j++)
+          {
+            if($scope.user.projects_id_list[i] === data[j])
+            {
+              $location.path('/tasks/fill/' + task.id + '/' + data[j].id);
+            }
+          }
+      }).error(function(err)
+      {
+        console.log(err.message);
+      });
+    }
+  }
+
   $scope.displayTasks = function()
   {
     apiService.getAllFutureTasks(token).success(function(data) // Get all Tasks // TODO change to closest TASK
@@ -89,15 +116,17 @@ angular.module('SeHub')
     {
       console.log(err.message);
     });
+  }
 
-    // apiService.getAllFutureTasks(token, courseId).success(function(data) // need to check courseId
-    // {
-    //   console.log("YE");
-    // }).error(function(err)
-    // {
-    //   console.log("Error: " + err.message);
-    // });
-
+  $scope.getProjects = function(courseId)
+  {
+    apiService.getProjectsByCourse(token, courseId).success(function(data)
+    {
+      return data;
+    }).error(function(err)
+    {
+      console.log(err.message);
+    });
   }
 
   $scope.getCampuses = function()
@@ -106,7 +135,7 @@ angular.module('SeHub')
     {
       $scope.campuses = data;
       $scope.getCourses();  // Get all the courses info
-      if($scope.messages)
+      if($scope.userMessages)
       {
         //$scope.displayMessages(); //  // Display all messages in message feed and the latest one
       }
@@ -158,25 +187,6 @@ angular.module('SeHub')
     console.log($scope.courseObj);
   }
 
-  // $scope.chooseCourseClicked = function()
-  // {
-  //   console.log("Click ");
-  //   console.log($scope.choosenCourse);
-  //   if($scope.choosenCourse)
-  //   {
-  //     console.log("here");
-  //     $scope.courseObj = null;
-  //     for(var i = 0; i < $scope.courses.length; i++)
-  //     {
-  //       if($scope.courses[i].courseName === $scope.choosenCourse)
-  //       {
-  //         $scope.courseObj = $scope.courses[i];
-  //         console.log($scope.courseObj);
-  //       }
-  //     }
-  //   }
-  // }
-
   $scope.chooseProjectClicked = function()
   {
     console.log("choose project Clicked!!");
@@ -185,8 +195,13 @@ angular.module('SeHub')
   $scope.getCampuses(); // Get all the campuses info
 
   // animation
-  $scope.displayMessages();
+  if($scope.userMessages)
+  {
+    $scope.displayMessages(); //  // Display all messages in message feed and the latest one
+  }
+  // $scope.displayMessages();
   $scope.displayTasks(); // Display all tasks in task feed and the latest one
+   // $scope.getProjects(); // Get all projects info
   $scope.isEnterd = top.setIsEnterd;
 
 }]);

@@ -31,7 +31,9 @@
 			Closest Task-
 			<md-card layout-margin layout-padding>
 				<div>	
-					In Course: {{userTasks[0].courseName}}
+					<md-button ng-click="gotoTask(task)">
+						 {{userTasks[0].title}}
+					</md-button>
 				</div>
 			</md-card>
 		</div>
@@ -93,7 +95,6 @@
 												</div>
 												<div>
 													{{msg.group.courseName}}
-													<br></br>
 													{{msg.group.projectName}}
 												</div>
 											</div>
@@ -130,14 +131,16 @@
 								
 						<md-tab label="Tasks">
 							<md-content class="md-padding">
-								<h1 class="md-display-2">Tasks</h1>
-								<md-card ng-repeat = "task in userTasks">
+								<md-card ng-repeat = "task in userTasks" layout-padding>
 									<div>
-										{{task.courseName}}
+										Title: 
+										<md-button ng-click="gotoTask(task)">
+											{{task.title}}
+										</md-button>
+										<br></br>
+										Description: {{task.description}}
 									</div>
-								</md-card>
-									
-								
+								</md-card>	
 							</md-content>
 						</md-tab>
 						<md-tab label="two">

@@ -335,7 +335,7 @@ def getAllFutureTasks(token):
         for t in query.run():
             taskDic =dict(json.loads(t.to_JSON()))
             #add a key 'forSortDate' for sorting dates
-            taskTime = datetime.datetime(taskDic['dueDate']['year'], taskDic['dueDate']['month'], taskDic['dueDate']['day'])
+            taskTime = datetime.date(taskDic['dueDate']['year'], taskDic['dueDate']['month'], taskDic['dueDate']['day'])
             if taskTime >= datetime.date.today():
                 taskDic['forSortDate'] = taskTime
                 arr.append(taskDic)
