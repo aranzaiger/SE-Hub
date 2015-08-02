@@ -8,12 +8,14 @@ angular.module('SeHub')
 			var submitterId = $routeParams.submitterId;
 			var token = $cookies['com.sehub.www'];
 			var groupId = $routeParams.gId;
+			$scope.loading = true;
 
-			apiService.getTaskById(token, taskId, groupId).success(function(data){
+			apiService.getTaskById(token, taskId, groupId).success(function(data) {
 				$scope.task = data;
 				$scope.dateInit($scope.task.dueDate);
-			}).error(function(err){
-				console.error('Error: ', err);
+				$scope.loading = false;
+			}).error(function(err) {
+				$location.path('/tasks');
 			})
 
 			if (submitterId) { //In This Case we Only Want to show The Content of the Submitter
@@ -71,8 +73,23 @@ angular.module('SeHub')
 
 			$scope.submitTask = function(event) { //Dialog will pop-up if not all mandatory fields are filled
 				if (validateComponents()) {
-					alert('All Shit Are Filled');
-					return;
+					apiService.submitTask(token, taskId, groupId, $scope.task.components).success(function(data) {
+						$mdDialog.show(
+							$mdDialog.alert()
+							.title('Submitted!')
+							.content('Your Task Was Successfully Submitted!')
+							.ariaLabel('ddd')
+							.ok('GoTo My Submitted Task')
+							.then(function(dd){
+								if($scope.task.isPersonal)
+									$location.path('/tasks/overview/'+taskId+'/'+groupId+'/'+groupId);
+								else
+									$location.path('/tasks/overview/'+taskId+'/'+groupId+'/'+groupId);
+							})
+							.targetEvent(event)
+						);
+					})
+
 				}
 				$mdDialog.show(
 					$mdDialog.alert()
@@ -119,7 +136,7 @@ angular.module('SeHub')
 			// 	}]
 			// };
 
-			
+
 
 			$scope.dueTime = function() {
 				if (!$scope.task.date || $scope.task.date === '')
