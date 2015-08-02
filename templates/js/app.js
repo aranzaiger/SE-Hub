@@ -48,11 +48,11 @@ app.config(['$routeProvider', '$locationProvider',
 				templateUrl: 'templates/views/newTask.html',
 				controller: 'newTasksController'
 			})
-			.when('/tasks/overview/:taskId/:submitterId', {
+			.when('/tasks/overview/:taskId/:submitterId/:gId', {
 				templateUrl: 'templates/views/task.html',
 				controller: 'taskController'
 			})
-			.when('/tasks/fill/:taskId', {
+			.when('/tasks/fill/:taskId/:gId', {
 				templateUrl: 'templates/views/task.html',
 				controller: 'taskController'
 			})

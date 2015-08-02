@@ -143,7 +143,79 @@ def create_task(token):
                                 status=200,
                                 mimetype="application/json")
 
+@task_routes.route('/api/tasks/submitTask/<string:token>/<string:taskId>/<string:ownerId>', methods=['POST'])
+@auto.doc()
+def submitTask(token, taskId, ownerId):
+    """
+    <span class="card-title">This call will create a new Task in the DB</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - JSON Object, Example: <br>
+    {<br>
+        "title":"task1",<br>
+        "courseId":1234567890,<br>
+        "description":"pls fddfsdfdsk",<br>
+        "dueDate":{"year":2010,<br>
+                    "month":2,<br>
+                    "day":4<br>
+                    },
+        "isPersonal":true,<br>
+        "components":[<br>
+                {<br>
+                "type" : "should be type1",<br>
+                "label" : "should be label1",<br>
+                "isMandatory" : true,<br>
+                "order" : 1<br>
+                },<br>
+                {<br>
+                "type" : "should be type2",<br>
+                "label" : "should be label2",<br>
+                "isMandatory" : true,<br>
+                "order" : 2<br>
+                },<br>
+                {<br>
+                "type" : "should be type3",<br>
+                "label" : "should be label3",<br>
+                "isMandatory" : false,<br>
+                "order" : 3<br>
+                }<br>
+        ]<br>
+}
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    201 - Created
+    <br>
+    400 - Bad Request
+    <br>
+    403 - Invalid token or not a lecturer
+    """
+    if not request.data:
+        return bad_request("no payload")
+    payload = json.loads(request.data)
 
+    user = get_user_by_token(token)
+
+    task = Task.get_by_id(int(taskId))
+
+    #create components
+    for c in payload['components']:
+        try:
+            component = TaskComponent(taskId=task.key().id(), userId=(int(ownerId)), type=c['type'], label=c['label'], isMandatory=c['isMandatory'], order=c['order'])
+        except Exception as e:
+            print e
+            return bad_request("Bad component")
+        db.put(component)
+        db.save
+
+    return Response(response=task.to_JSON(),
+                                status=200,
+                                mimetype="application/json")
 #----------------------------------------------------------
 #                     PUT
 #----------------------------------------------------------
@@ -267,7 +339,7 @@ def getAllFutureCampusTasks(token, courseId):
     for t in query.run():
         taskDic =dict(json.loads(t.to_JSON()))
         #add a key 'forSortDate' for sorting dates
-        taskTime = datetime.datetime(taskDic['dueDate']['year'], taskDic['dueDate']['month'], taskDic['dueDate']['day'])
+        taskTime = datetime.date(taskDic['dueDate']['year'], taskDic['dueDate']['month'], taskDic['dueDate']['day'])
         if taskTime >= datetime.date.today():
             taskDic['forSortDate'] = taskTime
             arr.append(taskDic)
@@ -558,15 +630,16 @@ def getAllUserTasks(token):
 
 
 
-@task_routes.route('/api/tasks/getUserTaskById/<string:token>/<string:taskId>', methods=["GET"])
+@task_routes.route('/api/tasks/getTaskById/<string:token>/<string:taskId>/<string:ownerId>', methods=["GET"])
 @auto.doc()
-def getUserTaskById(token, taskId):
+def getTaskById(token, taskId, ownerId):
     """
     <span class="card-title">>This Call will return an array of all components for a given task</span>
     <br>
     <b>Route Parameters</b><br>
          - SeToken: token<br>
         - taskId: 1234567890
+        - ownerId: 123456789
     <br>
     <br>
     <b>Payload</b><br>
@@ -606,33 +679,45 @@ def getUserTaskById(token, taskId):
     if task is None:
         return bad_request("Bad Task id")
 
+    task = json.loads(task.to_JSON())
+    task['components'] = []
+    task['grade'] = {}
 
     taskCompQuery = TaskComponent.all()
-    taskCompQuery.filter("taskId = ", task.key().id())
+    taskCompQuery.filter("taskId = ", taskId)
 
-    if task.isPersonal:
-        taskCompQuery.filter("userId = ", user.key().id())
-    else:
-        taskCompQuery.filter("userId = ", user.key().id())#TODO: fix to project
+    taskCompQuery.filter("userId = ", ownerId)
+    # if task.isPersonal:
+    #     taskCompQuery.filter("userId = ", user.key().id())
+    # else:
+    #     taskCompQuery.filter("userId = ", user.key().id())#TODO: fix to project
 
     #check if never created a personalized task and if so, create it
     if taskCompQuery.count() == 0:
-        taskCompQuery = TaskComponent.all().filter("taskId = ", task.key().id()).filter("userId = ", -1)
-        for tc in taskCompQuery.run():
-            tcNew = TaskComponent(taskId=tc.taskId, userId=user.key().id(), type=tc.type, label=tc.label, isMandatory=tc.isMandatory, order=tc.order)
-            db.put(tcNew)
+        print "here"
+        taskCompQuery = TaskComponent.all().filter("taskId =", int(taskId)).filter("userId =", -1)
+    print "query count is: ", taskCompQuery.count()
+    for tc in taskCompQuery.run():
+        task['components'].append(dict(json.loads(tc.to_JSON())))
 
-        grade = TaskGrade(grade=0, taskId=task.key().id(), userId=user.key().id())
-        db.put(grade)
+        # for tc in taskCompQuery.run():
+        #     tcNew = TaskComponent(taskId=tc.taskId, userId=user.key().id(), type=tc.type, label=tc.label, isMandatory=tc.isMandatory, order=tc.order)
+        #     db.put(tcNew)
+
+        # grade = TaskGrade(grade=0, taskId=task.key().id(), userId=user.key().id())
+        # db.put(grade)
+    grade = TaskGrade.all().filter("taskId = ", taskId).filter("userId = ", ownerId)
+    gradeFound = False
+    for g in grade.run():
+        task['grade'] = g
+        gradeFound = True
+    if not gradeFound:
+        task['grade'] = {'taskId': taskId, 'userId': ownerId, 'grade': None}
 
 
-
-
-
-
-
-    db.save
-    return no_content()
+    return Response(response=json.dumps(task),
+                        status=200,
+                        mimetype="application/json")
 
 
 
