@@ -7,13 +7,25 @@ angular.module('SeHub')
 	$scope.isEditPressed = false;
 	$scope.user = $scope.$parent.user;
 	$scope.loadingData = true;
-	$scope.isMasterOrLecturer = false;
+	$scope.isMaster = false;
 	$scope.isMember = false;
 
 	// $scope.thisProject = {};
 	// $scope.thisProject.courseName = $routeParams.className;
 
-	$scope.joinProject = function()
+	$scope.removeUserFromProject = function()
+	{
+		apiService.removeUserFromProject.success(function(data)
+		{
+
+		}).error(function(err)
+		{
+			console.log(err.message);
+		});
+
+	}
+
+	$scope.joinProject = function(ev)
 	{
 		apiService.joinProject(token, projectId).success(function(data)
 		{
@@ -30,25 +42,32 @@ angular.module('SeHub')
 
 	$scope.editProject = function(ev)
 	{
-		$scope.isEditPressed = true;
+		$scope.isEditPressed = !$scope.isEditPressed;
 	}
 
 	$scope.removeProject = function(ev)
 	{
-		$mdDialog.show($mdDialog.confirm().title('Remove Project').content('Are you sure you want to remove the project ?')
-		.ariaLabel('Removing project alert dialog').ok('Yes').cancel('No').targetEvent(ev));
+		var confirm = $mdDialog.confirm().title('Remove Project').content('Would you like to delete this project?').ariaLabel('removeProj')
+		.ok('Please do it!').cancel('No').targetEvent(ev);
+		$mdDialog.show(confirm).then(function()
+		{ // Yes - Remove the project
+			console.log("Removed");
 
-		 /*
-		 .than(function()
-		{
-			$scope.alert = 'You decided to get rid of your debt.';
+      		apiService.removeProject(token, projectId).success(function(data)
+      		{
+      			$mdDialog.show($mdDialog.alert().title('Project Removal').content('Project removed successfully.')
+				.ariaLabel('project remove alert dialog').ok('Ok').targetEvent(ev));
+      		}).error(function(err)
+      		{
+      			$mdDialog.show($mdDialog.alert().title('Project Removal').content('Project removal failed - reason' + err.message)
+				.ariaLabel('project remove alert dialog').ok('Try Again').targetEvent(ev));
+      		});
 		},
-	    function()
-	    {
-			$scope.alert = 'You decided to keep your debt.';
+		function()
+		{ // No - Dont remove
+    		console.log("Not removed");
+      
 		});
-		 */
-			
 			// $location.path('/class/' + data.id + '/' + data.courseName); // Will display all the projects in this course
 	};
 
