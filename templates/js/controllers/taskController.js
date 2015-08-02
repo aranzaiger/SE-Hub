@@ -38,6 +38,8 @@ angular.module('SeHub')
 				$scope.readOnly = true;
 
 			} else { //In This Case We Need An Empty Task To Be Able To Fill It
+				if($scope.isMaster)
+					$location.path('/tasks');
 				$scope.readOnly = false;
 			}
 
@@ -88,7 +90,12 @@ angular.module('SeHub')
 
 			$scope.submitTask = function(event) { //Dialog will pop-up if not all mandatory fields are filled
 				if (validateComponents()) {
-					apiService.submitTask(token, taskId, groupId, $scope.task.components).success(function(data) {
+					payload = $scope.task.components;
+					for(var i = 0 ; i < payload.length ; i++){
+						if (payload[i].type === 'checkbox')
+							payload[i].value = payload[i].value.toString();
+					}
+					apiService.submitTask(token, taskId, groupId, payload).success(function(data) {
 						$mdDialog.show(
 							$mdDialog.alert()
 							.title('Submitted!')
