@@ -27,7 +27,7 @@
 				<md-button ng-click = "joinCourse()" ng class = "md-raised md-primary" ng-disabled="isCourseOver"><i class="fa fa-plus"></i> Join Class</md-button>
 		</div>
 		<div layout-margin>
-			<md-content>
+			<md-content ng-if="isInCourse && !isInProject">
 				<md-button ng-click="createProjectClicked()" ng class="md-raised md-primary" ng-disabled="isCourseOver">Create Project <i ng-class="createSctionStatus"></i></md-button>
 			</md-content>	
 		</div>

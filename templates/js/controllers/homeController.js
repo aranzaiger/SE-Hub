@@ -56,10 +56,8 @@ angular.module('SeHub')
 
       apiService.createMessage(token, jsonNewMsg).success(function(data)
       {
-        console.log("create Msg!");
       }).error(function(err)
       {
-        console.log("Error Below");
         console.log(err.message);
       });
 
@@ -85,7 +83,6 @@ angular.module('SeHub')
     {
       apiService.getProjectsByCourse(token, task.courseId).success(function(data)
       {
-        // console.log($scope.user);
         for(var i = 0; i < $scope.user.projects_id_list.length; i++)
           for(var j = 0; j < data.length; j++)
           {

@@ -9,7 +9,9 @@ angular.module('SeHub')
 	$scope.loadingData = true;
 	$scope.isMaster = false;
 	$scope.isMember = false;
-
+	$scope.project = [];
+	$scope.isInProject = false;
+	
 	// $scope.thisProject = {};
 	// $scope.thisProject.courseName = $routeParams.className;
 
@@ -22,7 +24,6 @@ angular.module('SeHub')
 		{
 			console.log(err.message);
 		});
-
 	}
 
 	$scope.joinProject = function(ev)
@@ -57,6 +58,7 @@ angular.module('SeHub')
       		{
       			$mdDialog.show($mdDialog.alert().title('Project Removal').content('Project removed successfully.')
 				.ariaLabel('project remove alert dialog').ok('Ok').targetEvent(ev));
+				$location.path('/myProjects');
       		}).error(function(err)
       		{
       			$mdDialog.show($mdDialog.alert().title('Project Removal').content('Project removal failed - reason' + err.message)
@@ -96,6 +98,19 @@ angular.module('SeHub')
 					$scope.isMember = true;
 				}
 			}
+
+			apiService.getProjectsByCourse(token, $scope.project.courseId).success(function(data)
+			{
+				if($scope.user.projects_id_list)
+					for(var i = 0; i < $scope.project.length; i++)
+						if($scope.user.projects_id_list[i].id === data[i].id.toString())
+							$scope.isInProject = true;
+						
+			}).error(function(err)
+			{
+				console.log(err.message);
+			});
+
 			// if($scope.user === $scope.project.info.master_id)
 			// {
 			// 	$scope.isMasterOrLecturer = true;
@@ -106,9 +121,8 @@ angular.module('SeHub')
 			// }
 		}).error(function(err)
 		{
-			console.log("Error: " + err.message);
+			console.log(err.message);
 		});
 	}
-
 	$scope.getProjectInfo(); // Get all this project data
 }]);

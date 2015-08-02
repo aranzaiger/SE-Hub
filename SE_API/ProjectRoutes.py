@@ -307,8 +307,9 @@ def getProjectsByUser(token):
     arr = []
     for p in user.projects_id_list:
         project = Project.get_by_id(int(p))
-        projDict = dict(json.loads(project.to_JSON()))
-        arr.append(projDict)
+        if project is not None:
+            projDict = dict(json.loads(project.to_JSON()))
+            arr.append(projDict)
 
     if len(arr) != 0:
         return Response(response=json.dumps(arr),
