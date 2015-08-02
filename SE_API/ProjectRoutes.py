@@ -372,12 +372,22 @@ def deleteProject(token,projectId):
     if p is None:
         return bad_request("no such Project")
 
-    if p.master_id == user.key().id():
-        db.delete(p)
-        db.save
-        return accepted("Project deleted")
+    if p.master_id != user.key().id():
+        return forbidden("user is not owner of Project")
 
-    return forbidden("user is not owner of Project")
+    #remove all users related to project
+    for uId in p.membersId:
+        user = User.get_by_id(uId)
+        if user is None:
+            return bad_request("trying to remove a user from project failed")
+        user.projects_id_list.remove(p.key().id())
+        db.put(user)
+
+
+    db.delete(p)
+    db.save
+    return accepted("Project deleted")
+
 
 
 
