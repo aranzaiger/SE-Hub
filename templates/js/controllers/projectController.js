@@ -7,35 +7,41 @@ angular.module('SeHub')
 	$scope.isEditPressed = false;
 	$scope.user = $scope.$parent.user;
 	$scope.loadingData = true;
+	$scope.displayingMessages = true;
 	$scope.isMaster = false;
 	$scope.isMember = false;
 	$scope.project = [];
 	$scope.isInProject = false;
 	$scope.projectMessages = [];
 	$scope.msg = {};
+	$scope.isMaster = false;
 	
 	// $scope.thisProject = {};
 	// $scope.thisProject.courseName = $routeParams.className;
 
+	
+	console.log($scope.user.id)
+	// console.log($scope.projectid)
 
 	$scope.displayProjectMessages = function()
 	{
 		apiService.getAllUserMessages(token).success(function(data)
 	    {
-	      $scope.projectMessages = data;
+	    	$scope.displayingMessages = false;
+			$scope.projectMessages = data;
 	    }).error(function(err)
 	    {
-	      console.log(err.message);
+			console.log(err.message);
 	    });
 	}
 
 	$scope.goToProfile = function(memberId)
 	{
-		$location.path('#/profile/' + memberId);
+		$location.path('/profile/' + memberId);
 	}
 	$scope.removeUserFromProject = function()
 	{
-		apiService.removeUserFromProject.success(function(data)
+		apiService.removeUserFromProject(token, $scope.user.id, projectId).success(function(data)
 		{
 
 		}).error(function(err)
@@ -66,6 +72,9 @@ angular.module('SeHub')
 
 	$scope.removeProject = function(ev)
 	{
+		if($scope.user.id === $scope.project.master_id)
+			$scope.isMaster = true;
+
 		var confirm = $mdDialog.confirm().title('Remove Project').content('Would you like to delete this project?').ariaLabel('removeProj')
 		.ok('Please do it!').cancel('No').targetEvent(ev);
 		$mdDialog.show(confirm).then(function()
@@ -79,7 +88,7 @@ angular.module('SeHub')
 				$location.path('/myProjects');
       		}).error(function(err)
       		{
-      			$mdDialog.show($mdDialog.alert().title('Project Removal').content('Project removal failed - reason' + err.message)
+      			$mdDialog.show($mdDialog.alert().title('Project Removal').content('Project removal failed - reason ' + err.message)
 				.ariaLabel('project remove alert dialog').ok('Try Again').targetEvent(ev));
       		});
 		},
@@ -141,6 +150,8 @@ angular.module('SeHub')
 		apiService.getProjectsById(token, projectId).success(function(data)
 		{
 			$scope.project = data;
+			if($scope.user.id === $scope.project.master_id)
+				$scope.isMaster = true;
 			for(var i = 0; i < data.members.length; i++)
 			{
 				if($scope.user.id === data.members[i].id)
