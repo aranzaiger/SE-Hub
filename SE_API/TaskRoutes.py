@@ -857,8 +857,10 @@ def getUsersStateByTask(token, taskId):
 
     arr = []
     if task.isPersonal:
-        for u in enumerate(course.membersId):
+        for u in course.membersId:
             user = User.get_by_id(int(u))
+            if user.key().id() == course.key().id():
+                continue
             userDic = dict(json.loads(user.to_JSON()))
             grade = TaskGrade.all().filter("taskId = ", task.key().id()).filter("userId = ", user.key().id())
             for g in grade.run():
