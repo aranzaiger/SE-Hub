@@ -54,6 +54,10 @@ angular.module('SeHub')
 				}
 			}
 
+			$scope.createNewTask = function(){
+				$location.path('/tasks/new');
+			}
+
 
 			function DialogController($scope, $mdDialog, data, apiService) {
 				$scope.task = data.task;

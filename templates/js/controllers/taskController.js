@@ -138,6 +138,7 @@ angular.module('SeHub')
 						.ok('No Problem!')
 						.targetEvent(event)
 					);
+					console.error(err);
 				})
 			}
 
