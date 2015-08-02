@@ -9,9 +9,9 @@
 	<div ng-if='!loading'>
 		<md-content layout-padding>
 			<md-tabs md-dynamic-height md-border-bottom>
-		      <md-tab label="Class Name">
+		      <md-tab label="{{class.courseName}}" ng-repeat="class in tasks">
 		        <md-content class="md-padding">
-		          <h1 class="md-display-2">Class Name Tasks</h1>
+		          <h1 class="md-display-2">{{class.courseName}} Tasks</h1>
 		          
 		          <div>
 						<div layout='row' layout-align="center center">
@@ -60,28 +60,37 @@
 
 			          	<div layout='row' style='width:100%'>
 							<div layout='row' style='width:100%'>
-								<div class="Personal" style='width:100%'>
-									<md-button style='width: 100%' layout='row'>
-											<div>
-												Personal Task name
-											</div>
-											<div class='spacer'></div>
-											<div> 3 / 70 </div>
-										</div>
-									</md-button>
+								<div class="Personal" style='width:100%' >
+									<div layout='column' ng-repeat="personalTask in class.PersonalTasks">
+										<div>
+											<md-button style='width: 100%' layout='row'>
+													<div>
+														{{personalTask.title}}
+													</div>
+													<div class='spacer'></div>
+													<div ng-if='user.id === class.master_id'> {{personalTask.submitted.done}} / {{personalTask.submitted.total}} </div>
+													<div ng-if='user.id !== class.master_id'> {{personalTask.grade.grade || "Not Yet Reviewed"}} </div>
+												</div>
+											</md-button>
+											
+										</div>	
+									</div>
 								</div>
 								<div style='padding: 0px 5px 0px 5px; margin-top: auto; margin-bottom: auto'>
-			          				|
 			          			</div>
-								<div class="Project" style='width:100%' >
-									<md-button style='width: 100%' layout='row'>
-											<div>
-												Project Task name
+								<div class="Project" style='width:100%'>
+									<div layout='column' ng-repeat="projectTask in class.projectTasks">
+										
+										<md-button style='width: 100%' layout='row'>
+												<div>
+													{{projectTask.title}}
+												</div>
+												<div class='spacer'></div>
+												<div ng-if='user.id === class.master_id'> {{projectTask.submitted.done}} / {{projectTask.submitted.total}} </div>
+												<div ng-if='user.id !== class.master_id'> {{projectTask.grade.grade || "Not Yet Reviewed"}} </div>
 											</div>
-											<div class='spacer'></div>
-											<div> 3 / 70 </div>
-										</div>
-									</md-button>
+										</md-button>
+									</div>
 								</div>
 							</div>
 						</div>

@@ -6,24 +6,13 @@ angular.module('SeHub')
 			$rootScope.seToken = $cookies['com.sehub.www'];
 			var token = $rootScope.seToken;
 
-			$scope.createTaskClicked = function() {
-				$location.path("/tasks/new"); // Reference to 'newTask' page
-			}
-
-			$scope.displayTasks = function() {
-				apiService.getAllFutureTasks(token).success(function(data) // Get all Tasks // TODO change to closest TASK
-					{
-						$scope.lecturerTasks = data;
-						console.log(data);
-					}).error(function(err) {
-					console.log(err.message);
-				});
-			}
-			$scope.gotoTask = function(taskId) {
-				$location.path('/tasks/fill/' + taskId);
-			}
-
-			$scope.displayTasks(); // Calling tasks with task id
+			$scope.user = $scope.$parent.user;
+			apiService.getAllUserTasks(token).success(function(data) {
+				$scope.tasks = data;
+				console.log(data);
+			}).error(function(err) {
+				console.log(err.message);
+			});
 
 
 		}
