@@ -279,6 +279,14 @@ service.factory('apiService', ['$http', function($http) {
 				url: url
 			};
 			return $http(req);
+		},
+		isTaskSubmitted: function(token, taskId, ownerId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/isTaskSubmitted/" + token + '/' + taskId + '/' + ownerId;
+			req = {
+				method: 'GET',
+				url: url
+			};
+			return $http(req);
 		}
 	};
 }]);
