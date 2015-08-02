@@ -17,7 +17,16 @@ angular.module('SeHub')
 		var dayDeltaOfCourse;
 		var courseElapseTime;
 		$scope.isCourseOver = false;
+		$scope.isInProject = false;
 		$scope.createSctionStatus = "fa fa-angle-down";
+
+		for(var i = 0; i < $scope.user.courses_id_list.length; i++)
+			if($scope.user.courses_id_list[i] === classId)
+				$scope.isInCourse = true;
+
+		for(var i = 0; i < $scope.user.projects_id_list.length; i++)
+			if($scope.user.projects_id_list[i])
+				$scope.isInProject = true;
 
 		$scope.displayProjects = function() {
 			apiService.getCourseById(token, classId)
@@ -36,22 +45,21 @@ angular.module('SeHub')
 						courseElapseTime = dayDeltaOfCourse;
 					}
 					$scope.courseTimePresentege = ((courseElapseTime/dayDeltaOfCourse) * 100).toString();
-					console.log($scope.courseTimePresentege);
 
 					apiService.getProjectsByCourse(token, classId).success(function(data) // Get all the campuses
-						{
-							$scope.loadingData = false;
-							$scope.projects = data;
-							if ($scope.projects != null && $scope.projects.length > 0) {
-								$scope.projectsEmpty = false;
-							}
-							init(); // Executing the function to initialize projects display
-						}).error(function(err) {
-						console.error("Error: " + err);
+					{
+						$scope.loadingData = false;
+						$scope.projects = data;
+						if ($scope.projects != null && $scope.projects.length > 0) {
+							$scope.projectsEmpty = false;
+						}
+						init(); // Executing the function to initialize projects display
+					}).error(function(err) {
+						console.error(err.message);
 					});
 				})
 				.error(function(err) {
-					console.error("Error: " + err);
+					console.error(err.message);
 				})
 		}
 		$scope.joinCourse = function() {
@@ -60,14 +68,11 @@ angular.module('SeHub')
 				$mdDialog.show($mdDialog.alert().title('Joined Course').content('You have successfully joined course.')
 						.ariaLabel('Join course alert dialog').ok('Lets Start!').targetEvent())
 					.then(function() {
-						$location.path('/class/' + classId); // TODO TODO TODO
+						$location.path('/class/' + classId + '/' + $scope.project.courseName); // TODO TODO TODO
 					}); // Pop-up alert
 			}).error(function(err) {
 				$mdDialog.show($mdDialog.alert().title('Error Joining Course').content(err.message + '.')
 					.ariaLabel('Join course alert dialog').ok('Try Again!').targetEvent()); // Pop-up alert
-				// .then(function() {
-				// 				// $location.path('/newCourse'); // TODO TODO TODO
-				// 			}); 
 			});
 		}
 
@@ -87,9 +92,6 @@ angular.module('SeHub')
 				'courseId': intClassId,
 				'gitRepository': $scope.project.repoOwner + '/' + $scope.project.gitRepoName
 			};
-			console.log("Look Down");
-			console.log(jsonNewProj);
-
 			if ($scope.project.logoUrl)
 				jsonNewProj.logo_url = $scope.project.logoUrl;
 
@@ -115,7 +117,6 @@ angular.module('SeHub')
 
 	$scope.goToProject = function(projectId)
 	{
-		console.log("projects only from classID: "  + projectId)
 		$location.path('/project/' + projectId);
 	}
 

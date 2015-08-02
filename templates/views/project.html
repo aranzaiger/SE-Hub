@@ -18,7 +18,7 @@
 				<div layout = "row" flex = "45">
 					<!-- <div ng-if = "isMasterOrLecturer"> -->
 					<md-card layout = "row">
-						<div ng-if="!isMember" layout-padding>
+						<div ng-if="!isMember && !isInProject" layout-padding>
 							<md-button ng-click="joinProject($event)" ng class = "md-raised md-primary" aria-label="jP">
 								<i class="fa fa-user-plus"></i>
 							</md-button>
@@ -43,7 +43,7 @@
 				<div flex = "10" layout-padding layout-margin border = "1">
 					Team Members:
 					<ul layout-padding>
-						<div layout = "row">
+						<!-- <div layout = "row"> -->
 							<li ng-repeat = "member in project.members">
 								<div>
 									<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;"> {{member.name}}</a>	
@@ -54,7 +54,7 @@
 									</md-button>
 								</div>
 							</li>	
-						</div>
+						<!-- </div> -->
 					</ul>
 				</div>
 				<div flex = "40">

@@ -14,27 +14,24 @@ angular.module('SeHub')
 	$scope.showMyClass = false;
 	$scope.coursesEmpty = true;
 	$scope.campusId;
+	$scope.isMemberInCourse = false;
 	var campusId = $routeParams.campusId;
 	
 	$scope.goToClass = function(classId, className)
 	{
-		console.log("Done! " + className);
 		$location.path('/class/' + classId.toString() + '/' + className); // Will display all the projects in this course
 	}
 
 	$scope.chooseCampusClicked = function()
 	{
 		$scope.isCourse = true;
-		console.log("Choose campus Clicked!!");
 
 		apiService.getAllCampuses(token).success(function(data)
 		{
 			$scope.campuses = data;
-			console.log("Campuses: ");
-			console.log($scope.campuses);
 		}).error(function(err)
 		{
-			console.log("Error: " + err);
+			console.log(err.message);
 		});
 	}
 
@@ -55,8 +52,6 @@ angular.module('SeHub')
 		    		$scope.campusId = $scope.campuses[i].id;
 		    	}
 		    }
-		    console.log("NOW: ");
-		    console.log($scope.campusId);
 
 	    	var jsonNewCourse =
 	    	{
@@ -77,11 +72,9 @@ angular.module('SeHub')
 	      	
 	      	apiService.createCourse(token, jsonNewCourse).success(function(data)
 	      	{
-	      		console.log("createCourse API done");
 	      		$mdDialog.show($mdDialog.alert().title('Course Created').content('You have created course successfully.')
 		        .ariaLabel('Email verification alert dialog').ok('Lets Start!').targetEvent())
 			.then(function() {
-							// $location.path('/newCourse'); // TODO TODO TODO
 							$location.path('/class/' + data.id + '/' + data.courseName); // Will display all the projects in this course
 						}); // Pop-up alert
 	      	}).error(function(err)
@@ -118,15 +111,12 @@ angular.module('SeHub')
 		$scope.holdArrays.push(tempArr);
 	}
 
-	//$scope.courses = ["lala", "aaa", "bbb", "ccc", "rrr"];
-
 	var displayCourses = function()
 	{
 		apiService.getAllCoursesByCampus(token, campusId).success(function(data) // Shows all classes from this campus
 		{
 			$scope.loadingData = false;
 			$scope.courses = data;
-			console.log("success " + $scope.courses);
 			init(); // Executing the function to initialize course display
 			if($scope.courses && $scope.courses.length > 0)
 			{
@@ -134,24 +124,17 @@ angular.module('SeHub')
 			}
 		}).error(function(err)
 		{
-			console.log("error: " + err);
+			console.log(err.message);
 		});		
 	}
-
 
 	if($scope.user.isLecturer)
 	{
 		$scope.isStudent = false;
-		console.log("Lecturer Mode!");
 	}
 	else
 	{
 		$scope.isStudent = true;
-		console.log("Student Mode!");
 	}
-
 	displayCourses(); // Will display the courses that the user related to // TODO!!
-
-
-
 }]);
