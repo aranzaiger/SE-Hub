@@ -724,9 +724,8 @@ def getAllUserTasks(token):
             taskDic['submitted']['total'] = total
 
             basicTC = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", -1).count()
-            print "basic tc: " + basicTC
             allTC = TaskComponent.all().filter("taskId = ", t.key().id()).count()
-            done = (basicTC/allTC) - 1
+            done = (allTC/basicTC) - 1
             taskDic['submitted']['done'] = done
 
             taskArr.append(taskDic)
