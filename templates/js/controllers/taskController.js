@@ -6,12 +6,22 @@ angular.module('SeHub')
 
 			var taskId = $routeParams.taskId;
 			var submitterId = $routeParams.submitterId;
+			var token = $cookies['com.sehub.www'];
+			var groupId = $routeParams.gId;
 
+			apiService.getTaskById(token, taskId, groupId).success(function(data){
+				$scope.task = data;
+				$scope.dateInit($scope.task.dueDate);
+			}).error(function(err){
+				console.error('Error: ', err);
+			})
 
 			if (submitterId) { //In This Case we Only Want to show The Content of the Submitter
 				$scope.readOnly = true;
+
 			} else { //In This Case We Need An Empty Task To Be Able To Fill It
 				$scope.readOnly = false;
+				apiService.getTaskById(token, taskId, groupId);
 			}
 
 			$scope.dateInit = function(date) {
@@ -81,35 +91,35 @@ angular.module('SeHub')
 			=            Mock Data            =
 			=================================*/
 
-			$scope.task = {
-				"title": "task1",
-				"courseId": 1234567890,
-				"description": "one line\nsecondline\nthirdline",
-				"dueDate": {
-					"year": 2010,
-					"month": 2,
-					"day": 4
-				},
-				"isPersonal": true,
-				"components": [{
-					"type": "radiobuttons",
-					"label": "pick One|this|orthis|MaybeThis",
-					"isMandatory": true,
-					"order": 1
-				}, {
-					"type": "checkbox",
-					"label": "tick Me",
-					"isMandatory": true,
-					"order": 2
-				}, {
-					"type": "textarea",
-					"label": "fill shit",
-					"isMandatory": false,
-					"order": 3
-				}]
-			};
+			// $scope.task = {
+			// 	"title": "task1",
+			// 	"courseId": 1234567890,
+			// 	"description": "one line\nsecondline\nthirdline",
+			// 	"dueDate": {
+			// 		"year": 2010,
+			// 		"month": 2,
+			// 		"day": 4
+			// 	},
+			// 	"isPersonal": true,
+			// 	"components": [{
+			// 		"type": "radiobuttons",
+			// 		"label": "pick One|this|orthis|MaybeThis",
+			// 		"isMandatory": true,
+			// 		"order": 1
+			// 	}, {
+			// 		"type": "checkbox",
+			// 		"label": "tick Me",
+			// 		"isMandatory": true,
+			// 		"order": 2
+			// 	}, {
+			// 		"type": "textarea",
+			// 		"label": "fill shit",
+			// 		"isMandatory": false,
+			// 		"order": 3
+			// 	}]
+			// };
 
-			$scope.dateInit($scope.task.dueDate);
+			
 
 			$scope.dueTime = function() {
 				if (!$scope.task.date || $scope.task.date === '')

@@ -245,6 +245,15 @@ service.factory('apiService', ['$http', function($http) {
 				url: url
 			};
 			return $http(req);
+		},
+		getTaskById: function(token, taskId, ownerId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getTaskById/" + token + "/" + taskId + "/" + ownerId;
+			var req = {
+				method: 'GET',
+				url: url
+			};
+			return $http(req);
+
 		}
 	};
 }]);
