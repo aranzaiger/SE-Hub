@@ -1,4 +1,8 @@
-<div layout-padding>
+<div ng-if='loading' layout-padding>
+	<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+
+<div layout-padding ng-if='!loading'>
 	<div layout="row">
 	<div flex="40" layout-padding>
 		<md-card layout-padding>
@@ -7,15 +11,20 @@
 			</h2>
 			<div layout="column">
 				<div>
+					<md-select placeholder="Pick A Course" ng-model="course.title" required ng-change='courseSelected()'>
+        				<md-option ng-repeat="c in courses" value="{{c.courseName}}">{{c.courseName}}</md-option>
+      				</md-select>
+				</div>
+				<div>
 					<md-input-container>
 						<label>Title</label>
-						<input ng-model="task.task.title" required>
+						<input ng-model="task.title" required>
 	    			</md-input-container>
 				</div>
 				<div>
 					<md-input-container>
 					<label>Description</label>
-					<textarea ng-model="task.task.description" required></textarea>
+					<textarea ng-model="task.description" required></textarea>
 					</md-input-container>
 				</div>
 				<div>
@@ -32,7 +41,7 @@
 				<div layout="row">
 					<div flex="60"></div>
 					<div>
-						<md-button class="md-raised md-primary"><i class="fa fa-paper-plane"></i> Submit</md-button>
+						<md-button class="md-raised md-primary" ng-click='submit()' ng-disabled="submitting"><i class="fa fa-paper-plane"></i> Submit</md-button>
 					</div>
 				</div>
 			</div>
@@ -84,10 +93,10 @@
 		</h2>
 		
 		<md-card layout-padding>
-			<h3><i class="fa fa-clipboard"></i> {{task.task.title}}</h3>
+			<h3><i class="fa fa-clipboard"></i> {{task.title}}</h3>
 			<h4>Due At: {{ task.date }}</h4>
 			<p>{{ dueTimeFromNow }}</p>
-			<p style="white-space: pre-wrap;">{{task.task.description}}</p>
+			<p style="white-space: pre-wrap;">{{task.description}}</p>
 			<p>{{(task.isPersonal) ? "Personal" : "Project"}} Task</p>
 
 			<md-divider ng-if="!$last"></md-divider>
