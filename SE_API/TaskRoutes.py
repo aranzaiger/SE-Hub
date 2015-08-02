@@ -303,8 +303,8 @@ def submitGrade(token, taskId, ownerId, grade):
     try:
         tg = TaskGrade.all().filter("taskId = ", int(taskId)).filter("userId = ", int(ownerId))
         if tg.count() == 0:
-                grade = TaskGrade(taskId=int(taskId), userId=int(ownerId), grade=int(grade))
-                db.put(grade)
+            grade = TaskGrade(taskId=int(taskId), userId=int(ownerId), grade=int(grade))
+            db.put(grade)
 
         else:
             for g in tg.run():
