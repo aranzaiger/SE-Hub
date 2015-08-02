@@ -230,6 +230,95 @@ def submitTask(token, taskId, ownerId):
     return Response(response=task.to_JSON(),
                                 status=200,
                                 mimetype="application/json")
+
+
+@task_routes.route('/api/tasks/submitGrade/<string:token>/<string:taskId>/<string:ownerId>/<string:grade>', methods=['POST'])
+@auto.doc()
+def submitGrade(token, taskId, ownerId, grade):
+    """
+    <span class="card-title">This call will create a new Task in the DB</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - seToken: 'seToken'
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - JSON Object, Example: <br>
+    {<br>
+        "title":"task1",<br>
+        "courseId":1234567890,<br>
+        "description":"pls fddfsdfdsk",<br>
+        "dueDate":{"year":2010,<br>
+                    "month":2,<br>
+                    "day":4<br>
+                    },
+        "isPersonal":true,<br>
+        "components":[<br>
+                {<br>
+                "type" : "should be type1",<br>
+                "label" : "should be label1",<br>
+                "isMandatory" : true,<br>
+                "order" : 1<br>
+                },<br>
+                {<br>
+                "type" : "should be type2",<br>
+                "label" : "should be label2",<br>
+                "isMandatory" : true,<br>
+                "order" : 2<br>
+                },<br>
+                {<br>
+                "type" : "should be type3",<br>
+                "label" : "should be label3",<br>
+                "isMandatory" : false,<br>
+                "order" : 3<br>
+                }<br>
+        ]<br>
+}
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    201 - Created
+    <br>
+    400 - Bad Request
+    <br>
+    403 - Invalid token or not a lecturer
+    """
+    user = get_user_by_token(token)
+    if user is None:
+        bad_request("bad user Token")
+
+    task = Task.get_by_id(int(taskId))
+    if task is None:
+        bad_request("bad Task id")
+
+
+    if task.isPersonal:
+        if User.get_by_id(int(ownerId)) is None:
+            return bad_request("no such user")
+    else:
+        if Project.get_by_id(int(ownerId)) is None:
+            return bad_request("no such project")
+
+    try:
+        tg = TaskGrade.all().filter("taskId = ", int(taskId)).filter("userId = ", int(ownerId))
+        if tg.count() == 0:
+                grade = TaskGrade(taskId=int(taskId), userId=int(ownerId), grade=int(grade))
+        else:
+            for g in tg.run():
+                g.grade=int(grade)
+                g.taskId=int(taskId)
+                g.userId=int(ownerId)
+        db.put(grade)
+        db.save
+        return Response(response=grade.to_JSON(),
+                                    status=200,
+                                    mimetype="application/json")
+    except Exception as e:
+        print e.message
+        return bad_request("wrong format")
+
+
 #----------------------------------------------------------
 #                     PUT
 #----------------------------------------------------------
@@ -704,9 +793,9 @@ def getTaskById(token, taskId, ownerId):
     task['grade'] = {}
 
     taskCompQuery = TaskComponent.all()
-    taskCompQuery.filter("taskId = ", taskId)
+    taskCompQuery.filter("taskId = ", int(taskId))
 
-    taskCompQuery.filter("userId = ", ownerId)
+    taskCompQuery.filter("userId = ", int(ownerId))
     # if task.isPersonal:
     #     taskCompQuery.filter("userId = ", user.key().id())
     # else:
@@ -714,7 +803,6 @@ def getTaskById(token, taskId, ownerId):
 
     #check if never created a personalized task and if so, create it
     if taskCompQuery.count() == 0:
-        print "here"
         taskCompQuery = TaskComponent.all().filter("taskId =", int(taskId)).filter("userId =", -1)
     print "query count is: ", taskCompQuery.count()
     for tc in taskCompQuery.run():
@@ -878,11 +966,12 @@ def sendTaskReminder():
                 course = Course.get_by_id(int(t.courseId))
                 if t.isPersonal:
                     for uId in course.membersId:
-                        tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", int(uId))
-                        if tc.count() == 0:
-                            user = User.get_by_id(int(uId))
-                            send_task_reminder(user.email, user.name, t.title, course.courseName)
-                            print ""
+                        if int(uId) != course.master_id:
+                            tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", int(uId))
+                            if tc.count() == 0:
+                                user = User.get_by_id(int(uId))
+                                send_task_reminder(user.email, user.name, t.title, course.courseName)
+                                print ""
 
                 else:
                     projects = Project.all().filter("courseId = ", course.key().id())
