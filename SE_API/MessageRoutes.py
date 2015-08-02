@@ -68,8 +68,8 @@ def createMessage(token):
     """
     if not request.data:
         return bad_request("no data")
-    if not is_lecturer(token):  #todo: change to lecturer id
-        return forbidden("Invalid token or not a lecturer!")
+    # if not is_lecturer(token):  #todo: change to lecturer id
+    #     return forbidden("Invalid token or not a lecturer!")
 
     user = get_user_by_token(token)
 
