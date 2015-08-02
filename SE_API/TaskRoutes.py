@@ -218,9 +218,9 @@ def getAllTasksByCourse(token, courseId):
         return no_content()
 
 
-@task_routes.route('/api/tasks/getAllFutureTasks/<string:token>/<string:courseId>', methods=["GET"])
+@task_routes.route('/api/tasks/getAllFutureCampusTasks/<string:token>/<string:courseId>', methods=["GET"])
 @auto.doc()
-def getAllFutureTasks(token, courseId):
+def getAllFutureCampusTasks(token, courseId):
     """
     <span class="card-title">>This Call will return an array of all Future Tasks in a course, ordered by date</span>
     <br>
@@ -284,6 +284,73 @@ def getAllFutureTasks(token, courseId):
     else:
         return no_content()
 
+@task_routes.route('/api/tasks/getAllFutureTasks/<string:token>', methods=["GET"])
+@auto.doc()
+def getAllFutureTasks(token):
+    """
+    <span class="card-title">>This Call will return an array of all Future Tasks ordered by date</span>
+    <br>
+    <b>Route Parameters</b><br>
+         - SeToken: token<br>
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+        {<br>
+        'title' : 'Task1',<br>
+        'courseName' : 'advance Math',<br>
+        'description' : 'prepare by sunday',<br>
+        'dueDate' : {
+                    'year' : 2015,
+                    'month' : 12,
+                    'day' : 23
+                    }<br>
+        'isPersonal' : true,<br>
+        'task_id' : 589689456894<br>
+    }<br>
+    </code>
+    <br>
+    """
+
+    user = get_user_by_token
+    if user is None:
+        return bad_request("Bad User Token")
+
+    arr = []
+
+    for courseId in user.courses_id_list:
+        query = Task.all()
+
+        try:
+            query.filter("courseId = ", int(courseId))
+        except Exception as e:
+            return bad_request("Bad id format")
+
+        for t in query.run():
+            taskDic =dict(json.loads(t.to_JSON()))
+            #add a key 'forSortDate' for sorting dates
+            taskTime = datetime.datetime(taskDic['dueDate']['year'], taskDic['dueDate']['month'], taskDic['dueDate']['day'])
+            if taskTime >= datetime.date.today():
+                taskDic['forSortDate'] = taskTime
+                arr.append(taskDic)
+
+    #sort array by date, and remove added key
+    arr = sorted(arr, key=itemgetter('forSortDate'), reverse=False)
+    for i in arr:
+        del i['forSortDate']
+
+    if len(arr) != 0:
+        return Response(response=json.dumps(arr),
+                        status=200,
+                        mimetype="application/json")
+    else:
+        return no_content()
 
 
 @task_routes.route('/api/tasks/getTaskComponents/<string:token>/<string:taskId>', methods=["GET"])
@@ -353,7 +420,7 @@ def getTaskComponents(token, taskId):
 
 @task_routes.route('/api/tasks/getAllUserTasks/<string:token>', methods=["GET"])
 @auto.doc()
-def getAllTasksByUser(token):
+def getAllUserTasks(token):
     """
     <span class="card-title">>This Call will return an array of all of the User's Tasks</span>
     <br>
@@ -491,70 +558,81 @@ def getAllTasksByUser(token):
 
 
 
-# @task_routes.route('/api/tasks/getUserFullTasksById/<string:token>/<string:taskId>', methods=["GET"])
-# @auto.doc()
-# def getFullTasksById(token, taskId):
-#     """
-#     <span class="card-title">>This Call will return an array of all components for a given task</span>
-#     <br>
-#     <b>Route Parameters</b><br>
-#          - SeToken: token<br>
-#         - taskId: 1234567890
-#     <br>
-#     <br>
-#     <b>Payload</b><br>
-#      - NONE
-#     <br>
-#     <br>
-#     <b>Response</b>
-#     <br>
-#     200 - JSON Example:<br>
-#     <code>
-#     [
-#         {<br>
-#             'taskId' : 7589454894,
-#             'userId' : -1,
-#             'type' : 'kindOfType',
-#             'label' : 'kindOfLabel',
-#             'isMandatory' : true,
-#             'order' : 2
-#         }<br>
-#         {<br>
-#             'taskId' : 7589454894,
-#             'userId' : yossi,
-#             'type' : 'otherKindOfType',
-#             'label' : 'otherKindOfLabel',
-#             'isMandatory' : false,
-#             'order' : 4
-#         }<br>
-#     ]
-#     </code>
-#     <br>
-#     """
-#     user = get_user_by_token(token)
-#     if user is None:
-#         return bad_request("Bad User Token")
-#
-#     task = Task.get_by_id(int(taskId))
-#     if task is None:
-#         return bad_request("Bad Task id")
-#
-#     taskCompQuery = TaskComponent.all()
-#     taskCompQuery.filter("taskId = ", task.key().id())
-#
-#     if task.isPersonal:
-#         taskCompQuery.filter("userId = ", user.key().id())
-#     else:
-#         taskCompQuery.filter("userId = ", user.key().id())
-#
-#     if taskCompQuery.count() == 0:
-#         #create componenets and Score for user
-#
-#
-#     for i in taskCompQuery.run():
-#         print i.to_JSON()
-#
-#     return no_content()
+@task_routes.route('/api/tasks/getUserTaskById/<string:token>/<string:taskId>', methods=["GET"])
+@auto.doc()
+def getUserTaskById(token, taskId):
+    """
+    <span class="card-title">>This Call will return an array of all components for a given task</span>
+    <br>
+    <b>Route Parameters</b><br>
+         - SeToken: token<br>
+        - taskId: 1234567890
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>
+    [
+        {<br>
+            'taskId' : 7589454894,
+            'userId' : -1,
+            'type' : 'kindOfType',
+            'label' : 'kindOfLabel',
+            'isMandatory' : true,
+            'order' : 2
+        }<br>
+        {<br>
+            'taskId' : 7589454894,
+            'userId' : yossi,
+            'type' : 'otherKindOfType',
+            'label' : 'otherKindOfLabel',
+            'isMandatory' : false,
+            'order' : 4
+        }<br>
+    ]
+    </code>
+    <br>
+    """
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad User Token")
+
+    task = Task.get_by_id(int(taskId))
+    if task is None:
+        return bad_request("Bad Task id")
+
+
+    taskCompQuery = TaskComponent.all()
+    taskCompQuery.filter("taskId = ", task.key().id())
+
+    if task.isPersonal:
+        taskCompQuery.filter("userId = ", user.key().id())
+    else:
+        taskCompQuery.filter("userId = ", user.key().id())#TODO: fix to project
+
+    #check if never created a personalized task and if so, create it
+    if taskCompQuery.count() == 0:
+        taskCompQuery = TaskComponent.all().filter("taskId = ", task.key().id()).filter("userId = ", -1)
+        for tc in taskCompQuery.run():
+            tcNew = TaskComponent(taskId=tc.taskId, userId=user.key().id(), type=tc.type, label=tc.label, isMandatory=tc.isMandatory, order=tc.order)
+            db.put(tcNew)
+
+        grade = TaskGrade(grade=0, taskId=task.key().id(), userId=user.key().id())
+        db.put(grade)
+
+
+
+
+
+
+
+    db.save
+    return no_content()
 
 
 

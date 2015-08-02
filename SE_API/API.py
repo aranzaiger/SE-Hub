@@ -208,7 +208,8 @@ def login():
 
 debug = True # Change In Production
 if debug:
-    counter = 300
+    import random
+    counter = random.randrange(300,400)
 
     @auto.doc()
     @app.route('/debug/login')
