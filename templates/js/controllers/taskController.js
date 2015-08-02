@@ -80,14 +80,15 @@ angular.module('SeHub')
 							.content('Your Task Was Successfully Submitted!')
 							.ariaLabel('ddd')
 							.ok('GoTo My Submitted Task')
-							.then(function(dd){
+							.targetEvent(event)
+
+						).then(function(){
 								if($scope.task.isPersonal)
 									$location.path('/tasks/overview/'+taskId+'/'+groupId+'/'+groupId);
 								else
 									$location.path('/tasks/overview/'+taskId+'/'+groupId+'/'+groupId);
-							})
-							.targetEvent(event)
-						);
+						});
+						return;
 					})
 
 				}

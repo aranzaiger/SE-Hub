@@ -167,7 +167,7 @@ def send_task_reminder( email, name, task_name, course_name):
             <h3>Dear """+name+""":</h3>
 
             <center>
-                <img src='https://pixabay.com/static/uploads/photo/2014/03/05/07/54/reminder-279903_640.png'>
+                <img src='https://pixabay.com/static/uploads/photo/2014/03/05/07/54/reminder-279903_640.png' style='height:100px'>
             </center>
             <br>
 
