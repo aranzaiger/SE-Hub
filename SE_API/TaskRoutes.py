@@ -693,6 +693,7 @@ def getAllUserTasks(token):
         course = Course.get_by_id(int(c))
         dic['courseName'] = course.courseName
         dic['courseId'] = course.key().id()
+        dic['master_id'] = course.master_id
         courseTasks = Task.all().filter("courseId = ", course.key().id())
         taskArr = []
         for t in courseTasks.run():
@@ -755,6 +756,247 @@ def getAllUserTasks(token):
                         status=200,
                         mimetype="application/json")
 
+@task_routes.route('/api/tasks/getUsersStateByTask/<string:token>/<string:taskId>', methods=["GET"])
+@auto.doc()
+def getUsersStateByTask(token, taskId):
+    """
+    <span class="card-title">>This Call will return an array of all of the User's Tasks</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - SeToken: token<br>
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>[<br>
+              {<br>
+                "courseName": "Advance Math",<br>
+                "courseId": 4762397176758272,<br>
+                "PersonalTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 4762397176758272,<br>
+                    "title": "task1",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5888297083600896<br>
+                  }<br>
+                ],<br>
+                "projectTasks": []<br>
+              },<br>
+              {<br>
+                "courseName": "Bad Math",<br>
+                "courseId": 5659598665023488,<br>
+                "PersonalTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task1",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5096648711602176<br>
+                  },<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task4",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5167017455779840<br>
+                  }<br>
+                ],<br>
+                "projectTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": false,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task3",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5237386199957504<br>
+                  }<br>
+                ]<br>
+              }<br>
+    ]<br>
+    </code>
+    <br>
+    """
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad User Token")
+
+    task = Task.get_by_id(int(taskId))
+    if task is None:
+        return bad_request("Bad task id")
+
+    course = Course.get_by_id(task.courseId)
+
+    arr = []
+    if task.isPersonal:
+        for u in enumerate(course.membersId):
+            user = User.get_by_id(int(u))
+            userDic = dict(json.loads(user.to_JSON()))
+            grade = TaskGrade.all().filter("taskId = ", task.key().id()).filter("userId = ", user.key().id())
+            for g in grade.run():
+                userDic['grade'] = json.loads(g.to_JSON())
+            if grade.count() == 0:
+                userDic['grade'] = {'taskId': taskId, 'userId': user.key().id(), 'grade': None}
+            arr.append(userDic)
+
+    else:
+        projects = Project.all().filter("courseId = ", course.key().id())
+        for project in projects.run():
+            projDic = dict(json.loads(project.to_JSON()))
+            grade = TaskGrade.all().filter("taskId = ", task.key().id()).filter("userId = ", project.key().id())
+            for g in grade.run():
+                projDic['grade'] = json.loads(g.to_JSON())
+            if grade.count() == 0:
+                projDic['grade'] = {'taskId': taskId, 'userId': user.key().id(), 'grade': None}
+            arr.append(projDic)
+
+    if len(arr) != 0:
+            return Response(response=json.dumps(arr),
+                            status=200,
+                            mimetype="application/json")
+    else:
+        return Response(response=[],
+                        status=200,
+                        mimetype="application/json")
+
+@task_routes.route('/api/tasks/isTaskSubmitted/<string:token>/<string:taskId>/<string:groupId>', methods=["GET"])
+@auto.doc()
+def isTaskSubmitted(token, taskId, groupId):
+    """
+    <span class="card-title">>This Call will return an array of all of the User's Tasks</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - SeToken: token<br>
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>[<br>
+              {<br>
+                "courseName": "Advance Math",<br>
+                "courseId": 4762397176758272,<br>
+                "PersonalTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 4762397176758272,<br>
+                    "title": "task1",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5888297083600896<br>
+                  }<br>
+                ],<br>
+                "projectTasks": []<br>
+              },<br>
+              {<br>
+                "courseName": "Bad Math",<br>
+                "courseId": 5659598665023488,<br>
+                "PersonalTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task1",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5096648711602176<br>
+                  },<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task4",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5167017455779840<br>
+                  }<br>
+                ],<br>
+                "projectTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": false,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task3",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5237386199957504<br>
+                  }<br>
+                ]<br>
+              }<br>
+    ]<br>
+    </code>
+    <br>
+    """
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad User Token")
+
+    task = Task.get_by_id(int(taskId))
+    if task is None:
+        return bad_request("Bad task id")
+
+    res = {}
+
+    grade = TaskGrade.all().filter("taskId = ", task.key().id()).filter("userId = ", int(groupId))
+    if grade.count() == 0:
+        res['submitted'] = False
+    else:
+        res['submitted'] = True
+
+
+
+    return Response(response=res,
+                    status=200,
+                    mimetype="application/json")
 
 # @task_routes.route('/api/tasks/getAllUngradedTasks/<string:token>/<string:taskId>/<string:ownerId>', methods=["GET"])
 # @auto.doc()
