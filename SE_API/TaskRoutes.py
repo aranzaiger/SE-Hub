@@ -866,6 +866,38 @@ def documentation():
     return auto.html()
 
 
+@task_routes.route('/api/tasks/sendTaskReminder', methods=['GET'])
+def sendTaskReminder():
+
+    tasks = Task.all()
+
+    #go over all the courses
+    for t in tasks.run():
+        if t.dueDate == datetime.date.today() + datetime.timedelta(days=1):
+            course = Course.get_by_id(int(t.courseId))
+            if t.isPersonal:
+                for uId in course.membersId:
+                    tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", int(uId))
+                    if tc.count() == 0:
+                        #SEND MAIL!! TODO
+                        print ""
+
+            else:
+                projects = Project.all().filter("courseId = ", course.key().id())
+                for p in projects:
+                    tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", p.key().id())
+                    if tc.count() == 0:
+                        #SEND MAIL!! TODO
+                        print ""
+
+
+
+        #go over all
+
+    return accepted("Task deleted")
+
+
+
 
 
 

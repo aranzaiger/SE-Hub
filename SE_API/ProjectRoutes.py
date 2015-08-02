@@ -377,10 +377,10 @@ def deleteProject(token,projectId):
 
     #remove all users related to project
     for uId in p.membersId:
-        user = User.get_by_id(uId)
+        user = User.get_by_id(int(uId))
         if user is None:
             return bad_request("trying to remove a user from project failed")
-        user.projects_id_list.remove(p.key().id())
+        user.projects_id_list.remove(str(p.key().id()))
         db.put(user)
 
 
