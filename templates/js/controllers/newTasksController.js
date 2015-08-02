@@ -180,6 +180,5 @@ angular.module('SeHub').controller('newTasksController', ['$scope', 'apiService'
 		$scope.RB = function(comp) {
 			console.info(comp);
 		}
-
 	}
 ]);

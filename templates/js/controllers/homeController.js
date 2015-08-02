@@ -1,21 +1,21 @@
 angular.module('SeHub')
-.controller('homeController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope', function ($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
+.controller('homeController', ['$scope', '$cookies', '$cookieStore', '$window', '$location', '$mdToast', '$mdDialog', 'apiService', '$rootScope',
+  function ($scope, $cookies, $cookieStore, $window, $location, $mdToast, $mdDialog, apiService ,$rootScope)
 {
   $scope.isStudent = false;
   $scope.addMsg = false;
   $scope.msgToPost = "";
   $scope.oldText = "";
   $scope.messages = [];
+  $scope.userMessages = [];
   $scope.messagesDisplay = [];
   $scope.courses = [];
   $scope.campuses = [];
   $scope.msg = {};
   $scope.courseObj = {};
-  // $scope.course = ""; // should be ""  ?  // {} ??
-
+  $scope.user = $scope.$parent.user;
   $rootScope.seToken = $cookies['com.sehub.www'];
   var token = $rootScope.seToken;
-  var imagePath = $scope.user.avatar_url;
 
   if($scope.user.isLecturer)
   {
@@ -27,6 +27,20 @@ angular.module('SeHub')
     $scope.isStudent = true;
     console.log("Student Mode!");
   }
+
+  $scope.displayMessages = function()
+  {
+    apiService.getAllUserMessages(token).success(function(data)
+    {
+      console.log(data);
+      $scope.userMessages = data;
+    }).error(function(err)
+    {
+      console.log("Error: " + err.message);
+    });
+  }
+
+  $scope.displayMessages(); //
 
   $scope.addMessageClicked = function()
   {
@@ -53,8 +67,8 @@ angular.module('SeHub')
         console.log(err);
       });
 
-      console.log($scope.msg.msgToAdd);
       $scope.messages.push({"text": $scope.msg.msgToAdd});
+      $location.path('/home/');
     }
     else
     {
@@ -66,29 +80,24 @@ angular.module('SeHub')
 
   $scope.displayTasks = function()
   {
+    apiService.getAllUserTasks(token).success(function(data) // Get all Tasks // TODO change to closest TASK
+    {
+      $scope.tasks = data;
+      console.log(data);
+    }).error(function(err)
+    {
+
+    });
+
     // apiService.getAllFutureTasks(token, courseId).success(function(data) // need to check courseId
     // {
-
+    //   console.log("YE");
     // }).error(function(err)
     // {
-
+    //   console.log("Error: " + err.message);
     // });
 
-
   }
-
-  $scope.displayMessages = function()
-  {
-    // apiService.getMessagesByGroupId(token, $scope.courseObj.id).success(function(data)
-    // {
-    //   $scope.messages = data;
-    //   console.log($scope.messages);
-    // }).error(function(err)
-    // {
-    //   console.log(err);
-    // });
-  }
-
 
   $scope.getCampuses = function()
   {
@@ -98,11 +107,11 @@ angular.module('SeHub')
       $scope.getCourses();  // Get all the courses info
       if($scope.messages)
       {
-        $scope.displayMessages(); //  // Display all messages in message feed and the latest one
+        //$scope.displayMessages(); //  // Display all messages in message feed and the latest one
       }
     }).error(function(err)
     {
-      console.log("Error: " + err);
+      console.log("Error: " + err.message);
     });
 
   }
@@ -122,14 +131,14 @@ angular.module('SeHub')
         }
       }).error(function(err)
       {
-        console.log("Error: " + err);
+        console.log("Error: " + err.message);
       }); 
      }
   }
 
   $scope.clearAllClicked = function() // Clear Screen from text
   {
-    $scope.messages = []; 
+    $scope.userMessages = []; 
   }
 
   $scope.chooseCourseClicked = function()
@@ -175,8 +184,8 @@ angular.module('SeHub')
   $scope.getCampuses(); // Get all the campuses info
 
   // animation
-  
-  // $scope.displayTasks(); // Display all tasks in task feed and the latest one
+  // $scope.displayMessages();
+  $scope.displayTasks(); // Display all tasks in task feed and the latest one
   $scope.isEnterd = top.setIsEnterd;
 
 }]);
