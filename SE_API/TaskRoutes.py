@@ -1125,7 +1125,7 @@ def getAllUnsubmittedTasks(token):
                     p = Project.get_by_id(tc.userId)
                     taskDic['projectsToReview'].append(json.loads(p.to_JSON()))
 
-        dic['tasks'].append(taskDic)
+            dic['tasks'].append(taskDic)
 
         arr.append(dic)
 
