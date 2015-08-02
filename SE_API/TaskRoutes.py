@@ -704,9 +704,9 @@ def getTaskById(token, taskId, ownerId):
     task['grade'] = {}
 
     taskCompQuery = TaskComponent.all()
-    taskCompQuery.filter("taskId = ", taskId)
+    taskCompQuery.filter("taskId = ", int(taskId))
 
-    taskCompQuery.filter("userId = ", ownerId)
+    taskCompQuery.filter("userId = ", int(ownerId))
     # if task.isPersonal:
     #     taskCompQuery.filter("userId = ", user.key().id())
     # else:
@@ -714,7 +714,6 @@ def getTaskById(token, taskId, ownerId):
 
     #check if never created a personalized task and if so, create it
     if taskCompQuery.count() == 0:
-        print "here"
         taskCompQuery = TaskComponent.all().filter("taskId =", int(taskId)).filter("userId =", -1)
     print "query count is: ", taskCompQuery.count()
     for tc in taskCompQuery.run():
