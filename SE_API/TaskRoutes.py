@@ -817,7 +817,7 @@ def getTaskById(token, taskId, ownerId):
     grade = TaskGrade.all().filter("taskId = ", int(taskId)).filter("userId = ", int(ownerId))
     gradeFound = False
     for g in grade.run():
-        task['grade'] = g
+        task['grade'] = json.loads(g.to_JSON())
         gradeFound = True
     if not gradeFound:
         task['grade'] = {'taskId': taskId, 'userId': ownerId, 'grade': None}
