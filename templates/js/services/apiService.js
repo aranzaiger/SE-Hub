@@ -287,6 +287,14 @@ service.factory('apiService', ['$http', function($http) {
 				url: url
 			};
 			return $http(req);
+		},
+		getUsersStateByTask: function(token, taskId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getUsersStateByTask/" + token + '/' + taskId;
+			req = {
+				method: 'GET',
+				url: url
+			};
+			return $http(req);
 		}
 	};
 }]);

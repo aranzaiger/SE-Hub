@@ -1,0 +1,46 @@
+<md-dialog aria-label="Class Status" style='width: 80%'>
+  <form>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>{{task.title}}  - Class Status</h2>
+      <span flex></span>
+      <md-button  ng-click="answer('not applicable')">
+        X
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-conten layout-padding>
+    <div ng-if='loading'>
+      
+    </div>
+    <div ng-if='!loading'>
+      <div ng-repeat="obj in classList">
+        <div layout='row' width='100%' >
+          <div>
+            <img ng-src="{{obj.avatar_url || obj.logo_url}}" alt="" class='campusAvatar' style='max-height:auto'>
+          </div>
+          <div class='spacer'></div>
+          <div>{{obj.name || obj.projectName}}</div>
+          <div class='spacer'></div>
+          <div>
+            {{obj.grade.grade || "Not Yet Reviewed"}}
+          </div>
+        </div>
+        <md-divider ng-if="!$last"></md-divider>
+      </div>
+    </div>
+  </md-dialog-content>
+  <div class="md-actions" layout="row">
+    <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" hide show-md>
+      More on Wikipedia
+    </md-button>
+    <span flex></span>
+    <md-button ng-click="answer('not useful')" class="md-primary">
+     Not Useful
+    </md-button>
+    <md-button ng-click="answer('useful')" class="md-primary">
+      Useful
+    </md-button>
+  </div>
+  </form>
+</md-dialog>

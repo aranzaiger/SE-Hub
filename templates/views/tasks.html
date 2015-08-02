@@ -63,7 +63,7 @@
 								<div class="Personal" style='width:100%' >
 									<div layout='column' ng-repeat="personalTask in class.PersonalTasks">
 										<div>
-											<md-button style='width: 100%' layout='row'>
+											<md-button style='width: 100%' layout='row' ng-click="taskClicked(personalTask, class.courseId, true, class.master_id, $event)">
 													<div>
 														{{personalTask.title}}
 													</div>
@@ -81,7 +81,7 @@
 								<div class="Project" style='width:100%'>
 									<div layout='column' ng-repeat="projectTask in class.projectTasks">
 										
-										<md-button style='width: 100%' layout='row'>
+										<md-button style='width: 100%' layout='row' ng-click="taskClicked(projectTask, class.courseId, false, class.master_id, $event)">
 												<div>
 													{{projectTask.title}}
 												</div>

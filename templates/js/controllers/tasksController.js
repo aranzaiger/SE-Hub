@@ -7,18 +7,32 @@ angular.module('SeHub')
 			$scope.user = $scope.$parent.user;
 			apiService.getAllUserTasks(token).success(function(data) {
 				$scope.tasks = data;
-
-				console.log(data);
 			}).error(function(err) {
-				console.log(err.message);
+				console.error(err.message);
 			});
 
 
-			$scope.taskClicked = function(task, classId, isPersonal) {
+			$scope.taskClicked = function(task, classId, isPersonal, masterId, ev) {
 				var ownerId = null;
-				if (classId === $scope.user.id) {
+				if (masterId === $scope.user.id) {
 					///This Is The Lecturer
 					///Need to show the List
+					$mdDialog.show({
+							controller: DialogController,
+							templateUrl: 'templates/views/UserStateList.html?v=1',
+							parent: $scope,
+							targetEvent: ev,
+							locals: {
+								data: {task: task, token: token, isPersonal: isPersonal}
+							}
+						})
+						.then(function(answer) {
+							$scope.alert = 'You said the information was "' + answer + '".';
+						}, function() {
+							$scope.alert = 'You cancelled the dialog.';
+						});
+
+
 				} else {
 					if (!isPersonal) {
 						apiService.getProjectsByCourse(token, task.courseId).success(function(data) {
@@ -27,11 +41,11 @@ angular.module('SeHub')
 									if (data[i].id.toString() === $scope.user.projects_id_list[j])
 										ownerId = $scope.user.projects_id_list[j];
 							}
-							apiService.isTaskSubmitted(token, task.id, ownerId).success(function(data){
-								if(data.submitted)
-									$location.path('/tasks/overview/'+task.id+'/'+ownerId+'/'+ownerId)
+							apiService.isTaskSubmitted(token, task.id, ownerId).success(function(data) {
+								if (data.submitted)
+									$location.path('/tasks/overview/' + task.id + '/' + ownerId + '/' + ownerId)
 								else
-									$location.path('/tasks/fill/'+task.id+'/'+ownerId)
+									$location.path('/tasks/fill/' + task.id + '/' + ownerId)
 							})
 						}).error(function(err) {
 							console.error('Error: ', err);
@@ -39,6 +53,36 @@ angular.module('SeHub')
 					}
 				}
 			}
+
+
+			function DialogController($scope, $mdDialog, data, apiService) {
+
+				console.log(apiService);
+				$scope.task = data.task;
+				$scope.isPersonal = data.isPersonal;
+				var token = data.token;
+				$scope.loading = true;
+
+				apiService.getUsersStateByTask(token, $scope.task.id).success(function(data){
+					$scope.classList = data;
+					$scope.loading = false;
+				}).error(function(err){
+					console.error(err);
+					$scope.hide();
+				})
+
+
+				$scope.hide = function() {
+					$mdDialog.hide();
+				};
+				$scope.cancel = function() {
+					$mdDialog.cancel();
+				};
+				$scope.answer = function(answer) {
+					$mdDialog.hide(answer);
+				};
+			}
+
 
 
 		}
