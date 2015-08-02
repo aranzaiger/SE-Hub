@@ -25,6 +25,7 @@ from models.Project import Project
 #Validation Utils Libs
 from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
+from Email_Utils import *
 
 
 task_routes = Blueprint("task_routes", __name__)
@@ -864,6 +865,38 @@ def deleteTaskComponents(token,taskId):
 @task_routes.route('/api/tasks/help')
 def documentation():
     return auto.html()
+
+
+@task_routes.route('/api/tasks/sendTaskReminder', methods=['GET'])
+def sendTaskReminder():
+
+    tasks = Task.all()
+
+    try:
+        for t in tasks.run():
+            if t.dueDate == datetime.date.today() + datetime.timedelta(days=1):
+                course = Course.get_by_id(int(t.courseId))
+                if t.isPersonal:
+                    for uId in course.membersId:
+                        tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", int(uId))
+                        if tc.count() == 0:
+                            user = User.get_by_id(int(uId))
+                            send_task_reminder(user.email, user.name, t.title, course.courseName)
+                            print ""
+
+                else:
+                    projects = Project.all().filter("courseId = ", course.key().id())
+                    for p in projects.run():
+                        tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", p.key().id())
+                        if tc.count() == 0:
+                            for uId in p.membersId:
+                                user = User.get_by_id(int(uId))
+                                send_task_reminder(user.email, user.name, t.title, course.courseName)
+        return accepted()
+
+    except:
+        return bad_request()
+
 
 
 
