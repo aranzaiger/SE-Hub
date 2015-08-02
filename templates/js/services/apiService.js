@@ -197,8 +197,8 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
-		getAllFutureTasks: function(token, courseId){
-			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getAllFutureCampusTasks/" + token + "/" + courseId;
+		getAllFutureTasks: function(token){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getAllFutureTasks/" + token;
 			req = {
 				method: "GET",
 				url: url

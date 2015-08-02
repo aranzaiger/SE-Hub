@@ -403,7 +403,7 @@ def getAllFutureTasks(token):
     <br>
     """
 
-    user = get_user_by_token
+    user = get_user_by_token(token)
     if user is None:
         return bad_request("Bad User Token")
 

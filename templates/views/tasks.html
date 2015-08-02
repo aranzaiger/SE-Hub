@@ -24,8 +24,13 @@
 							</md-tab>
 							<md-tab label="Not Submitted">
 								<md-content class="md-padding">
-									<h1 class="md-display-2">Not Submitted</h1>
-									<p> Not Submitted ..</p>
+									<md-card ng-repeat = "task in lecturerTasks"> 
+										<md-button ng-click="gotoTask(task.id)">
+											{{task.title}}
+										</md-button>
+
+									</md-card>
+									
 								</md-content>
 							</md-tab>
 							<div ng-if = "user.isLecturer">

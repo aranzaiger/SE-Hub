@@ -25,123 +25,64 @@
 	<md-content>
 		<h1 style="margin-left:15px;"><i class="fa fa-dashboard"></i> Dash Board</h1>
 	</md-content>
-	
-	<div layout = "column" flex = 90 layout-margin>
-		<div>
-			Closest Task-
-			<md-card layout-margin layout-padding>
-				<div>	
-					In Course: {{tasks[0].courseName}}
-				</div>
-			</md-card>
-		</div>
-		<div>
-			Latest Message-
-			<md-card layout-margin layout-padding>
-				{{userMessages[0].message}}
-			</md-card>
-		</div>
-	</div>
-
-
-	<!-- 
-	<table style="width:100%;" border = "1">
-						<tr>
-							<th>Message</th>
-							<th style = "width:20%;">Date</th>
-							<th style = "width:10%;">Committer</th>
-						</tr>
-						<tr ng-repeat = "commit in project.info.commits" layout-margin align = "center">
-							<td>
-								<span ng-repeat = "msg in commit">
-									<a target = "_blank"ng-href="{{commit.html_url}}" 
-									style="text-decoration:none; color:black;">
-										{{msg.message}}
-									</a>
-								</span>
-							</td>
-							<td>
-								<span ng-repeat = "date in commit.author">
-									{{date.date}}
-								</span>
-							</td>
-							<td ng-repeat = "member in project.members">
-								<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;">
-									{{member.name}}
-								</a>
-							</td>
-						</tr>
-					</table>
--->
-
 	<div ng-if="user.isLecturer"> <!-- Lecturer Mode -->
 		<md-card>
-			<div flex = 90>
+			<div flex = "90">
 				<md-content>
 					<md-tabs md-dynamic-height md-border-bottom>
 						<md-tab label="Messages">
 							<md-content class="tabDesign">
-								<md-content class="messagesContent">
+								<!-- <md-content class="messagesContent"> -->
 									<md-card ng-repeat = "msg in userMessages">
 										<div layout = "column" layout-padding>
-											<div flex = 30 class="md-avatar">
-												<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
-											</div>
-											<div flex = 20 layout = "row">
-												<div>
-													{{msg.user.username}}
+											<!-- <div> -->
+												<div flex = "30" class="md-avatar">
+													<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
 												</div>
-												<div>
-													{{msg.group.courseName}}
-													<br></br>
-													{{msg.group.projectName}}
+											<!-- </div>	 -->
+											<!-- <div> -->
+												<div flex = "20" layout = "row">
+													<div>
+														{{msg.user.username}}
+													</div>
+													<div>
+														{{msg.group.courseName}}
+														{{msg.group.projectName}}
+													</div>
 												</div>
-											</div>
-											<div flex = 40>
-												{{msg.message}}
-											</div>
+											<!-- </div>	 -->
+											<!-- <div> -->
+												<div flex = "40">
+													{{msg.message}}
+												</div>
+											<!-- </div> -->
 										</div>
-										
-
-										<!-- <div flex layout="column">
-											<div flex = 30 class="md-avatar" layout-padding layout-margin>
-												<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
-											</div>
-											
-											<div layout = "row" flex = 15 layout-padding>	
-												<div>
-													{{msg.user.username}}
-												</div>
-												<div>
-													{{msg.group.courseName}}
-													{{msg.group.projectName}}
-												</div>
-											</div>
-											<div flex = 50 layout-padding>
-												{{msg.message}}
-											</div>
-										</div> -->
-
+										<!---->
 
 									</md-card>
-								</md-content>
-								<!-- </div> -->
 							</md-content>
+							<!-- </md-content> -->
 						</md-tab>
-						<md-tab label="Tasks">
+						<md-tab label="Tasks waiting for review">
 							<md-content class="md-padding">
-								<h1 class="md-display-2">Tasks</h1>
-								<div>
-									
-								</div>
+								<md-card ng-repeat = "task in userTasks" layout-padding>
+									<div>
+										Title: 
+										<md-button ng-click="gotoTask(task)">
+											{{task.title}}
+										</md-button>
+										<br></br>
+										Description: {{task.description}}
+									</div>
+								</md-card>	
 							</md-content>
 						</md-tab>
-						<md-tab label="two">
+<!-- 						<md-tab label="two">
 							<md-content class="md-padding">
 								<h1 class="md-display-2">Tab Two</h1>
 								Two
 							</md-content>
-						</md-tab>
+						</md-tab> -->
 					</md-tabs>
 				</md-content>
 			</div>
@@ -171,75 +112,104 @@
 				</div>
 			</div>
 		</div>
-<!-- </md-content> -->
 	</div>
 	<div ng-if="isStudent"> <!-- Student Mode -->
-		<md-content>
-			<div layout="row">
-				<div flex="65">
-					<md-card>
-						<p class = "messagesFeed">Messages</p>
-					</md-card>
-				</div>
-				<div flex="34">
-					<md-card>
-						<p class = "tasksFeed">Tasks</p>
-					</md-card>
-				</div>
+		<div layout = "column" flex = 90 layout-margin>
+			<div>
+				Closest Task-
+				<md-card layout-margin layout-padding>
+					<div>	
+						<md-button ng-click="gotoTask(userTasks[0])">
+							 {{userTasks[0].title}}
+						</md-button>
+					</div>
+				</md-card>
 			</div>
-			<div layout="row">
-				<div  flex="65">
-					<md-card>
-					<div class = "messagesContent"> 
-						<md-card ng-repeat = "msg in messages">
-							<div layout="column">
-								<div layout="row" layout-margin layout-padding>
-									<div flex="10">
-										<img ng-src="{{user.avatar_url}}" class="roundUserAvatar" style = "width:70%;">
-									</div>
-									<div flex>	
-										<div layout = "column">
-											<div>
-												<b>{{user.name}}</b>
+			<div>
+				Latest Message-
+				<md-card layout-margin layout-padding>
+					{{userMessages[0].message}}
+				</md-card>
+			</div>
+		</div>
+		<md-content>
+			<md-card>
+				<div flex="100">
+					<md-tabs md-dynamic-height md-border-bottom>
+						<md-tab label="Messages">
+							<md-content class="tabDesign">
+								<md-content class="messagesContent">
+									<md-card ng-repeat = "msg in userMessages">
+										<div layout = "column" layout-padding>
+											<div flex = "30" class="md-avatar">
+												<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
 											</div>
-											<div>
-												class_name
+											<div flex = "20" layout = "row">
+												<div>
+													{{msg.user.username}}
+												</div>
+												<div>
+													{{msg.group.courseName}}
+													{{msg.group.projectName}}
+												</div>
+											</div>
+											<div flex = "40">
+												{{msg.message}}
 											</div>
 										</div>
+									</md-card>
+								</md-content>
+						<!-- </div> -->
+							</md-content>
+						</md-tab>
+						<md-tab label="Tasks">
+							<md-content class="md-padding">
+								<md-card ng-repeat = "task in userTasks" layout-padding>
+									<div>
+										Title: 
+										<md-button ng-click="gotoTask(task)">
+											{{task.title}}
+										</md-button>
+										<br></br>
+										Description: {{task.description}}
 									</div>
-								</div>
-								<div>
-									<div flex="69" class="msgSent" layout-margin layout-padding>
-										{{msg.text}}
-									</div>
-								</div>	
-							</div>
-						</md-card>
-					</div>
-					</md-card>
+								</md-card>	
+							</md-content>
+						</md-tab>
+<!-- 						<md-tab label="two">
+							<md-content class="md-padding">
+								<h1 class="md-display-2">Tab Two</h1>
+								Two
+							</md-content>
+						</md-tab> -->
+					</md-tabs>
 				</div>
-				<div flex="34">
-					<md-card>
-						<p class = "tasksContent"> 
-							For Task 3 Press: <a href="http://localhost:8080/home#/tasks">Task #3</a>
-							<br></br>
-							For Task 4 Press: <a href="http://localhost:8080/home#/home">Task #4</a>
-							<br></br>
-							For Task 5 Press: <a href="http://localhost:8080/home#/home">Task #5</a>
-							<br></br>
-							For Task 6 Press: <a href="http://localhost:8080/home#/home">Task #6</a>
-							<br></br>
-							For Task 7 Press: <a href="http://localhost:8080/home#/home">Task #7</a>
-							<br></br>
-							For Task 8 Press: <a href="http://localhost:8080/home#/home">Task #8</a>
-						</p>
-					</md-card>
+			</md-card>
+			<div class ="addMessage" layout="row" layout-margin layout padding>
+			<div>
+				<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary"><i class="fa fa-comments"></i></md-button>
+			</div>
+		</div>
+		<div ng-if="addMsg">
+			<div layout = "row" layout-margin layout padding layout-align = "left center">	
+				<md-button ng-click="postMessageClicked()" ng class="md-raised md-primary">Post</md-button>
+				<md-button ng-click="clearAllClicked()" ng class="md-raised md-primary">Clear All</md-button>
+			</div>
+			<div class="port_spacer"></div>
+			<div layout-padding layout = "row">
+				<div flex = "60">
+					<md-input-container>
+						<label> Write Your Desired Message Here And Press Post</label>
+						<input type="text" minlength="1" ng-model="msg.msgToAdd" required></input>	
+					</md-input-container>
+				</div>
+				<div flex = "30">
+					<md-select placeholder="Choose Course" ng-model="courseObj.name" ng-change="chooseCourseClicked()" style="z-index: 300" class="courseDropDown" required>
+						<md-option ng-repeat="c in courses" value="{{c.courseName}}">{{c.courseName}}</md-option>
+					</md-select>
 				</div>
 			</div>
-			<!-- <md-button ng-click="chooseCourseClicked()" ng class="md-raised md-primary">Choose Course</md-button>		 -->
-			<!-- <md-select placeholder="Choose Course" ng-model="course" ng-click="chooseCourseClicked()" style="z-index: 300"> -->
-				<!-- <md-option ng-switch="user.isLecturer" ng-repeat="c in courses" value="{{c.title}}">{{c.title}}</md-option> -->
-			<!-- </md-select> -->
+		</div>
 		</md-content>
 	</div>
 </div>
