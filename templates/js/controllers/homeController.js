@@ -21,27 +21,22 @@ angular.module('SeHub')
   if($scope.user.isLecturer)
   {
     $scope.isStudent = false;
-    console.log("Lecturer Mode!");
   }
   else
   {
     $scope.isStudent = true;
-    console.log("Student Mode!");
   }
 
   $scope.displayMessages = function()
   {
     apiService.getAllUserMessages(token).success(function(data)
     {
-      // console.log(data);
       $scope.userMessages = data;
     }).error(function(err)
     {
-      console.log("Error: " + err.message);
+      console.log(err.message);
     });
   }
-
-  // $scope.displayMessages(); //
 
   $scope.addMessageClicked = function()
   {
@@ -90,11 +85,11 @@ angular.module('SeHub')
     {
       apiService.getProjectsByCourse(token, task.courseId).success(function(data)
       {
-        console.log($scope.user);
+        // console.log($scope.user);
         for(var i = 0; i < $scope.user.projects_id_list.length; i++)
           for(var j = 0; j < data.length; j++)
           {
-            if($scope.user.projects_id_list[i] === data[j])
+            if($scope.user.projects_id_list[i] === data[j].id.toString())
             {
               $location.path('/tasks/fill/' + task.id + '/' + data[j].id);
             }
@@ -111,7 +106,6 @@ angular.module('SeHub')
     apiService.getAllFutureTasks(token).success(function(data) // Get all Tasks // TODO change to closest TASK
     {
       $scope.userTasks = data;
-      console.log(data);
     }).error(function(err)
     {
       console.log(err.message);
