@@ -25,6 +25,7 @@ from models.Project import Project
 #Validation Utils Libs
 from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
+from Email_Utils import *
 
 
 task_routes = Blueprint("task_routes", __name__)
@@ -871,30 +872,30 @@ def sendTaskReminder():
 
     tasks = Task.all()
 
-    #go over all the courses
-    for t in tasks.run():
-        if t.dueDate == datetime.date.today() + datetime.timedelta(days=1):
-            course = Course.get_by_id(int(t.courseId))
-            if t.isPersonal:
-                for uId in course.membersId:
-                    tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", int(uId))
-                    if tc.count() == 0:
-                        #SEND MAIL!! TODO
-                        print ""
+    try:
+        for t in tasks.run():
+            if t.dueDate == datetime.date.today() + datetime.timedelta(days=1):
+                course = Course.get_by_id(int(t.courseId))
+                if t.isPersonal:
+                    for uId in course.membersId:
+                        tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", int(uId))
+                        if tc.count() == 0:
+                            user = User.get_by_id(int(uId))
+                            send_task_reminder(user.email, user.name, t.title, course.courseName)
+                            print ""
 
-            else:
-                projects = Project.all().filter("courseId = ", course.key().id())
-                for p in projects:
-                    tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", p.key().id())
-                    if tc.count() == 0:
-                        #SEND MAIL!! TODO
-                        print ""
+                else:
+                    projects = Project.all().filter("courseId = ", course.key().id())
+                    for p in projects.run():
+                        tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", p.key().id())
+                        if tc.count() == 0:
+                            for uId in p.membersId:
+                                user = User.get_by_id(int(uId))
+                                send_task_reminder(user.email, user.name, t.title, course.courseName)
+        return accepted()
 
-
-
-        #go over all
-
-    return accepted("Task deleted")
+    except:
+        return bad_request()
 
 
 
