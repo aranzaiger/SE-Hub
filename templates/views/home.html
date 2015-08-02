@@ -30,16 +30,49 @@
 		<div>
 			Closest Task-
 			<md-card layout-margin layout-padding>
-				Will Be Here
+				<div>	
+					In Course: {{tasks[0].courseName}}
+				</div>
 			</md-card>
 		</div>
 		<div>
 			Latest Message-
 			<md-card layout-margin layout-padding>
-				Will Be Here
+				{{userMessages[0].message}}
 			</md-card>
 		</div>
 	</div>
+
+
+	<!-- 
+	<table style="width:100%;" border = "1">
+						<tr>
+							<th>Message</th>
+							<th style = "width:20%;">Date</th>
+							<th style = "width:10%;">Committer</th>
+						</tr>
+						<tr ng-repeat = "commit in project.info.commits" layout-margin align = "center">
+							<td>
+								<span ng-repeat = "msg in commit">
+									<a target = "_blank"ng-href="{{commit.html_url}}" 
+									style="text-decoration:none; color:black;">
+										{{msg.message}}
+									</a>
+								</span>
+							</td>
+							<td>
+								<span ng-repeat = "date in commit.author">
+									{{date.date}}
+								</span>
+							</td>
+							<td ng-repeat = "member in project.members">
+								<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;">
+									{{member.name}}
+								</a>
+							</td>
+						</tr>
+					</table>
+-->
 
 	<div ng-if="user.isLecturer"> <!-- Lecturer Mode -->
 		<md-card>
@@ -49,30 +82,47 @@
 						<md-tab label="Messages">
 							<md-content class="tabDesign">
 								<md-content class="messagesContent">
-								<!-- <div class = "messagesContent">  -->
-									<md-card ng-repeat = "msg in messages">
-										<div layout="column">
-											<div layout="row" layout-margin layout-padding>
-												<div flex="10" class="md-avatar">
-													<img ng-src="{{user.avatar_url}}" style="width:100%">
+									<md-card ng-repeat = "msg in userMessages">
+										<div layout = "column" layout-padding>
+											<div flex = 30 class="md-avatar">
+												<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
+											</div>
+											<div flex = 20 layout = "row">
+												<div>
+													{{msg.user.username}}
 												</div>
-												<div flex>	
-													<div layout = "column">
-														<div>
-															<b>{{user.name}}</b>
-														</div>
-														<div>
-															{{courseObj.courseName}}
-														</div>
-													</div>
+												<div>
+													{{msg.group.courseName}}
+													<br></br>
+													{{msg.group.projectName}}
 												</div>
 											</div>
-											<div>
-												<div flex="70" class="msgSent" layout-margin layout-padding>
-													{{msg.text}}
-												</div>
-											</div>	
+											<div flex = 40>
+												{{msg.message}}
+											</div>
 										</div>
+										
+
+										<!-- <div flex layout="column">
+											<div flex = 30 class="md-avatar" layout-padding layout-margin>
+												<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
+											</div>
+											
+											<div layout = "row" flex = 15 layout-padding>	
+												<div>
+													{{msg.user.username}}
+												</div>
+												<div>
+													{{msg.group.courseName}}
+													{{msg.group.projectName}}
+												</div>
+											</div>
+											<div flex = 50 layout-padding>
+												{{msg.message}}
+											</div>
+										</div> -->
+
+
 									</md-card>
 								</md-content>
 								<!-- </div> -->
@@ -81,7 +131,9 @@
 						<md-tab label="Tasks">
 							<md-content class="md-padding">
 								<h1 class="md-display-2">Tasks</h1>
-								One
+								<div>
+									
+								</div>
 							</md-content>
 						</md-tab>
 						<md-tab label="two">

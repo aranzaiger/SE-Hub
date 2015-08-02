@@ -35,11 +35,21 @@ angular.module('SeHub')
 
 	$scope.removeProject = function(ev)
 	{
-		$mdDialog.show($mdDialog.alert().title('Remove Project').content('Are you sure you want to remove the project ?')
-		.ariaLabel('Removing project alert dialog').ok('Yes').targetEvent(ev));
-		// .then(function() {
+		$mdDialog.show($mdDialog.confirm().title('Remove Project').content('Are you sure you want to remove the project ?')
+		.ariaLabel('Removing project alert dialog').ok('Yes').cancel('No').targetEvent(ev));
+
+		 /*
+		 .than(function()
+		{
+			$scope.alert = 'You decided to get rid of your debt.';
+		},
+	    function()
+	    {
+			$scope.alert = 'You decided to keep your debt.';
+		});
+		 */
+			
 			// $location.path('/class/' + data.id + '/' + data.courseName); // Will display all the projects in this course
-		// }); // Pop-up alert
 	};
 
 	$scope.getProfileRoute = function(userName)
@@ -48,8 +58,6 @@ angular.module('SeHub')
 		{
 			if(userName === $scope.project.members[i].name)
 			{
-				console.log(userName);
-				console.log($scope.project.members[i].name);
 				return '#/profile/' + $scope.project.members[i].id;
 			}
 			else

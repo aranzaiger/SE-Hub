@@ -87,6 +87,7 @@ angular.module('SeHub')
 				'courseId': intClassId,
 				'gitRepository': $scope.project.repoOwner + '/' + $scope.project.gitRepoName
 			};
+			console.log("Look Down");
 			console.log(jsonNewProj);
 
 			if ($scope.project.logoUrl)
@@ -94,7 +95,7 @@ angular.module('SeHub')
 
     	apiService.createProject(token, jsonNewProj).success(function(data)
     	{
-    		loadingData = false;
+    		$scope.loadingData = false;
     		projectId = data.id;
       		$mdDialog.show($mdDialog.alert().title('Project Created').content('You have successfully created project.')
 	        .ariaLabel('Project created alert dialog').ok('Great!').targetEvent())
@@ -104,7 +105,8 @@ angular.module('SeHub')
 
     	}).error(function(err)
     	{
-    		console.log("Error: " + err.message);
+    		$scope.creatingProject = false;
+    		console.log(err.message);
       		$mdDialog.show($mdDialog.alert().title('Error Creating Project').content('You have failed Creating the project.')
 	        .ariaLabel('Create project alert dialog').ok('Try Again!').targetEvent()); // Pop-up alert
     	});
