@@ -20,6 +20,7 @@ from models.Task import Task
 from models.Course import Course
 from models.TaskComponent import TaskComponent
 from models.TaskGrade import TaskGrade
+from models.Project import Project
 
 #Validation Utils Libs
 from SE_API.Validation_Utils import *
@@ -200,13 +201,25 @@ def submitTask(token, taskId, ownerId):
     payload = json.loads(request.data)
 
     user = get_user_by_token(token)
+    if user is None:
+        bad_request("bad user Token")
 
     task = Task.get_by_id(int(taskId))
+    if task is None:
+        bad_request("bad Task id")
+
+    if task.isPersonal:
+        if User.get_by_id(ownerId) is None:
+            return bad_request("no such user")
+    else:
+        if Project.get_by_id(ownerId) is None:
+            return bad_request("no such project")
+
 
     #create components
-    for c in payload['components']:
+    for c in payload:
         try:
-            component = TaskComponent(taskId=task.key().id(), userId=(int(ownerId)), type=c['type'], label=c['label'], isMandatory=c['isMandatory'], order=c['order'])
+            component = TaskComponent(taskId=task.key().id(), userId=(int(ownerId)), type=c['type'], label=c['label'], value=c['value'], isMandatory=c['isMandatory'], order=c['order'])
         except Exception as e:
             print e
             return bad_request("Bad component")
@@ -678,6 +691,12 @@ def getTaskById(token, taskId, ownerId):
     task = Task.get_by_id(int(taskId))
     if task is None:
         return bad_request("Bad Task id")
+    if task.isPersonal:
+        if User.get_by_id(ownerId) is None:
+            return bad_request("no such user")
+    else:
+        if Project.get_by_id(ownerId) is None:
+            return bad_request("no such project")
 
     task = json.loads(task.to_JSON())
     task['components'] = []

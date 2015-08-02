@@ -10,6 +10,7 @@ class TaskComponent(db.Model):
     userId = db.IntegerProperty(required=True, default = -1)
     type = db.StringProperty(required=True,default=" ")
     label = db.StringProperty(required=True,default=" ")
+    value = db.StringProperty(required=True, default=" ")
     isMandatory = db.BooleanProperty(required=True, default=True)
     order = db.IntegerProperty(required=True)
 
@@ -18,6 +19,7 @@ class TaskComponent(db.Model):
                 'userId' : self.userId,
                 'type' : self.type,
                 'label' : self.label,
+                'value' : self.value,
                 'isMandatory' : self.isMandatory,
                 'order' : self.order,
                 'id' : self.key().id()
