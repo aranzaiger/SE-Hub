@@ -19,7 +19,7 @@ angular.module('SeHub')
 					///Need to show the List
 					$mdDialog.show({
 							controller: DialogController,
-							templateUrl: 'templates/views/UserStateList.html?v=1',
+							templateUrl: 'templates/views/UserStateList.html?v=1122231',
 							parent: $scope,
 							targetEvent: ev,
 							locals: {
@@ -43,9 +43,9 @@ angular.module('SeHub')
 							}
 							apiService.isTaskSubmitted(token, task.id, ownerId).success(function(data) {
 								if (data.submitted)
-									$location.path('/tasks/overview/' + task.id + '/' + ownerId + '/' + ownerId)
+									$location.path('/tasks/overview/' + task.id + '/' + ownerId + '/' + ownerId);
 								else
-									$location.path('/tasks/fill/' + task.id + '/' + ownerId)
+									$location.path('/tasks/fill/' + task.id + '/' + ownerId);
 							})
 						}).error(function(err) {
 							console.error('Error: ', err);
@@ -56,8 +56,6 @@ angular.module('SeHub')
 
 
 			function DialogController($scope, $mdDialog, data, apiService) {
-
-				console.log(apiService);
 				$scope.task = data.task;
 				$scope.isPersonal = data.isPersonal;
 				var token = data.token;
@@ -70,6 +68,11 @@ angular.module('SeHub')
 					console.error(err);
 					$scope.hide();
 				})
+
+				$scope.goToTask = function(obj){
+					$mdDialog.hide();
+					$location.path('/tasks/overview/' + $scope.task.id + '/' + obj.id + '/' + obj.id);
+				}
 
 
 				$scope.hide = function() {

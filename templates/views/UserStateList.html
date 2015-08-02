@@ -1,4 +1,4 @@
-<md-dialog aria-label="Class Status" style='width: 80%'>
+<md-dialog aria-label="Class Status" style='width: 60%'>
   <form>
   <md-toolbar>
     <div class="md-toolbar-tools">
@@ -10,14 +10,14 @@
     </div>
   </md-toolbar>
   <md-dialog-conten layout-padding>
-    <div ng-if='loading'>
+    <!-- <div ng-if='loading'>
       
     </div>
     <div ng-if='!loading'>
       <div ng-repeat="obj in classList">
-        <div layout='row' width='100%' >
+        <div layout='row' width='100%' max-height="20px">
           <div>
-            <img ng-src="{{obj.avatar_url || obj.logo_url}}" alt="" class='campusAvatar' style='max-height:auto'>
+            <img ng-src="{{obj.avatar_url || obj.logo_url}}" alt="" class='campusAvatar' style='max-height=15px'>
           </div>
           <div class='spacer'></div>
           <div>{{obj.name || obj.projectName}}</div>
@@ -28,9 +28,20 @@
         </div>
         <md-divider ng-if="!$last"></md-divider>
       </div>
-    </div>
+    </div> -->
+<md-list>
+    <md-list-item class="md-3-line hoverable" ng-repeat="obj in classList" layout="row" ng-click='goToTask(obj)'>
+        <img ng-src="{{obj.avatar_url || obj.logo_url}}?{{$index}}" class="md-avatar" alt="{{obj.id}}" />
+        <div class="md-list-item-text">
+          <h4>{{obj.name || obj.projectName}}</h3>
+          <p>Grade: {{obj.grade.grade || "Not Yet Reviewed"}}</p>
+          <!-- <p>{{ item.notes }}</p> -->
+        </div>
+    </md-list-item>
+</md-list>
+
   </md-dialog-content>
-  <div class="md-actions" layout="row">
+ <!--  <div class="md-actions" layout="row">
     <md-button href="http://en.wikipedia.org/wiki/Mango" target="_blank" hide show-md>
       More on Wikipedia
     </md-button>
@@ -41,6 +52,6 @@
     <md-button ng-click="answer('useful')" class="md-primary">
       Useful
     </md-button>
-  </div>
+  </div> -->
   </form>
 </md-dialog>

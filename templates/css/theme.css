@@ -92,17 +92,11 @@ body.noscroll
   box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
 }
 
-  /* Added BY devMatan */
-
-/*.disabledSubmitButton:
-{
-  /*background: #f7f7f7;*/
-  /*border-radius: 10000px;*/
-  /*text-align: center;*/
-
-  /*position: relative !important;*
- 
-  }*/
+.md-toolbar-tools h1 {
+  font-size: inherit;
+  font-weight: inherit;
+  margin: inherit;
+}
 
 .campusAvatar img
 {
@@ -297,6 +291,16 @@ body.noscroll
   font-weight: bold;
   cursor: pointer;
 }
+
+.hoverable{
+  cursor: pointer;
+}
+
+.hoverable:hover{
+  cursor: pointer;
+  background-color: #E2E2E2;
+}
+
 
 .se-menu li:active{
   background-color: #B2B2B2;
