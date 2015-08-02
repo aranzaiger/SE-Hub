@@ -21,7 +21,7 @@ angular.module('SeHub')
 					$scope.isMaster = (user.id === data.master_id);
 				});
 				if (!data.isPersonal) {
-					apiService.getProjectsById(token, groupId).sucsess(function(data) {
+					apiService.getProjectsById(token, groupId).success(function(data) {
 						$scope.group = data;
 					});
 				} else {
