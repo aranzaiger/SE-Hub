@@ -703,9 +703,9 @@ def getAllUserTasks(token):
             taskDic['forSortDate'] = taskTime
 
 
-            if t.isPersonal:
-                ownerId = user.key().id()
-            else:
+
+            ownerId = user.key().id()
+            if not t.isPersonal:
                 project = Project.all().filter("courseId = ", course.key().id())
                 for p in project.run():
                     if str(p.key().id()) in user.projects_id_list:
@@ -1111,6 +1111,7 @@ def getAllUnsubmittedTasks(token):
             taskDic['isPersonal'] = task.isPersonal
             taskDic['usersToReview'] = []
             taskDic['projectsToReview'] = []
+            taskDic['id'] = task.key().id()
 
             tgs = TaskGrade.all().filter("taskId = ", task.key().id())
             tcs = TaskComponent.all().filter("taskId = ", task.key().id()).filter("order = ", 0).filter("userId != ", -1)

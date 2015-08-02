@@ -101,6 +101,9 @@ angular.module('SeHub')
 							$location.path('/tasks/overview/' + taskId + '/' + groupId + '/' + groupId);
 						});
 
+					}).error(function(err)
+					{
+						console.log(err.message);
 					})
 
 				} else {

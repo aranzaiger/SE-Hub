@@ -117,6 +117,14 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
+		getAllUnsubmittedTasks: function(token){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getAllUnsubmittedTasks/" + token;
+			req = {
+				method : "GET",
+				url : url
+			};
+			return $http(req);
+		},
 		getAllFutureTasks: function(token, courseId){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getAllFutureTasks/" + token + "/" + courseId;
 			req = {
