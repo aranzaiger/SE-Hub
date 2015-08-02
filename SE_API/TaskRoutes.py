@@ -209,10 +209,10 @@ def submitTask(token, taskId, ownerId):
         bad_request("bad Task id")
 
     if task.isPersonal:
-        if User.get_by_id(ownerId) is None:
+        if User.get_by_id(int(ownerId)) is None:
             return bad_request("no such user")
     else:
-        if Project.get_by_id(ownerId) is None:
+        if Project.get_by_id(int(ownerId)) is None:
             return bad_request("no such project")
 
 
@@ -692,10 +692,10 @@ def getTaskById(token, taskId, ownerId):
     if task is None:
         return bad_request("Bad Task id")
     if task.isPersonal:
-        if User.get_by_id(ownerId) is None:
+        if User.get_by_id(int(ownerId)) is None:
             return bad_request("no such user")
     else:
-        if Project.get_by_id(ownerId) is None:
+        if Project.get_by_id(int(ownerId)) is None:
             return bad_request("no such project")
 
     task = json.loads(task.to_JSON())
