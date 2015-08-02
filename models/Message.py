@@ -8,7 +8,7 @@ from models.Course import Course
 
 class Message(db.Model):
     groupId = db.IntegerProperty(required=True)
-    message = db.StringProperty(required=True)
+    message = db.StringProperty(required=True, multiline=True)
     msgDate = db.DateTimeProperty(required=True)
     master_id = db.IntegerProperty(required=True)
     isProject = db.BooleanProperty(default=False)

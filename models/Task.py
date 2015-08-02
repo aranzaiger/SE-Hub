@@ -15,7 +15,7 @@ class Task(db.Model):
         data = {'title' : self.title,
                 'courseId' : self.courseId,
                 'description' : self.description,
-                 'dueDate' : {
+                'dueDate' : {
                     'year': self.dueDate.year,
                     'month': self.dueDate.month,
                     'day': self.dueDate.day
