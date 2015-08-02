@@ -304,12 +304,14 @@ def submitGrade(token, taskId, ownerId, grade):
         tg = TaskGrade.all().filter("taskId = ", int(taskId)).filter("userId = ", int(ownerId))
         if tg.count() == 0:
                 grade = TaskGrade(taskId=int(taskId), userId=int(ownerId), grade=int(grade))
+                db.put(grade)
+
         else:
             for g in tg.run():
                 g.grade=int(grade)
                 g.taskId=int(taskId)
                 g.userId=int(ownerId)
-        db.put(grade)
+                db.put(g)
         db.save
         return Response(response=grade.to_JSON(),
                                     status=200,
