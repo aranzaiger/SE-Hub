@@ -712,7 +712,7 @@ def getAllUserTasks(token):
 
             grade = TaskGrade.all().filter("taskId = ", t.key().id()).filter("userId = ", ownerId)
             for g in grade.run():
-                taskDic['grade'] = g.grade
+                taskDic['grade'] = json.loads(g.to_JSON())
             if grade.count() == 0:
                 taskDic['grade'] = {'taskId': t.key().id(), 'userId': ownerId, 'grade': None}
 
@@ -725,7 +725,7 @@ def getAllUserTasks(token):
 
             basicTC = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", -1).count()
             allTC = TaskComponent.all().filter("taskId = ", t.key().id()).count()
-            done = (basicTC/allTC) - 1
+            done = (allTC/basicTC) - 1
             taskDic['submitted']['done'] = done
 
             taskArr.append(taskDic)
