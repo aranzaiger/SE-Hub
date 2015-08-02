@@ -118,7 +118,7 @@ angular.module('SeHub')
 			};
 
 			$scope.submitGrade = function(event){
-				apiService.submitGrade(token, taskId, groupId, $scope.task.garde.grade).success(function(data){
+				apiService.submitGrade(token, taskId, groupId, $scope.task.grade.grade).success(function(data){
 					$mdDialog.show(
 						$mdDialog.alert()
 						.title('Thanks For Grading')
