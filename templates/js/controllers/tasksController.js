@@ -23,7 +23,11 @@ angular.module('SeHub')
 							parent: $scope,
 							targetEvent: ev,
 							locals: {
-								data: {task: task, token: token, isPersonal: isPersonal}
+								data: {
+									task: task,
+									token: token,
+									isPersonal: isPersonal
+								}
 							}
 						})
 						.then(function(answer) {
@@ -42,19 +46,60 @@ angular.module('SeHub')
 										ownerId = $scope.user.projects_id_list[j];
 							}
 							apiService.isTaskSubmitted(token, task.id, ownerId).success(function(data) {
-								if (data.submitted)
-									$location.path('/tasks/overview/' + task.id + '/' + ownerId + '/' + ownerId);
-								else
-									$location.path('/tasks/fill/' + task.id + '/' + ownerId);
-							})
+								if (data.submitted) {
+									if (ownerId)
+										$location.path('/tasks/overview/' + task.id + '/' + ownerId + '/' + ownerId);
+									else {
+										$mdDialog.show(
+											$mdDialog.alert()
+											.title('You Have No Project in this class')
+											.content('To Be Able To Fill A Project Task you need to be assigned to a project')
+											.ariaLabel('ddd')
+											.ok('Ok, ill join/create a project')
+											.targetEvent(event)
+
+										).then(function() {
+											$location.path('/campuses');
+										});
+									}
+								} else {
+									if (ownerId)
+										$location.path('/tasks/fill/' + task.id + '/' + ownerId);
+									else {
+										$mdDialog.show(
+											$mdDialog.alert()
+											.title('You Have No Project in this class')
+											.content('To Be Able To Fill A Project Task you need to be assigned to a project')
+											.ariaLabel('ddd')
+											.ok('Ok, ill join/create a project')
+											.targetEvent(event)
+
+										).then(function() {
+											$location.path('/campuses');
+										});
+									}
+								}
+							}).error(function(err) {
+								console.error(err);
+							});
 						}).error(function(err) {
 							console.error('Error: ', err);
+						});
+					} else {
+						apiService.isTaskSubmitted(token, task.id, $scope.user.id).success(function(data) {
+							if (data.submitted) {
+								$location.path('/tasks/overview/' + task.id + '/' + $scope.user.id + '/' + $scope.user.id);
+							} else {
+								$location.path('/tasks/fill/' + task.id + '/' + $scope.user.id);
+							}
+						}).error(function(err) {
+							console.error(err);
 						})
 					}
 				}
 			}
 
-			$scope.createNewTask = function(){
+			$scope.createNewTask = function() {
 				$location.path('/tasks/new');
 			}
 
@@ -65,15 +110,15 @@ angular.module('SeHub')
 				var token = data.token;
 				$scope.loading = true;
 
-				apiService.getUsersStateByTask(token, $scope.task.id).success(function(data){
+				apiService.getUsersStateByTask(token, $scope.task.id).success(function(data) {
 					$scope.classList = data;
 					$scope.loading = false;
-				}).error(function(err){
+				}).error(function(err) {
 					console.error(err);
 					$scope.hide();
 				})
 
-				$scope.goToTask = function(obj){
+				$scope.goToTask = function(obj) {
 					$mdDialog.hide();
 					$location.path('/tasks/overview/' + $scope.task.id + '/' + obj.id + '/' + obj.id);
 				}
