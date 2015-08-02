@@ -92,7 +92,7 @@ def createMessage(token):
 
     db.put(msg)
     db.save
-    return Response(response=json.dumps(msg),
+    return Response(response=msg.to_JSON(),
                             status=200,
                             mimetype="application/json")
 

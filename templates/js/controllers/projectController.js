@@ -11,10 +11,29 @@ angular.module('SeHub')
 	$scope.isMember = false;
 	$scope.project = [];
 	$scope.isInProject = false;
+	$scope.projectMessages = [];
 	
 	// $scope.thisProject = {};
 	// $scope.thisProject.courseName = $routeParams.className;
 
+
+	$scope.displayProjectMessages = function()
+	{
+		apiService.getAllUserMessages(token).success(function(data)
+	    {
+	      $scope.projectMessages = data;
+	    }).error(function(err)
+	    {
+	      console.log(err.message);
+	    });
+
+
+	}
+
+	$scope.goToProfile = function(memberId)
+	{
+		$location.path('#/profile/' + memberId);
+	}
 	$scope.removeUserFromProject = function()
 	{
 		apiService.removeUserFromProject.success(function(data)
@@ -125,4 +144,5 @@ angular.module('SeHub')
 		});
 	}
 	$scope.getProjectInfo(); // Get all this project data
+	$scope.displayProjectMessages(); // Display all messages in project
 }]);

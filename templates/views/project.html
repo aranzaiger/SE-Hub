@@ -43,18 +43,22 @@
 				<div flex = "10" layout-padding layout-margin border = "1">
 					Team Members:
 					<ul layout-padding>
-						<!-- <div layout = "row"> -->
-							<li ng-repeat = "member in project.members">
-								<div>
-									<a ng-href="#/profile/{{member.id}}" style="text-decoration:none; color:black;"> {{member.name}}</a>	
+						<div layout = "column" ng-repeat = "member in project.members">
+							<!-- <li ng-repeat = "member in project.members"> -->
+								<div layout = "row">
+									<div>
+										<md-button ng-click = "goToProfile(member.id)">
+											{{member.name}}
+										</md-button>
+									</div>
+									<div ng-if = "isEditPressed">
+										<md-button ng-click="removeUserFromProject()" ng class="md-raised md-primary" aria-label="rU">
+											<i class="fa fa-times"></i>
+										</md-button>
+									</div>
 								</div>
-								<div ng-if = "isEditPressed">
-									<md-button ng-click="removeUserFromProject()" ng class="md-raised md-primary" aria-label="rU">
-										<i class="fa fa-times"></i>
-									</md-button>
-								</div>
-							</li>	
-						<!-- </div> -->
+							<!-- </li>	 -->
+						</div>
 					</ul>
 				</div>
 				<div flex = "40">
@@ -80,10 +84,27 @@
 						<md-content class="md-padding">
 							<md-tabs md-dynamic-height md-border-bottom>
 								<md-tab label="Messages">
-									<md-content class="md-padding">
-										<h1 class="md-display-2">Messages</h1>
-										<p>Messages...</p>
-									</md-content>
+									<!-- <md-content class="md-padding"> -->
+										<md-card ng-repeat = "msg in userMessages">
+											<div layout = "column" layout-padding>
+												<div flex = "30" class="md-avatar">
+													<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
+												</div>
+												<div flex = "20" layout = "row">
+													<div>
+														{{msg.user.username}}
+													</div>
+													<div>
+														{{msg.group.courseName}}
+														{{msg.group.projectName}}
+													</div>
+												</div>
+												<div flex = "40">
+													{{msg.message}}
+												</div>
+											</div>
+										</md-card>
+									<!-- </md-content> -->
 								</md-tab>
 								<md-tab label="Commits">
 									<md-content class="tabDesign">
