@@ -1000,6 +1000,142 @@ def isTaskSubmitted(token, taskId, groupId):
                     status=200,
                     mimetype="application/json")
 
+
+@task_routes.route('/api/tasks/getAllUnsubmittedTasks/<string:token>', methods=["GET"])
+@auto.doc()
+def getAllUnsubmittedTasks(token):
+    """
+    <span class="card-title">>This Call will return an array of all of the User's Tasks</span>
+    <br>
+    <b>Route Parameters</b><br>
+        - SeToken: token<br>
+    <br>
+    <br>
+    <b>Payload</b><br>
+     - NONE
+    <br>
+    <br>
+    <b>Response</b>
+    <br>
+    200 - JSON Example:<br>
+    <code>[<br>
+              {<br>
+                "courseName": "Advance Math",<br>
+                "courseId": 4762397176758272,<br>
+                "PersonalTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 4762397176758272,<br>
+                    "title": "task1",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5888297083600896<br>
+                  }<br>
+                ],<br>
+                "projectTasks": []<br>
+              },<br>
+              {<br>
+                "courseName": "Bad Math",<br>
+                "courseId": 5659598665023488,<br>
+                "PersonalTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task1",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5096648711602176<br>
+                  },<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": true,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task4",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5167017455779840<br>
+                  }<br>
+                ],<br>
+                "projectTasks": [<br>
+                  {<br>
+                    "grade": 12,<br>
+                    "isPersonal": false,<br>
+                    "dueDate": {<br>
+                      "year": 2010,<br>
+                      "day": 4,<br>
+                      "month": 2<br>
+                    },<br>
+                    "courseId": 5659598665023488,<br>
+                    "title": "new task3",<br>
+                    "description": "pls fddfsdfdsk",<br>
+                    "id": 5237386199957504<br>
+                  }<br>
+                ]<br>
+              }<br>
+    ]<br>
+    </code>
+    <br>
+    """
+    user = get_user_by_token(token)
+    if user is None:
+        return bad_request("Bad User Token")
+
+    arr = []
+
+    courses = Course.all().filter("master_id = ", user.key().id())
+
+    for course in courses.run():
+        dic = {}
+        dic['courseId'] = course.key().id()
+        dic['courseName'] = course.courseName
+        dic['tasks'] = []
+
+        tasks = Task.all().filter("courseId = ", course.key().id())
+        for task in tasks.run():
+            taskDic = {}
+            taskDic['title'] = task.title
+            taskDic['isPersonal'] = task.isPersonal
+            taskDic['usersToReview'] = []
+            taskDic['projectsToReview'] = []
+
+            tgs = TaskGrade.all().filter("taskId = ", task.key().id())
+            tcs = TaskComponent.all().filter("taskId = ", task.key().id()).filter("order = ", 0).filter("userId != ", -1)
+            for tg in tgs.run():
+                tcs.filter("userId != ", tg.userId)
+
+            for tc in tcs.run():
+                if task.isPersonal:
+                    u = User.get_by_id(tc.userId)
+                    taskDic['usersToReview'].append(json.loads(u.to_JSON()))
+                else:
+                    p = Project.get_by_id(tc.userId)
+                    taskDic['projectsToReview'].append(json.loads(p.to_JSON()))
+
+            dic['tasks'].append(taskDic)
+
+        arr.append(dic)
+
+    return Response(response=json.dumps(arr),
+                            status=200,
+                            mimetype="application/json")
+
+
+
+
 # @task_routes.route('/api/tasks/getAllUngradedTasks/<string:token>/<string:taskId>/<string:ownerId>', methods=["GET"])
 # @auto.doc()
 # def getAllUngradedTasks(token, taskId, ownerId):

@@ -176,7 +176,7 @@ def getMessagesByGroup(token, groupId):
         msgDic['forSortDate'] = msgTime
         arr.append(msgDic)
     print arr
-    arr = sorted(arr, key=itemgetter('forSortDate'), reverse=True)
+    arr = sorted(arr, key=itemgetter('forSortDate'), reverse=False)
     for i in arr:
         del i['forSortDate']
     print arr
@@ -270,7 +270,7 @@ def getAllUserMessages(token):
             msgDic['forSortDate'] = msgTime
             arr.append(msgDic)
 
-    arr = sorted(arr, key=itemgetter('forSortDate'), reverse=True)
+    arr = sorted(arr, key=itemgetter('forSortDate'), reverse=False)
     for i in arr:
         del i['forSortDate']
     print arr
