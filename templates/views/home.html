@@ -31,7 +31,7 @@
 			Closest Task-
 			<md-card layout-margin layout-padding>
 				<div>	
-					In Course: {{tasks[0].courseName}}
+					In Course: {{userTasks[0].courseName}}
 				</div>
 			</md-card>
 		</div>
@@ -101,7 +101,11 @@
 												{{msg.message}}
 											</div>
 										</div>
-										
+									</md-card>
+								</md-content>
+						<!-- </div> -->
+							</md-content>
+						</md-tab>
 
 										<!-- <div flex layout="column">
 											<div flex = 30 class="md-avatar" layout-padding layout-margin>
@@ -123,17 +127,17 @@
 										</div> -->
 
 
-									</md-card>
-								</md-content>
-								<!-- </div> -->
-							</md-content>
-						</md-tab>
+								
 						<md-tab label="Tasks">
 							<md-content class="md-padding">
 								<h1 class="md-display-2">Tasks</h1>
-								<div>
+								<md-card ng-repeat = "task in userTasks">
+									<div>
+										{{task.courseName}}
+									</div>
+								</md-card>
 									
-								</div>
+								
 							</md-content>
 						</md-tab>
 						<md-tab label="two">
