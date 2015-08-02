@@ -313,9 +313,7 @@ def submitGrade(token, taskId, ownerId, grade):
                 g.userId=int(ownerId)
                 db.put(g)
         db.save
-        return Response(response=grade.to_JSON(),
-                                    status=200,
-                                    mimetype="application/json")
+        return accepted()
     except Exception as e:
         print e.message
         return bad_request("wrong format")
