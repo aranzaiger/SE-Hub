@@ -67,27 +67,27 @@ angular.module('SeHub')
     $scope.msg.msgToAdd = null;
   }
 
-  $scope.reviewTask = function(task)
+  $scope.reviewTask = function(taskId, groupId)
   {
       //tasks/overview/:taskId/:submitterId/:gId', {
 
-    if(task.isPersonal) // As Lecturer
-    {
-      $location.path('/tasks/overview/' + task.id + '/' + $scope.user.id + '/' + $scope.user.id);
-    }
-    else // it's a project task
-    { 
-      apiService.getProjectsByCourse(token, task.courseId).success(function(data)
-      {
-        for(var i = 0; i < $scope.user.projects_id_list.length; i++)
-          for(var j = 0; j < data.length; j++)
-            if($scope.user.projects_id_list[i] === data[j].id.toString())
-              $location.path('/tasks/overview/' + task.id + '/' + data[j].id + '/' + data[j].id);
-      }).error(function(err)
-      {
-        console.log(err.message);
-      });
-    }
+    // if(task.isPersonal) // As Lecturer
+    // {
+      $location.path('/tasks/overview/' + taskId + '/' + groupId + '/' + groupId);
+    // }
+    // else // it's a project task
+    // { 
+    //   apiService.getProjectsByCourse(token, task.courseId).success(function(data)
+    //   {
+    //     for(var i = 0; i < $scope.user.projects_id_list.length; i++)
+    //       for(var j = 0; j < data.length; j++)
+    //         if($scope.user.projects_id_list[i] === data[j].id.toString())
+    //           $location.path('/tasks/overview/' + task.id + '/' + data[j].id + '/' + data[j].id);
+    //   }).error(function(err)
+    //   {
+    //     console.log(err.message);
+    //   });
+    // }
   }
 
   $scope.gotoTask = function(task)
