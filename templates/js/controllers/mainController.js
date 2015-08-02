@@ -52,7 +52,6 @@ angular.module('SeHub')
 				}];
 
 				dataService.initService($scope); //Start Data Sync Service (For User)
-				console.log(data);
 				if ($scope.user.isFirstLogin) {
 					$scope.menuObj = {};
 					$scope.isInRegisterMode = true;
