@@ -20,10 +20,12 @@ from models.Task import Task
 from models.Course import Course
 from models.TaskComponent import TaskComponent
 from models.TaskGrade import TaskGrade
+from models.Project import Project
 
 #Validation Utils Libs
 from SE_API.Validation_Utils import *
 from SE_API.Respones_Utils import *
+from Email_Utils import *
 
 
 task_routes = Blueprint("task_routes", __name__)
@@ -200,13 +202,25 @@ def submitTask(token, taskId, ownerId):
     payload = json.loads(request.data)
 
     user = get_user_by_token(token)
+    if user is None:
+        bad_request("bad user Token")
 
     task = Task.get_by_id(int(taskId))
+    if task is None:
+        bad_request("bad Task id")
+
+    if task.isPersonal:
+        if User.get_by_id(int(ownerId)) is None:
+            return bad_request("no such user")
+    else:
+        if Project.get_by_id(int(ownerId)) is None:
+            return bad_request("no such project")
+
 
     #create components
-    for c in payload['components']:
+    for c in payload:
         try:
-            component = TaskComponent(taskId=task.key().id(), userId=(int(ownerId)), type=c['type'], label=c['label'], isMandatory=c['isMandatory'], order=c['order'])
+            component = TaskComponent(taskId=task.key().id(), userId=(int(ownerId)), type=c['type'], label=c['label'], value=c['value'], isMandatory=c['isMandatory'], order=c['order'])
         except Exception as e:
             print e
             return bad_request("Bad component")
@@ -678,6 +692,12 @@ def getTaskById(token, taskId, ownerId):
     task = Task.get_by_id(int(taskId))
     if task is None:
         return bad_request("Bad Task id")
+    if task.isPersonal:
+        if User.get_by_id(int(ownerId)) is None:
+            return bad_request("no such user")
+    else:
+        if Project.get_by_id(int(ownerId)) is None:
+            return bad_request("no such project")
 
     task = json.loads(task.to_JSON())
     task['components'] = []
@@ -845,6 +865,38 @@ def deleteTaskComponents(token,taskId):
 @task_routes.route('/api/tasks/help')
 def documentation():
     return auto.html()
+
+
+@task_routes.route('/api/tasks/sendTaskReminder', methods=['GET'])
+def sendTaskReminder():
+
+    tasks = Task.all()
+
+    try:
+        for t in tasks.run():
+            if t.dueDate == datetime.date.today() + datetime.timedelta(days=1):
+                course = Course.get_by_id(int(t.courseId))
+                if t.isPersonal:
+                    for uId in course.membersId:
+                        tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", int(uId))
+                        if tc.count() == 0:
+                            user = User.get_by_id(int(uId))
+                            send_task_reminder(user.email, user.name, t.title, course.courseName)
+                            print ""
+
+                else:
+                    projects = Project.all().filter("courseId = ", course.key().id())
+                    for p in projects.run():
+                        tc = TaskComponent.all().filter("taskId = ", t.key().id()).filter("userId = ", p.key().id())
+                        if tc.count() == 0:
+                            for uId in p.membersId:
+                                user = User.get_by_id(int(uId))
+                                send_task_reminder(user.email, user.name, t.title, course.courseName)
+        return accepted()
+
+    except:
+        return bad_request()
+
 
 
 

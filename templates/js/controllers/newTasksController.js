@@ -133,7 +133,7 @@ angular.module('SeHub').controller('newTasksController', ['$scope', 'apiService'
 				$scope.compDetails = [{
 					detail: "Label"
 				}, {
-					detail: "URL Path"
+					detail: "URL Path (You Need To Include 'http://'"
 				}];
 
 			if (type === 'radiobuttons')
