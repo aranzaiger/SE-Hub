@@ -234,7 +234,7 @@ def submitTask(token, taskId, ownerId):
 
 @task_routes.route('/api/tasks/submitGrade/<string:token>/<string:taskId>/<string:ownerId>/<string:grade>', methods=['POST'])
 @auto.doc()
-def submitTask(token, taskId, ownerId, grade):
+def submitGrade(token, taskId, ownerId, grade):
     """
     <span class="card-title">This call will create a new Task in the DB</span>
     <br>
