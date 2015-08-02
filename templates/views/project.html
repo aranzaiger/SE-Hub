@@ -18,6 +18,11 @@
 				<div layout = "row" flex = "45">
 					<!-- <div ng-if = "isMasterOrLecturer"> -->
 					<md-card layout = "row">
+						<div ng-if="!isMember" layout-padding>
+							<md-button ng-click="joinProject()" ng class = "md-raised md-primary">
+								<i class="fa fa-user-plus"></i>
+							</md-button>
+						</div>
 						<div layout-padding>
 							<md-button ng-click="editProject($event)"  ng class="md-raised md-primary">
 								<i class="fa fa-pencil-square-o"></i>

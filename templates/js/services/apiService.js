@@ -181,6 +181,54 @@ service.factory('apiService', ['$http', function($http) {
 			};
 			return $http(req);
 		},
+		joinProject: function(token, projectId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/projects/joinProject/" + token + "/" + projectId;
+			req = {
+				method: "PUT",
+				url: url
+			};
+			return $http(req);
+		},
+		removeProject: function(token, projectId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/projects/deleteProject/" + token + "/" + projectId;
+			req = {
+				method: "DELETE",
+				url: url
+			};
+			return $http(req);
+		},
+		getAllFutureTasks: function(token, courseId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getAllFutureCampusTasks/" + token + "/" + courseId;
+			req = {
+				method: "GET",
+				url: url
+			};
+			return $http(req);
+		},
+		getAllUserTasks: function(token){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getAllUserTasks/" + token;
+			req = {
+				method: "GET",
+				url: url
+			};
+			return $http(req);
+		},
+		getAllTasksByCourse: function(token, courseId){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/tasks/getAllTasksByCourse/" + token + "/" + courseId;
+			req = {
+				method: "GET",
+				url: url
+			};
+			return $http(req);
+		},
+		getAllUserMessages: function(token){
+			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/messages/getAllUserMessages/" + token;
+			req = {
+				method: "GET",
+				url: url
+			};
+			return $http(req);
+		},
 		getCourseById: function(token, id){
 			var url =  (DEBUG ? "http://localhost:8080" : "http://se-hub.appspot.com") + "/api/courses/getCoursesById/" + token + "/" + id;
 			req = {

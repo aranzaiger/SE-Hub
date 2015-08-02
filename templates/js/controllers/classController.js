@@ -8,6 +8,7 @@ angular.module('SeHub')
 		$scope.isCreateProjectClicked = false;
 		$scope.submitNewCourseClicked = false;
 		$scope.loadingData = true;
+		$scope.creatingProject = false;
 		$scope.isInCourse = false;
 		var startDate = null;
 		var endDate = null;
@@ -71,7 +72,6 @@ angular.module('SeHub')
 		}
 
 		$scope.createProjectClicked = function() {
-			// console.log("project created! is it ?!???! " + classId);
 			$scope.isCreateProjectClicked = !$scope.isCreateProjectClicked;
 			if($scope.isCreateProjectClicked)
 				$scope.createSctionStatus = "fa fa-angle-up";
@@ -80,15 +80,14 @@ angular.module('SeHub')
 		}
 
 		$scope.submitNewProject = function() {
-			loadingData = true;
-			// debugger;
+			$scope.creatingProject = true;
 			var intClassId = parseInt(classId);
-			// console.log($scope);
 			var jsonNewProj = {
 				'projectName': $scope.project.projectName,
 				'courseId': intClassId,
 				'gitRepository': $scope.project.repoOwner + '/' + $scope.project.gitRepoName
 			};
+			console.log("Look Down");
 			console.log(jsonNewProj);
 
 			if ($scope.project.logoUrl)
@@ -96,7 +95,7 @@ angular.module('SeHub')
 
     	apiService.createProject(token, jsonNewProj).success(function(data)
     	{
-    		loadingData = false;
+    		$scope.loadingData = false;
     		projectId = data.id;
       		$mdDialog.show($mdDialog.alert().title('Project Created').content('You have successfully created project.')
 	        .ariaLabel('Project created alert dialog').ok('Great!').targetEvent())
@@ -106,7 +105,8 @@ angular.module('SeHub')
 
     	}).error(function(err)
     	{
-    		console.log("Error: " + err.message);
+    		$scope.creatingProject = false;
+    		console.log(err.message);
       		$mdDialog.show($mdDialog.alert().title('Error Creating Project').content('You have failed Creating the project.')
 	        .ariaLabel('Create project alert dialog').ok('Try Again!').targetEvent()); // Pop-up alert
     	});

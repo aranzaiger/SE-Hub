@@ -110,6 +110,5 @@ angular.module('SeHub').controller('newTasksController', ['$scope',
 		$scope.RB = function(comp){
 			console.info(comp);
 		}
-
 	}
 ]);
