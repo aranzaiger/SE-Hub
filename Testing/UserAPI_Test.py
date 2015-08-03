@@ -271,7 +271,7 @@ class UserTestPlan(unittest.TestCase):
         }
         #r = requests.post(self.__class__.url_+'api/courses/create/'+__CONFIG__['TOKENS']['STUDENT'],data=payload)
         r = requests.put(url, data=json.dumps(data), headers=headers)
-        self.assertEquals(r.status_code, 400)
+        self.assertEquals(r.status_code, 404)
 
     def test_addUserToCampus_invalidToken(self):
         headers = {'content-type': 'application/json'}
@@ -282,7 +282,7 @@ class UserTestPlan(unittest.TestCase):
         }
         #r = requests.post(self.__class__.url_+'api/courses/create/'+__CONFIG__['TOKENS']['STUDENT'],data=payload)
         r = requests.put(url, data=json.dumps(data), headers=headers)
-        self.assertEquals(r.status_code, 400)
+        self.assertEquals(r.status_code, 404)
 
     '''
     def test_addUserToCourse_invalidToken(self):
@@ -311,13 +311,13 @@ class UserTestPlan(unittest.TestCase):
         #url = self.__class__.url_+'api/users/getUserById/'+__CONFIG__['TOKENS']['STUDENT'] + '/'+__CONFIG__['ID']['STUDENT_ID']
         url = 'http://localhost:8080/api/users/getUserById/_QA_TOKEN_TEST_STUDENT/6225984592281600'
         r = requests.get(url)
-        self.assertEquals(r.status_code, 200)
+        self.assertEquals(r.status_code, 204)
 
     def test_getUserById_lecturer(self):
         #url = self.__class__.url_+'api/users/getUserById/'+__CONFIG__['TOKENS']['STUDENT'] + '/'+__CONFIG__['ID']['STUDENT_ID']
         url = 'http://localhost:8080/api/users/getUserById/_QA_TOKEN_TEST_LECTURER/6225984592281600'
         r = requests.get(url)
-        self.assertEquals(r.status_code, 200)
+        self.assertEquals(r.status_code, 204)
 
     def test_getUserById_invalidToken(self):
         #url = self.__class__.url_+'api/users/getUserById/'+__CONFIG__['TOKENS']['STUDENT'] + '/'+__CONFIG__['ID']['STUDENT_ID']
