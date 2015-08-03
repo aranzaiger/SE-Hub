@@ -120,11 +120,8 @@
 			</div>
 			<div>
 				Latest Message-
-				<md-card layout-margin layout-padding ng-if="!userMessages">
+				<md-card layout-margin layout-padding>
 					{{userMessages[0].message}}
-				</md-card>
-				<md-card layout-margin layout-padding ng-if="userMessages">
-					No Messages.
 				</md-card>
 			</div>
 		</div>
@@ -158,11 +155,11 @@
 					<md-tabs md-dynamic-height md-border-bottom>
 						<md-tab label="Messages">
 							<md-card ng-repeat = "msg in userMessages">
-								<div layout = "column" layout-padding>
+								<div layout = "row" layout-padding>
 									<div flex = "30" class="md-avatar">
 										<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
 									</div>
-									<div flex = "20" layout = "row">
+									<div flex = "20" layout = "column">
 										<div>
 											{{msg.user.username}}
 										</div>

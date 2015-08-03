@@ -15,6 +15,7 @@ angular.module('SeHub')
 	$scope.projectMessages = [];
 	$scope.msg = {};
 	$scope.isMaster = false;
+	$scope.isLecturer = $scope.user.isLecturer;
 	
 	// $scope.thisProject = {};
 	// $scope.thisProject.courseName = $routeParams.className;
