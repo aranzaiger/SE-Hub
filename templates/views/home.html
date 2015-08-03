@@ -127,7 +127,8 @@
 		</div>
 		<div class ="addMessage" layout="row" layout-margin layout padding>
 			<div>
-				<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary" aria-label="aM"><i class="fa fa-comments"></i></md-button>
+				<md-button ng-click="addMessageClicked()" ng class="md-raised md-primary" aria-label="aM">
+				<i class="fa fa-comments"></i></md-button>
 			</div>
 		</div>
 		<div ng-if="addMsg">
@@ -156,7 +157,7 @@
 						<md-tab label="Messages">
 							<md-card ng-repeat = "msg in userMessages">
 								<div layout = "row" layout-padding>
-									<div flex = "30" class="md-avatar">
+									<div flex = "10" class="md-avatar">
 										<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
 									</div>
 									<div flex = "20" layout = "column">
