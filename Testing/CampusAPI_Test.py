@@ -2,6 +2,7 @@ __author__ = 'etye'
 import unittest
 import requests
 import json
+import webbrowser
 from Testing.config import __CONFIG__
 class UserTestPlan(unittest.TestCase):
     @classmethod
@@ -69,8 +70,18 @@ class UserTestPlan(unittest.TestCase):
         self.assertEquals(r.status_code, 200)
         self.assertTrue(len(r.json())>= 1)
 
+    def test_campusesGet_validToken_hebrewToken(self):
+        r = requests.get(self.__class__.url_+'api/campuses/getAll/????')
+        self.assertEquals(r.status_code, 403)
 
-
+    #        connectUserToCampus = self.__class__.url_+'http://localhost:8080/api/help/validation/confirm/TOKEN|post.jce.ac.il'
+    #  webbrowser.open('http://eample.com')
+    #/api/campuses/getCampusesByUser/<string:token>
+    def test_getCampusesByUser_lecturerToken(self):
+        connectUserToCampus = self.__class__.url_+'api/help/validation/confirm/'++__CONFIG__['TOKENS']['LECTURER']+'|post.jce.ac.il'
+        webbrowser.open('http://localhost:8080/api/help/validation/confirm/_QA_TOKEN_TEST_LECTURER|post.jce.ac.il')
+        r = requests.get(self.__class__.url_+'api/campuses/getCampusesByUser/'+__CONFIG__['TOKENS']['LECTURER'])
+        self.assertEquals(r.status_code, 200)
 
 if __name__ == '__main__':
     unittest.main()
