@@ -24,6 +24,10 @@ angular.module('SeHub')
 	console.log($scope.user.id)
 	// console.log($scope.projectid)
 
+	$scope.getDate = function(msg){
+    	return msg.date.day.toString() + "-" + msg.date.month.toString() +"-"+ msg.date.year.toString() + "  " + msg.date.hour.toString() +":"+msg.date.minute.toString();
+  	}
+
 	$scope.displayProjectMessages = function()
 	{
 		apiService.getAllUserMessages(token).success(function(data)
