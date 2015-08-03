@@ -108,7 +108,7 @@
 									</div>
 									<md-content class="tabDesign">
 										<md-card ng-repeat = "msg in projectMessages">
-											<div layout = "row" layout-padding ng-if="!displayingMessages && msg.isProject">
+											<div layout = "row" layout-padding ng-if="!displayingMessages && msg.isProject && msg.groupId == project.id">
 												<div flex = "10">
 													<img ng-src="{{msg.user.avatar_url}}" style="width:80%">
 												</div>
