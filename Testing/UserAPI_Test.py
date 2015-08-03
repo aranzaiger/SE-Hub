@@ -331,8 +331,8 @@ class UserTestPlan(unittest.TestCase):
         print("***********************************************")
         print(self._testMethodName+"Has begun")
         print("***********************************************")
-        #url=self.__class__.url_+'api/users/getUsersByCampus/'+__CONFIG__['TOKENS']['STUDENT']+'/6736157987569664'#campus id
-        url='http://localhost:8080/api/users/getUsersByCampus/_QA_TOKEN_TEST_STUDENT/6736157987569664'
+        url=self.__class__.url_+'api/users/getUsersByCampus/'+__CONFIG__['TOKENS']['STUDENT']+'/6736157987569664'#campus id
+        #url='http://localhost:8080/api/users/getUsersByCampus/_QA_TOKEN_TEST_STUDENT/6736157987569664'
         r = requests.get(url)
         self.assertEquals(r.status_code, 200)
         print("***********************************************")
@@ -344,8 +344,8 @@ class UserTestPlan(unittest.TestCase):
         print("***********************************************")
         print(self._testMethodName+"Has begun")
         print("***********************************************")
-        #url=self.__class__.url_+'api/users/getUsersByCampus/'+__CONFIG__['TOKENS']['LECTURER']+'/6736157987569664'#campus id
-        url = 'http://localhost:8080/api/users/getUsersByCampus/_QA_TOKEN_TEST_STUDENT/6736157987569664'
+        url=self.__class__.url_+'api/users/getUsersByCampus/'+__CONFIG__['TOKENS']['LECTURER']+'/6736157987569664'#campus id
+        #url = 'http://localhost:8080/api/users/getUsersByCampus/_QA_TOKEN_TEST_STUDENT/6736157987569664'
         r = requests.get(url)
         self.assertEquals(r.status_code, 200)
         print("***********************************************")
