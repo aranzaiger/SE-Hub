@@ -155,11 +155,11 @@
 					<md-tabs md-dynamic-height md-border-bottom>
 						<md-tab label="Messages">
 							<md-card ng-repeat = "msg in userMessages">
-								<div layout = "row" layout-padding>
+								<div layout = "column" layout-padding>
 									<div flex = "30" class="md-avatar">
 										<img ng-src="{{msg.user.avatar_url}}" style="width:100%">
 									</div>
-									<div flex = "20" layout = "column">
+									<div flex = "20" layout = "row">
 										<div>
 											{{msg.user.username}}
 										</div>
