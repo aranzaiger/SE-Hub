@@ -70,6 +70,7 @@
 											<div>
 												{{msg.group.courseName}}
 												{{msg.group.projectName}}
+												{{getDate(msg)}}
 											</div>
 										</div>
 										<div flex = "40">
@@ -83,8 +84,9 @@
 							<md-content class="md-padding">
 								<div ng-repeat = "course in unSubmittedTasks">
 									<md-card ng-repeat = "task in course.tasks" layout-padding>
-										<div ng-repeat = "uName in task.usersToReview">
-											Title: {{task.title}}
+										Title: {{task.title}}
+										<br/>{{(task.isPersonal) ? "A personal task": "A project task"}}
+										<div ng-repeat = "uName in task.usersToReview">	
 											<br></br>
 											<md-button ng-click="reviewTask(task.id, uName.id)">
 												Name: {{uName.name}}
@@ -167,6 +169,7 @@
 										<div>
 											{{msg.group.courseName}}
 											{{msg.group.projectName}}
+											{{getDate(msg)}}
 										</div>
 									</div>
 									<div flex = "40">

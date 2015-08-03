@@ -176,6 +176,9 @@ angular.module('SeHub')
     console.log($scope.courseObj);
   }
 
+  $scope.getDate = function(msg){
+    return msg.date.day.toString() + "-" + msg.date.month.toString() +"-"+ msg.date.year.toString() + "  " + msg.date.hour.toString() +":"+msg.date.minute.toString();
+  }
 
 
   $scope.chooseProjectClicked = function()
